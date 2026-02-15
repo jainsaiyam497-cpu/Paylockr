@@ -55,7 +55,7 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId }) => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20 animate-fade-in-up">
       {/* Header */}
       <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6 pl-16 md:pl-4">
           <div className="flex items-center gap-3 mb-6">
             <Calendar className="text-blue-600 dark:text-blue-400" size={32} />
             <div>

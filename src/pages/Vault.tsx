@@ -38,7 +38,7 @@ export const Vault: React.FC<VaultProps> = ({ documents }) => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pb-20 animate-fade-in-up">
       {/* Header */}
       <div className="backdrop-blur-lg bg-white/80 dark:bg-slate-900/80 border-b border-gray-200/50 dark:border-slate-800/50">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6 pl-16 md:pl-4">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Secure Vault</h1>
             <div className="flex items-center gap-2 text-green-600 dark:text-green-400">

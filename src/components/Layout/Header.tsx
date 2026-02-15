@@ -15,11 +15,11 @@ export const Header: React.FC<HeaderProps> = ({ view, session, notifications, se
   const userName = session?.user?.email?.split('@')[0] || 'Freelancer';
 
   return (
-    <header className="mb-6 md:mb-8">
+    <header className="mb-6 md:mb-8 pl-16 md:pl-0">
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
           <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white capitalize">
-            {view.toLowerCase().replace('_', ' ')}
+            {view.toLowerCase().replace(/_/g, ' ')}
           </h1>
           <p className="text-gray-600 dark:text-slate-400 text-sm mt-1">Welcome back, {userName}.</p>
         </div>

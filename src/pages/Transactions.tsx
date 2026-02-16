@@ -3,7 +3,7 @@ import { ChevronDown, Search, Filter, Download, ArrowDownLeft, ArrowUpRight, Cal
 import { CATEGORIES } from '../utils/multiUserUnifiedData';
 import { Transaction, TransactionType, TransactionStatus } from '../types';
 import { Button } from '../components/common/Button';
-import { TransactionModal } from '../components/transactions/TransactionModal';
+import { TransactionModal } from '../components/Transactions/TransactionModal';
 
 type SortBy = 'DATE_NEW' | 'DATE_OLD' | 'AMOUNT_HIGH' | 'AMOUNT_LOW';
 type FilterType = 'ALL' | 'INCOME' | 'EXPENSE' | 'TRANSFER';

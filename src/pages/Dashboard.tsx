@@ -14,9 +14,9 @@ import {
   ArrowDownLeft
 } from 'lucide-react';
 import { Transaction, ViewState, TaxDeadline, TransactionType, TransactionStatus } from '../types';
-import { Stats } from '../components/dashboard/Stats';
-import { Chart } from '../components/dashboard/Chart';
-import { QuickActions } from '../components/dashboard/QuickActions';
+import { Stats } from '../components/Dashboard/Stats';
+import { Chart } from '../components/Dashboard/Chart';
+import { QuickActions } from '../components/Dashboard/QuickActions';
 
 interface DashboardProps {
   transactions: Transaction[]; 

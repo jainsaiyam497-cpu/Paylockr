@@ -183,6 +183,42 @@ export interface VaultEntry {
   status: 'LOCKED' | 'RELEASED';
 }
 
+export interface TaxCalendarEntry {
+  id: string;
+  userId: string;
+  type: 'QUARTERLY' | 'ANNUAL' | 'GST' | 'TDS';
+  quarter?: 'Q1' | 'Q2' | 'Q3' | 'Q4';
+  dueDate: Date;
+  amount: number;
+  status: 'UPCOMING' | 'DUE' | 'PAID' | 'OVERDUE';
+  taxVaultId?: string;
+  paidTransactionId?: string;
+  description: string;
+}
+
+export interface AIInsight {
+  id: string;
+  userId: string;
+  type: 'INCOME' | 'EXPENSE' | 'TAX' | 'CASHFLOW' | 'GROWTH';
+  title: string;
+  message: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  relatedIds: string[];
+  actionable: boolean;
+  createdAt: Date;
+}
+
+export interface ClassifiedIncome {
+  id: string;
+  userId: string;
+  transactionId: string;
+  amount: number;
+  type: 'TAXABLE' | 'NON_TAXABLE';
+  confidence: number;
+  reason: string;
+  userConfirmed: boolean;
+}
+
 export type ViewState = 
   | 'LOGIN' 
   | 'SIGNUP'

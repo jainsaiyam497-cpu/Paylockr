@@ -21,6 +21,31 @@ export interface ClassifiedIncome {
   userConfirmed: boolean;
 }
 
+export interface TaxCalendarEntry {
+  id: string;
+  userId: string;
+  type: 'QUARTERLY' | 'ANNUAL' | 'GST' | 'TDS';
+  quarter?: 'Q1' | 'Q2' | 'Q3' | 'Q4';
+  dueDate: Date;
+  amount: number;
+  status: 'UPCOMING' | 'DUE' | 'PAID' | 'OVERDUE';
+  taxVaultId?: string;
+  paidTransactionId?: string;
+  description: string;
+}
+
+export interface AIInsight {
+  id: string;
+  userId: string;
+  type: 'INCOME' | 'EXPENSE' | 'TAX' | 'CASHFLOW' | 'GROWTH';
+  title: string;
+  message: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  relatedIds: string[];
+  actionable: boolean;
+  createdAt: Date;
+}
+
 // ============ DEMO USERS ============
 export const DEMO_USERS: (User & { password: string })[] = [
   {
@@ -320,6 +345,153 @@ export function generateUserData(userId: string) {
   ];
 
   // 5. Documents
+  // 5. Tax Calendar (Linked to Vault)
+  const taxCalendar: TaxCalendarEntry[] = [];
+  const currentYear = today.getFullYear();
+  const totalTaxLiability = vaultBalance;
+  
+  // Quarterly estimated tax payments
+  const quarters = [
+    { q: 'Q1', month: 5, day: 15, desc: 'Q1 (Apr-Jun)' },
+    { q: 'Q2', month: 8, day: 15, desc: 'Q2 (Jul-Sep)' },
+    { q: 'Q3', month: 11, day: 15, desc: 'Q3 (Oct-Dec)' },
+    { q: 'Q4', month: 2, day: 15, desc: 'Q4 (Jan-Mar)', year: currentYear + 1 }
+  ];
+
+  quarters.forEach((q, idx) => {
+    const dueDate = new Date(q.year || currentYear, q.month, q.day);
+    const quarterAmount = Math.round(totalTaxLiability / 4);
+    const isPast = dueDate < today;
+    
+    taxCalendar.push({
+      id: `TAX-Q${idx + 1}-${userId}`,
+      userId,
+      type: 'QUARTERLY',
+      quarter: q.q as any,
+      dueDate,
+      amount: quarterAmount,
+      status: isPast ? 'PAID' : (dueDate.getTime() - today.getTime() < 7 * 24 * 60 * 60 * 1000 ? 'DUE' : 'UPCOMING'),
+      description: `Advance Tax Payment - ${q.desc}`,
+      taxVaultId: vaultEntries[0]?.id
+    });
+  });
+
+  // Annual ITR filing
+  taxCalendar.push({
+    id: `TAX-ANNUAL-${userId}`,
+    userId,
+    type: 'ANNUAL',
+    dueDate: new Date(currentYear, 6, 31), // July 31
+    amount: totalTaxLiability,
+    status: new Date(currentYear, 6, 31) < today ? 'PAID' : 'UPCOMING',
+    description: 'Income Tax Return Filing - FY 2023-24',
+    taxVaultId: vaultEntries[0]?.id
+  });
+
+  // 6. AI Insights (Cross-module analysis)
+  const aiInsights: AIInsight[] = [];
+
+  // Income insight - Top client
+  const clientRevenue: Record<string, { amount: number; ids: string[] }> = {};
+  transactions
+    .filter(t => t.type === TransactionType.BUSINESS)
+    .forEach(t => {
+      const client = t.merchant || t.source;
+      if (!clientRevenue[client]) clientRevenue[client] = { amount: 0, ids: [] };
+      clientRevenue[client].amount += t.amount;
+      clientRevenue[client].ids.push(t.id);
+    });
+
+  const topClient = Object.entries(clientRevenue).sort((a, b) => b[1].amount - a[1].amount)[0];
+  if (topClient) {
+    const percentage = Math.round((topClient[1].amount / totalIncomeAmount) * 100);
+    aiInsights.push({
+      id: `INS-INCOME-${userId}`,
+      userId,
+      type: 'INCOME',
+      title: 'Top Revenue Source Identified',
+      message: `${topClient[0]} contributed ₹${topClient[1].amount.toLocaleString()} (${percentage}% of total income). Consider diversifying client base to reduce dependency.`,
+      priority: percentage > 50 ? 'HIGH' : 'MEDIUM',
+      relatedIds: topClient[1].ids,
+      actionable: true,
+      createdAt: today
+    });
+  }
+
+  // Expense insight - Deductible opportunities
+  const deductibleExpenses = expenses.filter(e => e.deductible);
+  const totalDeductible = deductibleExpenses.reduce((sum, e) => sum + e.amount, 0);
+  if (totalDeductible > 0) {
+    aiInsights.push({
+      id: `INS-EXPENSE-${userId}`,
+      userId,
+      type: 'EXPENSE',
+      title: 'Tax Deduction Opportunity',
+      message: `You have ₹${totalDeductible.toLocaleString()} in deductible business expenses. This could reduce your taxable income by ${Math.round((totalDeductible / totalIncomeAmount) * 100)}%.`,
+      priority: 'MEDIUM',
+      relatedIds: deductibleExpenses.map(e => e.id),
+      actionable: true,
+      createdAt: today
+    });
+  }
+
+  // Tax insight - Liability projection
+  const netTaxableIncome = totalIncomeAmount - totalDeductible;
+  const projectedTax = Math.round(netTaxableIncome * 0.3);
+  aiInsights.push({
+    id: `INS-TAX-${userId}`,
+    userId,
+    type: 'TAX',
+    title: 'Annual Tax Projection',
+    message: `Based on current income (₹${totalIncomeAmount.toLocaleString()}) and deductions (₹${totalDeductible.toLocaleString()}), your estimated tax liability is ₹${projectedTax.toLocaleString()}. Current vault balance: ₹${vaultBalance.toLocaleString()}.`,
+    priority: vaultBalance < projectedTax ? 'HIGH' : 'LOW',
+    relatedIds: vaultEntries.map(v => v.id),
+    actionable: true,
+    createdAt: today
+  });
+
+  // Cashflow insight
+  const avgMonthlyIncome = Math.round(totalIncomeAmount / 6);
+  const avgMonthlyExpense = Math.round(totalExpenseAmount / 6);
+  const netCashflow = avgMonthlyIncome - avgMonthlyExpense;
+  aiInsights.push({
+    id: `INS-CASHFLOW-${userId}`,
+    userId,
+    type: 'CASHFLOW',
+    title: 'Monthly Cashflow Analysis',
+    message: `Average monthly income: ₹${avgMonthlyIncome.toLocaleString()} | Expenses: ₹${avgMonthlyExpense.toLocaleString()} | Net: ₹${netCashflow.toLocaleString()}. ${netCashflow > 0 ? 'Healthy cashflow maintained.' : 'Warning: Expenses exceeding income.'}`,
+    priority: netCashflow < 0 ? 'HIGH' : 'LOW',
+    relatedIds: [],
+    actionable: false,
+    createdAt: today
+  });
+
+  // Growth insight
+  const recentIncome = transactions
+    .filter(t => t.type === TransactionType.BUSINESS && new Date(t.date).getMonth() === today.getMonth())
+    .reduce((sum, t) => sum + t.amount, 0);
+  const lastMonthIncome = transactions
+    .filter(t => {
+      const tDate = new Date(t.date);
+      return t.type === TransactionType.BUSINESS && tDate.getMonth() === today.getMonth() - 1;
+    })
+    .reduce((sum, t) => sum + t.amount, 0);
+  
+  if (lastMonthIncome > 0) {
+    const growth = Math.round(((recentIncome - lastMonthIncome) / lastMonthIncome) * 100);
+    aiInsights.push({
+      id: `INS-GROWTH-${userId}`,
+      userId,
+      type: 'GROWTH',
+      title: 'Revenue Growth Trend',
+      message: `${growth > 0 ? '📈' : '📉'} Revenue ${growth > 0 ? 'increased' : 'decreased'} by ${Math.abs(growth)}% compared to last month. ${growth > 0 ? 'Great momentum!' : 'Consider new client acquisition strategies.'}`,
+      priority: growth < -20 ? 'HIGH' : 'LOW',
+      relatedIds: [],
+      actionable: growth < 0,
+      createdAt: today
+    });
+  }
+
   const vaultDocuments: VaultDocument[] = [
     {
       id: 'DOC-1',
@@ -365,6 +537,11 @@ export function generateUserData(userId: string) {
     classifiedIncomes,
     bankAccounts,
     vaultDocuments,
+    taxCalendar: taxCalendar.sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime()),
+    aiInsights: aiInsights.sort((a, b) => {
+      const priorityOrder = { HIGH: 0, MEDIUM: 1, LOW: 2 };
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    }),
     stats: {
       totalIncome: totalIncomeAmount,
       totalExpense: totalExpenseAmount,
@@ -373,7 +550,10 @@ export function generateUserData(userId: string) {
       transactionCount: transactions.length,
       expenseCount: expenses.length,
       invoiceCount: invoices.length,
-      paidInvoices: invoices.filter(i => i.status === 'PAID').length
+      paidInvoices: invoices.filter(i => i.status === 'PAID').length,
+      netTaxableIncome: totalIncomeAmount - totalDeductible,
+      projectedTaxLiability: projectedTax,
+      deductibleExpenses: totalDeductible
     }
   };
 }
@@ -396,6 +576,12 @@ const initializeUserData = () => {
         data.vaultEntries = data.vaultEntries.map((v: any) => ({ ...v, lockedDate: new Date(v.lockedDate) }));
         data.bankAccounts = data.bankAccounts.map((b: any) => ({ ...b, lastUpdated: new Date(b.lastUpdated) }));
         data.vaultDocuments = data.vaultDocuments.map((d: any) => ({ ...d, uploadedDate: new Date(d.uploadedDate) }));
+        if (data.taxCalendar) {
+          data.taxCalendar = data.taxCalendar.map((t: any) => ({ ...t, dueDate: new Date(t.dueDate) }));
+        }
+        if (data.aiInsights) {
+          data.aiInsights = data.aiInsights.map((i: any) => ({ ...i, createdAt: new Date(i.createdAt) }));
+        }
         ALL_USER_DATA[userId] = data;
       });
       return;

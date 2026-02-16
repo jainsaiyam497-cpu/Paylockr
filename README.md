@@ -29,13 +29,44 @@ src/
 ├── pages/              # Page components
 ├── services/           # API and service integrations
 │   ├── geminiService.ts
-│   └── supabaseClient.ts
+│   ├── supabaseClient.ts
+│   ├── dataService.ts       # Core data relationship manager
+│   ├── transactionService.ts
+│   └── taxService.ts
 ├── styles/             # Global and component styles
 │   └── designSystem.ts
+├── types/              # TypeScript interfaces
+│   └── index.ts
 ├── utils/              # Utility functions
+│   ├── multiUserUnifiedData.ts  # Interconnected data system
+│   └── smartTaxVault.ts
 ├── App.tsx             # Main app component
 ├── main.tsx            # Entry point
 └── index.css           # Global styles
+```
+
+## Data Architecture 🏗️
+
+Paylockr uses a **comprehensive interconnected data model** where every transaction, invoice, expense, and tax entry is meaningfully linked. This creates a living financial ecosystem.
+
+**Key Features:**
+- ✅ Every transaction links to invoices or expenses
+- ✅ Smart Tax Vault auto-calculates from real income
+- ✅ Tax Calendar shows actual amounts from vault
+- ✅ AI Insights analyzes cross-module patterns
+- ✅ Bank accounts reflect real-time balances
+- ✅ No isolated data - everything is connected
+
+**Documentation:**
+- [Complete Data Architecture](./DATA_ARCHITECTURE.md) - Detailed system design
+- [Quick Start Guide](./QUICK_START.md) - How to use the data system
+- [System Diagrams](./SYSTEM_DIAGRAM.md) - Visual data flow maps
+
+**Example Data Flow:**
+```
+Client Pays Invoice → Transaction Created → Vault Entry Generated 
+→ Tax Calendar Updated → Bank Balance Updated → Dashboard Refreshed 
+→ AI Insights Analyzed → Notification Sent
 ```
 
 ## Getting Started 🚀

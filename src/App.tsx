@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ViewState, Transaction, Notification, TaxSettings, TaxDeadline, Invoice, Expense, VaultEntry, BankAccount, VaultDocument } from './types';
+import { ViewState, Transaction, Notification, TaxSettings, TaxDeadline, Invoice, Expense, VaultEntry, BankAccount, VaultDocument, TaxCalendarEntry, AIInsight, ClassifiedIncome } from './types';
 import { MOCK_TAX_DEADLINES, generateNotifications } from './constants';
-import { getUserData, getDashboardStats, ClassifiedIncome } from './utils/multiUserUnifiedData';
-import { FIXED_TRANSACTIONS, FIXED_EXPENSES, FIXED_INVOICES, FIXED_VAULT_ENTRIES, FIXED_BANK_ACCOUNTS, FIXED_VAULT_DOCUMENTS, FIXED_STATS } from './utils/fixedDummyData';
+import { getUserData, getDashboardStats } from './utils/multiUserUnifiedData';
 import { CheckCircle, AlertTriangle, Info, X } from 'lucide-react';
 
 // Layout
@@ -33,14 +32,13 @@ import { SmartTaxVault } from './pages/SmartTaxVault';
 import { TaxCalendar } from './pages/TaxCalendar';
 import { supabase } from './services/supabaseClient';
 
-// Toast Component
 const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 'error' | 'info', onClose: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (onClose) onClose();
     }, 3000);
     return () => clearTimeout(timer);
-  }, []); // FIX: Don't depend on onClose to prevent infinite loops
+  }, []);
 
   const bgColors = {
     success: 'bg-teal-600',
@@ -65,7 +63,6 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [toast, setToast] = useState<{msg: string, type: 'success'|'error'|'info'} | null>(null);
   
-  // --- SINGLE SOURCE OF TRUTH STATE ---
   const [financialData, setFinancialData] = useState<{
     transactions: Transaction[];
     expenses: Expense[];
@@ -74,6 +71,8 @@ export default function App() {
     classifiedIncomes: ClassifiedIncome[];
     bankAccounts: BankAccount[];
     vaultDocuments: VaultDocument[];
+    taxCalendar: TaxCalendarEntry[];
+    aiInsights: AIInsight[];
     stats: any;
   } | null>(null);
 
@@ -93,27 +92,30 @@ export default function App() {
     else document.documentElement.classList.remove('dark');
   }, [isDarkMode]);
 
-  // Auth & Data Loading Effect
   useEffect(() => {
     let mounted = true;
 
     const loadUserData = (user: any) => {
       if (!user) return;
       try {
-        // --- USE FIXED DATA INSTEAD OF RANDOM ---
+        const userId = user.id || 'saiyam';
+        const userData = getUserData(userId);
+        const dashStats = getDashboardStats(userId);
+        
         setFinancialData({
-          transactions: FIXED_TRANSACTIONS,
-          expenses: FIXED_EXPENSES,
-          invoices: FIXED_INVOICES,
-          vaultEntries: FIXED_VAULT_ENTRIES,
-          classifiedIncomes: [],
-          bankAccounts: FIXED_BANK_ACCOUNTS,
-          vaultDocuments: FIXED_VAULT_DOCUMENTS,
-          stats: FIXED_STATS
+          transactions: userData.transactions,
+          expenses: userData.expenses,
+          invoices: userData.invoices,
+          vaultEntries: userData.vaultEntries,
+          classifiedIncomes: userData.classifiedIncomes,
+          bankAccounts: userData.bankAccounts,
+          vaultDocuments: userData.vaultDocuments,
+          taxCalendar: userData.taxCalendar || [],
+          aiInsights: userData.aiInsights || [],
+          stats: dashStats
         });
         
-        // Generate notifications based on actual transactions
-        setNotifications(generateNotifications(FIXED_TRANSACTIONS));
+        setNotifications(generateNotifications(userData.transactions));
       } catch (e) {
         console.error("Failed to load user data", e);
       }
@@ -132,7 +134,6 @@ export default function App() {
           return;
         }
 
-        // Fallback for demo/mock
         const fallbackUserStr = sessionStorage.getItem('userData');
         if (fallbackUserStr) {
           const user = JSON.parse(fallbackUserStr);
@@ -154,7 +155,6 @@ export default function App() {
         loadUserData(session.user);
         if (view === 'LOGIN') setView('DASHBOARD');
       } else {
-        // Only reset if we are not in fallback mode
         if (!sessionStorage.getItem('userData')) {
           setSession(null);
           setFinancialData(null);
@@ -176,20 +176,24 @@ export default function App() {
         const user = JSON.parse(storedData);
         setSession({ user });
         
-        // Load fixed data immediately on login
+        const userId = user.id || 'saiyam';
+        const userData = getUserData(userId);
+        const dashStats = getDashboardStats(userId);
+        
         setFinancialData({
-          transactions: FIXED_TRANSACTIONS,
-          expenses: FIXED_EXPENSES,
-          invoices: FIXED_INVOICES,
-          vaultEntries: FIXED_VAULT_ENTRIES,
-          classifiedIncomes: [],
-          bankAccounts: FIXED_BANK_ACCOUNTS,
-          vaultDocuments: FIXED_VAULT_DOCUMENTS,
-          stats: FIXED_STATS
+          transactions: userData.transactions,
+          expenses: userData.expenses,
+          invoices: userData.invoices,
+          vaultEntries: userData.vaultEntries,
+          classifiedIncomes: userData.classifiedIncomes,
+          bankAccounts: userData.bankAccounts,
+          vaultDocuments: userData.vaultDocuments,
+          taxCalendar: userData.taxCalendar || [],
+          aiInsights: userData.aiInsights || [],
+          stats: dashStats
         });
         
-        // Generate notifications based on actual transactions
-        setNotifications(generateNotifications(FIXED_TRANSACTIONS));
+        setNotifications(generateNotifications(userData.transactions));
 
         setView('DASHBOARD');
         setToast({ msg: `Welcome back, ${user.name}!`, type: 'success' });
@@ -206,7 +210,7 @@ export default function App() {
     await supabase.auth.signOut();
     sessionStorage.removeItem('userData');
     setSession(null);
-    setFinancialData(null); // Clear data
+    setFinancialData(null);
     setView('LOGIN');
     setToast({ msg: 'Logged out successfully', type: 'info' });
   };
@@ -232,7 +236,6 @@ export default function App() {
     setNotifications(notifications.filter(n => n.id !== id));
   };
 
-  // Safe access to data with fallbacks
   const transactions = financialData?.transactions || [];
   const expenses = financialData?.expenses || [];
   const invoices = financialData?.invoices || [];
@@ -240,6 +243,8 @@ export default function App() {
   const classifiedIncomes = financialData?.classifiedIncomes || [];
   const bankAccounts = financialData?.bankAccounts || [];
   const vaultDocuments = financialData?.vaultDocuments || [];
+  const taxCalendar = financialData?.taxCalendar || [];
+  const aiInsights = financialData?.aiInsights || [];
   const stats = financialData?.stats || {};
 
   if (!session) {
@@ -297,7 +302,7 @@ export default function App() {
               deleteNotification={deleteNotification}
               taxDeadlines={MOCK_TAX_DEADLINES}
               currentUser={session?.user}
-              stats={stats} // Pass unified stats
+              stats={stats}
             />
           )}
           {view === 'SMART_TAX_VAULT' && (

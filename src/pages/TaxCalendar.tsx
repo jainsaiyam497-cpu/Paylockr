@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, ChevronLeft, ChevronRight, Clock, AlertCircle, Bell, CheckCircle2, XCircle, Filter } from 'lucide-react';
+import { getUserData } from '../utils/multiUserUnifiedData';
 
-export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId }) => {
+export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }) => {
+  const userData = getUserData(userId);
+  const taxCalendar = userData.taxCalendar || [];
+  
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
@@ -12,66 +16,17 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId }) => {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   };
 
-  const allTaxEvents = [
-    // INCOME TAX - Advance Tax
-    { date: new Date(2024, 5, 15), title: 'Advance Tax Q1', description: 'Q1 Advance Tax - 15% of total tax liability', type: 'PAYMENT', category: 'INCOME_TAX', amount: 18000, status: 'completed' },
-    { date: new Date(2024, 8, 15), title: 'Advance Tax Q2', description: 'Q2 Advance Tax - 45% of total tax liability', type: 'PAYMENT', category: 'INCOME_TAX', amount: 54000, status: 'completed' },
-    { date: new Date(2024, 11, 15), title: 'Advance Tax Q3', description: 'Q3 Advance Tax - 75% of total tax liability', type: 'PAYMENT', category: 'INCOME_TAX', amount: 90000, status: 'pending' },
-    { date: new Date(2025, 2, 15), title: 'Advance Tax Q4', description: 'Q4 Advance Tax - 100% of total tax liability', type: 'PAYMENT', category: 'INCOME_TAX', amount: 120000, status: 'upcoming' },
-    
-    // INCOME TAX - ITR Filing
-    { date: new Date(2024, 6, 31), title: 'ITR Filing (Early)', description: 'ITR deadline if advance tax paid', type: 'FILING', category: 'INCOME_TAX', amount: 0, status: 'completed' },
-    { date: new Date(2024, 7, 31), title: 'ITR Filing Deadline', description: 'Regular ITR filing deadline for individuals', type: 'FILING', category: 'INCOME_TAX', amount: 0, status: 'completed' },
-    { date: new Date(2024, 9, 31), title: 'Updated ITR Filing', description: 'Updated ITR filing deadline (Form ITR-U)', type: 'FILING', category: 'INCOME_TAX', amount: 1000, status: 'upcoming' },
-    { date: new Date(2024, 11, 31), title: 'Belated ITR Filing', description: 'Last date to file belated ITR with penalty', type: 'DEADLINE', category: 'INCOME_TAX', amount: 5000, status: 'pending' },
-    
-    // INCOME TAX - Audit
-    { date: new Date(2024, 8, 30), title: 'Tax Audit Report', description: 'Audit report due if turnover > ₹1 crore', type: 'FILING', category: 'INCOME_TAX', amount: 0, status: 'completed' },
-    { date: new Date(2024, 9, 31), title: 'Audited Financials', description: 'Audited financials submission deadline', type: 'FILING', category: 'INCOME_TAX', amount: 0, status: 'upcoming' },
-    { date: new Date(2024, 10, 30), title: 'Tax Audit Completion', description: 'Last date for tax audit completion', type: 'DEADLINE', category: 'INCOME_TAX', amount: 0, status: 'upcoming' },
-    
-    // GST - Monthly
-    { date: new Date(2024, 11, 13), title: 'GSTR-1 Filing', description: 'File GSTR-1 for outward supplies (Nov)', type: 'FILING', category: 'GST', amount: 0, status: 'pending' },
-    { date: new Date(2024, 11, 20), title: 'GSTR-3B Filing', description: 'File GSTR-3B monthly return (Nov)', type: 'FILING', category: 'GST', amount: 0, status: 'pending' },
-    { date: new Date(2025, 0, 13), title: 'GSTR-1 Filing', description: 'File GSTR-1 for outward supplies (Dec)', type: 'FILING', category: 'GST', amount: 0, status: 'upcoming' },
-    { date: new Date(2025, 0, 20), title: 'GSTR-3B Filing', description: 'File GSTR-3B monthly return (Dec)', type: 'FILING', category: 'GST', amount: 0, status: 'upcoming' },
-    { date: new Date(2025, 1, 13), title: 'GSTR-1 Filing', description: 'File GSTR-1 for outward supplies (Jan)', type: 'FILING', category: 'GST', amount: 0, status: 'upcoming' },
-    { date: new Date(2025, 1, 20), title: 'GSTR-3B Filing', description: 'File GSTR-3B monthly return (Jan)', type: 'FILING', category: 'GST', amount: 0, status: 'upcoming' },
-    
-    // GST - Annual
-    { date: new Date(2024, 11, 31), title: 'GSTR-9 Annual Return', description: 'GST annual return filing deadline', type: 'FILING', category: 'GST', amount: 0, status: 'pending' },
-    { date: new Date(2024, 11, 31), title: 'GSTR-9C Reconciliation', description: 'GST reconciliation statement deadline', type: 'FILING', category: 'GST', amount: 0, status: 'pending' },
-    
-    // TDS - Monthly
-    { date: new Date(2024, 11, 7), title: 'TDS Deposit', description: 'TDS deposit for salary, contractor, rent (Nov)', type: 'PAYMENT', category: 'TDS', amount: 12000, status: 'pending' },
-    { date: new Date(2025, 0, 7), title: 'TDS Deposit', description: 'TDS deposit for salary, contractor, rent (Dec)', type: 'PAYMENT', category: 'TDS', amount: 12000, status: 'upcoming' },
-    { date: new Date(2025, 1, 7), title: 'TDS Deposit', description: 'TDS deposit for salary, contractor, rent (Jan)', type: 'PAYMENT', category: 'TDS', amount: 12000, status: 'upcoming' },
-    
-    // TDS - Quarterly
-    { date: new Date(2025, 0, 31), title: 'TDS Return Q3', description: 'Q3 TDS return filing (Oct-Dec)', type: 'FILING', category: 'TDS', amount: 0, status: 'upcoming' },
-    
-    // TDS - Annual
-    { date: new Date(2025, 4, 31), title: 'TDS Annual Statement', description: 'TDS annual statement (Form 26AS)', type: 'FILING', category: 'TDS', amount: 0, status: 'upcoming' },
-    { date: new Date(2025, 5, 15), title: 'TDS Certificates', description: 'Issue TDS certificates to employees', type: 'DEADLINE', category: 'TDS', amount: 0, status: 'upcoming' },
-    
-    // Professional Tax
-    { date: new Date(2024, 11, 15), title: 'Professional Tax', description: 'Professional tax deposit (Nov)', type: 'PAYMENT', category: 'PROF_TAX', amount: 2500, status: 'pending' },
-    { date: new Date(2025, 0, 15), title: 'Professional Tax', description: 'Professional tax deposit (Dec)', type: 'PAYMENT', category: 'PROF_TAX', amount: 2500, status: 'upcoming' },
-    
-    // PF & ESI
-    { date: new Date(2024, 11, 7), title: 'PF Deposit', description: 'Provident Fund deposit (Nov)', type: 'PAYMENT', category: 'LABOR', amount: 8000, status: 'pending' },
-    { date: new Date(2024, 11, 15), title: 'ESI Deposit', description: 'Employee State Insurance deposit (Nov)', type: 'PAYMENT', category: 'LABOR', amount: 3000, status: 'pending' },
-    { date: new Date(2025, 0, 7), title: 'PF Deposit', description: 'Provident Fund deposit (Dec)', type: 'PAYMENT', category: 'LABOR', amount: 8000, status: 'upcoming' },
-    { date: new Date(2025, 0, 15), title: 'ESI Deposit', description: 'Employee State Insurance deposit (Dec)', type: 'PAYMENT', category: 'LABOR', amount: 3000, status: 'upcoming' },
-    
-    // Investment Deadlines
-    { date: new Date(2025, 2, 31), title: 'Investment Deadline', description: 'Last date for 80C investments (PPF, ELSS, LIC)', type: 'DEADLINE', category: 'INVESTMENT', amount: 0, status: 'upcoming' },
-    { date: new Date(2025, 2, 31), title: 'Medical Insurance', description: 'Last date for 80D medical insurance premium', type: 'DEADLINE', category: 'INVESTMENT', amount: 0, status: 'upcoming' },
-    
-    // Financial Year
-    { date: new Date(2024, 3, 1), title: 'Financial Year Starts', description: 'FY 2024-25 begins', type: 'REMINDER', category: 'GENERAL', amount: 0, status: 'completed' },
-    { date: new Date(2025, 2, 31), title: 'Financial Year Ends', description: 'FY 2024-25 ends - Prepare for tax filing', type: 'REMINDER', category: 'GENERAL', amount: 0, status: 'upcoming' },
-  ];
+  // Convert tax calendar to event format
+  const allTaxEvents = taxCalendar.map(entry => ({
+    date: entry.dueDate,
+    title: entry.description,
+    description: `${entry.type} - ₹${entry.amount.toLocaleString()} due`,
+    type: entry.type === 'QUARTERLY' ? 'PAYMENT' : 'FILING',
+    category: entry.type,
+    amount: entry.amount,
+    status: entry.status.toLowerCase(),
+    quarter: entry.quarter
+  }));
 
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -113,12 +68,8 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId }) => {
 
   const categories = [
     { value: 'ALL', label: 'All', color: 'blue' },
-    { value: 'INCOME_TAX', label: 'Income Tax', color: 'purple' },
-    { value: 'GST', label: 'GST', color: 'green' },
-    { value: 'TDS', label: 'TDS', color: 'orange' },
-    { value: 'PROF_TAX', label: 'Prof. Tax', color: 'pink' },
-    { value: 'LABOR', label: 'PF/ESI', color: 'cyan' },
-    { value: 'INVESTMENT', label: 'Investment', color: 'indigo' },
+    { value: 'QUARTERLY', label: 'Quarterly Tax', color: 'purple' },
+    { value: 'ANNUAL', label: 'Annual ITR', color: 'green' },
   ];
 
   return (

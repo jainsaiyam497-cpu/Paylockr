@@ -97,10 +97,10 @@ export const Help: React.FC = () => {
   });
 
   const quickLinks = [
-    { title: 'Getting Started Guide', icon: BookOpen, color: 'blue', link: '#' },
-    { title: 'Video Tutorials', icon: Video, color: 'red', link: '#' },
-    { title: 'Tax Filing Checklist', icon: FileText, color: 'green', link: '#' },
-    { title: 'API Documentation', icon: ExternalLink, color: 'purple', link: '#' },
+    { title: 'Getting Started Guide', icon: BookOpen, color: 'blue', link: 'https://github.com/SaiyamJain468/Paylockr#getting-started-' },
+    { title: 'Video Tutorials', icon: Video, color: 'red', link: 'https://www.youtube.com/results?search_query=paylockr+tutorial' },
+    { title: 'Tax Filing Checklist', icon: FileText, color: 'green', link: 'https://www.incometax.gov.in/iec/foportal/' },
+    { title: 'API Documentation', icon: ExternalLink, color: 'purple', link: 'https://github.com/SaiyamJain468/Paylockr' },
   ];
 
   return (
@@ -145,7 +145,7 @@ export const Help: React.FC = () => {
             <Mail size={24} />
           </div>
           <h3 className="font-bold text-lg dark:text-white mb-2">Email Support</h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">support@paylockr.com</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">saiyam468@gmail.com</p>
           <span className="text-xs font-semibold text-green-600 dark:text-green-400">Response within 24 hours</span>
         </div>
 
@@ -251,12 +251,22 @@ export const Help: React.FC = () => {
         <h3 className="text-2xl font-bold mb-2">Still need help?</h3>
         <p className="text-blue-100 mb-6">Our support team is here to assist you</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <button className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition shadow-lg">
+          <a 
+            href="https://wa.me/919911566610?text=Hi%2C%20I%20need%20support%20with%20PayLockr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition shadow-lg"
+          >
             Contact Support
-          </button>
-          <button className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition">
+          </a>
+          <a 
+            href="https://wa.me/919911566610?text=Hi%2C%20I%20want%20to%20schedule%20a%20call%20with%20PayLockr%20team"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition"
+          >
             Schedule a Call
-          </button>
+          </a>
         </div>
       </div>
     </div>

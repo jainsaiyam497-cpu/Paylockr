@@ -8,11 +8,13 @@ interface Budget {
 }
 
 interface ExpensesProps {
-  expenses: Expense[]; // Changed to expenses prop
+  expenses: Expense[];
+  onAdd?: (expense: Expense) => void;
 }
 
-export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
+export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [budgets, setBudgets] = useState<Budget>({
     FOOD: 10000,
     SHOPPING: 15000,
@@ -99,9 +101,17 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
           
           {/* Main Expense Card */}
           <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Receipt className="w-8 h-8 text-yellow-400" />
-              <h2 className="text-3xl font-black uppercase text-black dark:text-white">EXPENSES</h2>
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-3">
+                <Receipt className="w-8 h-8 text-yellow-400" />
+                <h2 className="text-3xl font-black uppercase text-black dark:text-white">EXPENSES</h2>
+              </div>
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold uppercase transition flex items-center gap-2"
+              >
+                <span className="text-xl">+</span> ADD EXPENSE
+              </button>
             </div>
             <div className="mb-6">
               <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">THIS MONTH'S SPENDING</p>
@@ -298,6 +308,58 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
           </div>
         </div>
       </div>
+
+      {/* Add Expense Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-black border-4 border-yellow-400 w-full max-w-md p-6">
+            <h3 className="text-xl font-black uppercase text-black dark:text-white mb-4">ADD NEW EXPENSE</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const newExpense: Expense = {
+                id: Date.now().toString(),
+                amount: Number(formData.get('amount')),
+                category: formData.get('category') as string,
+                description: formData.get('description') as string,
+                date: new Date(formData.get('date') as string),
+                merchant: formData.get('merchant') as string
+              };
+              onAdd && onAdd(newExpense);
+              setShowAddModal(false);
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Amount</label>
+                  <input name="amount" type="number" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Category</label>
+                  <select name="category" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none">
+                    {Object.keys(CATEGORIES).map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Description</label>
+                  <input name="description" type="text" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Merchant</label>
+                  <input name="merchant" type="text" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Date</label>
+                  <input name="date" type="date" required defaultValue={new Date().toISOString().split('T')[0]} className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+              </div>
+              <div className="flex gap-3 mt-6">
+                <button type="submit" className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-bold uppercase transition">ADD</button>
+                <button type="button" onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

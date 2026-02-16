@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Eye, EyeOff, Edit2, Trash2, TrendingUp, Landmark } from 'lucide-react';
+import { Plus, Eye, EyeOff, Edit2, Trash2, TrendingUp, Landmark, Shield } from 'lucide-react';
 import { BankAccount } from '../types';
 
 interface BankAccountsProps {
@@ -8,6 +8,9 @@ interface BankAccountsProps {
 
 export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
   const [showBalance, setShowBalance] = useState<Record<string, boolean>>({});
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [show2FAModal, setShow2FAModal] = useState(false);
+  const [showStatementModal, setShowStatementModal] = useState(false);
 
   const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
 
@@ -38,7 +41,10 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
               <Landmark className="w-8 h-8 text-yellow-400" />
               <h1 className="text-3xl font-black uppercase text-black dark:text-white">BANK ACCOUNTS</h1>
             </div>
-            <button className="px-6 py-2 bg-yellow-400 text-black font-bold uppercase hover:bg-yellow-500 flex items-center gap-2 transition">
+            <button 
+              onClick={() => setShowAddModal(true)}
+              className="px-6 py-2 bg-yellow-400 text-black font-bold uppercase hover:bg-yellow-500 flex items-center gap-2 transition"
+            >
               <Plus size={20} />
               ADD ACCOUNT
             </button>
@@ -125,10 +131,16 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
 
               {/* Account Actions */}
               <div className="mt-6 flex gap-3">
-                <button className="flex-1 px-4 py-2 bg-cyan-500 text-black font-bold uppercase hover:bg-cyan-400 transition">
+                <button 
+                  onClick={() => setShowStatementModal(true)}
+                  className="flex-1 px-4 py-2 bg-cyan-500 text-black font-bold uppercase hover:bg-cyan-400 transition"
+                >
                   VIEW STATEMENTS
                 </button>
-                <button className="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-900 text-black dark:text-white font-bold uppercase hover:bg-gray-200 dark:hover:bg-gray-800 transition">
+                <button 
+                  onClick={() => setShow2FAModal(true)}
+                  className="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-900 text-black dark:text-white font-bold uppercase hover:bg-gray-200 dark:hover:bg-gray-800 transition"
+                >
                   DOWNLOAD STATEMENT
                 </button>
               </div>
@@ -136,6 +148,77 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
           ))}
         </div>
       </div>
+
+      {/* Add Account Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-black border-4 border-yellow-400 w-full max-w-md p-6">
+            <h3 className="text-xl font-black uppercase text-black dark:text-white mb-4">ADD BANK ACCOUNT</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Bank Name</label>
+                <input type="text" className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+              </div>
+              <div>
+                <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Account Number</label>
+                <input type="text" className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+              </div>
+              <div>
+                <label className="text-xs font-bold uppercase text-gray-500 block mb-2">IFSC Code</label>
+                <input type="text" className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+              </div>
+              <div>
+                <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Account Type</label>
+                <select className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none">
+                  <option value="SAVINGS">SAVINGS</option>
+                  <option value="CURRENT">CURRENT</option>
+                  <option value="SALARY">SALARY</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={() => { setShowAddModal(false); setShow2FAModal(true); }} className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-bold uppercase transition">VERIFY & ADD</button>
+              <button onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 2FA Modal */}
+      {show2FAModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-black border-4 border-red-500 w-full max-w-md p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Shield className="text-red-500" size={32} />
+              <h3 className="text-xl font-black uppercase text-black dark:text-white">SECURITY VERIFICATION</h3>
+            </div>
+            <p className="text-xs font-bold uppercase text-gray-500 mb-4">ENTER YOUR 6-DIGIT OTP</p>
+            <input type="text" maxLength={6} placeholder="000000" className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white text-center text-2xl font-black tracking-widest focus:border-red-500 outline-none mb-4" />
+            <div className="flex gap-3">
+              <button onClick={() => { setShow2FAModal(false); alert('Verified successfully!'); }} className="flex-1 px-4 py-3 bg-red-500 text-white hover:bg-red-600 font-bold uppercase transition">VERIFY</button>
+              <button onClick={() => setShow2FAModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Statement Modal */}
+      {showStatementModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-black border-4 border-cyan-500 w-full max-w-2xl p-6">
+            <h3 className="text-xl font-black uppercase text-black dark:text-white mb-4">ACCOUNT STATEMENTS</h3>
+            <div className="space-y-3">
+              {['January 2024', 'December 2023', 'November 2023'].map(month => (
+                <div key={month} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 border-l-4 border-cyan-500">
+                  <span className="font-bold text-black dark:text-white">{month}</span>
+                  <button className="px-4 py-2 bg-cyan-500 text-black font-bold uppercase hover:bg-cyan-400 transition">DOWNLOAD</button>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setShowStatementModal(false)} className="w-full mt-6 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CLOSE</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

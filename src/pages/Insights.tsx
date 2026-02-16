@@ -13,6 +13,15 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const formatIndianCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
+
   const totalIncome = transactions.filter(t => t.type === 'Business Income').reduce((sum, t) => sum + t.amount, 0);
   const totalTax = transactions.reduce((sum, t) => sum + (t.estimatedTax || 0), 0);
   const avgTransaction = totalIncome / (transactions.filter(t => t.type === 'Business Income').length || 1);
@@ -50,7 +59,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
             <TrendingUp className="w-5 h-5 text-green-400" />
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">TOTAL INCOME</p>
-          <p className="text-3xl font-black text-black dark:text-white">₹{totalIncome.toLocaleString()}</p>
+          <p className="text-3xl font-black text-black dark:text-white">{formatIndianCurrency(totalIncome)}</p>
         </div>
 
         <div className="bg-white dark:bg-black border-l-4 border-red-500 p-6 shadow-lg">
@@ -59,7 +68,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
             <TrendingDown className="w-5 h-5 text-red-400" />
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">ESTIMATED TAX</p>
-          <p className="text-3xl font-black text-black dark:text-white">₹{totalTax.toLocaleString()}</p>
+          <p className="text-3xl font-black text-black dark:text-white">{formatIndianCurrency(totalTax)}</p>
         </div>
 
         <div className="bg-white dark:bg-black border-l-4 border-cyan-500 p-6 shadow-lg">
@@ -77,7 +86,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
             <DollarSign className="w-5 h-5 text-yellow-400" />
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">AVG TRANSACTION</p>
-          <p className="text-3xl font-black text-black dark:text-white">₹{Math.round(avgTransaction).toLocaleString()}</p>
+          <p className="text-3xl font-black text-black dark:text-white">{formatIndianCurrency(Math.round(avgTransaction))}</p>
         </div>
       </div>
 

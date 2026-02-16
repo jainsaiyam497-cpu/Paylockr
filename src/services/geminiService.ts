@@ -6,6 +6,8 @@ const getAiInstance = () => {
   // Check import.meta.env first (Vite standard)
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
   
+  console.log('🔑 API Key Check:', apiKey ? `Found (${apiKey.substring(0, 10)}...)` : 'MISSING');
+  
   if (!apiKey || apiKey.trim() === '') {
     throw new Error("API Key missing. Please add VITE_GEMINI_API_KEY to your .env.local file in the project root.");
   }
@@ -15,7 +17,7 @@ const getAiInstance = () => {
 export const generateTaxInsights = async (transactions: Transaction[], annualIncome: number) => {
   try {
     const genAI = getAiInstance();
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
     const transactionSummary = transactions
       .slice(0, 10) // Limit to recent transactions to avoid token limits
@@ -47,7 +49,12 @@ export const generateTaxInsights = async (transactions: Transaction[], annualInc
 
     return text || "No insights could be generated.";
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
+    console.error("❌ Gemini API Error:", error);
+    console.error("Error details:", {
+      message: error.message,
+      status: error.status,
+      statusText: error.statusText
+    });
     if (error.message?.includes('API Key missing')) {
       throw error;
     }

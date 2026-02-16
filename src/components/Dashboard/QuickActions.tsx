@@ -12,7 +12,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ setCurrentView, vaul
   return (
     <div className="space-y-4">
       <button
-        onClick={() => setCurrentView('VAULT')}
+        onClick={() => setCurrentView('SMART_TAX_VAULT')}
         className={`w-full ${isDarkMode ? 'bg-black border-b-4 border-green-500 hover:border-green-400' : 'bg-white border-b-4 border-green-500 hover:border-green-600'} p-5 text-left transition-all group`}
       >
         <div className="flex items-center gap-4">

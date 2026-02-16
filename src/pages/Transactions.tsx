@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronDown, Search, Filter, Download, ArrowDownLeft, ArrowUpRight, Calendar as CalendarIcon, X, Plus } from 'lucide-react';
+import { ChevronDown, Search, Filter, Download, ArrowDownLeft, ArrowUpRight, Calendar as CalendarIcon, X, Plus, DollarSign, Ban } from 'lucide-react';
 import { CATEGORIES } from '../utils/multiUserUnifiedData';
 import { Transaction, TransactionType, TransactionStatus } from '../types';
 import { Button } from '../components/common/Button';
@@ -12,9 +12,10 @@ type TimePeriod = 'TODAY' | 'THIS_WEEK' | 'THIS_MONTH' | 'LAST_3M' | 'CUSTOM';
 interface TransactionsProps {
   transactions: Transaction[]; 
   onAdd: (t: Transaction) => void;
+  onUpdate?: (t: Transaction) => void;
 }
 
-export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], onAdd }) => {
+export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], onAdd, onUpdate }) => {
   const [filterType, setFilterType] = useState<FilterType>('ALL');
   const [sortBy, setSortBy] = useState<SortBy>('DATE_NEW');
   const [timePeriod, setTimePeriod] = useState<TimePeriod>('THIS_MONTH');
@@ -289,9 +290,21 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
                             <h3 className="font-black text-black dark:text-white truncate">
                               {txn.source}
                             </h3>
-                            <p className="text-xs text-gray-500 mt-0.5 font-bold uppercase">
-                              {txn.category || 'UNCATEGORIZED'} • {txn.description || 'NO DESCRIPTION'}
-                            </p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <p className="text-xs text-gray-500 font-bold uppercase">
+                                {txn.category || 'UNCATEGORIZED'} • {txn.description || 'NO DESCRIPTION'}
+                              </p>
+                              {txn.type === TransactionType.BUSINESS && (
+                                <span className="text-[10px] bg-green-500 text-black px-2 py-0.5 font-black uppercase">
+                                  💵 TAXABLE
+                                </span>
+                              )}
+                              {(txn.type === TransactionType.REFUND || (txn.type === TransactionType.PERSONAL && txn.amount > 0)) && (
+                                <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 font-black uppercase">
+                                  🚫 NON-TAXABLE
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
 
@@ -373,6 +386,42 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
                   <span className="text-gray-500 font-bold uppercase text-xs">STATUS</span>
                   <span className="font-black text-black dark:text-white uppercase">{selectedTransaction.status.toLowerCase()}</span>
                 </div>
+                
+                {/* Tax Classification */}
+                <div className="pt-2 border-t-2 border-gray-200 dark:border-gray-800">
+                  <p className="text-gray-500 font-bold uppercase text-xs mb-2">TAX CLASSIFICATION</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const updated = {...selectedTransaction, type: TransactionType.BUSINESS, estimatedTax: selectedTransaction.amount * 0.1};
+                        onUpdate && onUpdate(updated);
+                        setSelectedTransaction(updated);
+                      }}
+                      className={`flex-1 px-3 py-2 text-xs font-bold uppercase transition flex items-center justify-center gap-2 ${
+                        selectedTransaction.type === TransactionType.BUSINESS
+                          ? 'bg-green-500 text-black'
+                          : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-green-500 hover:text-black'
+                      }`}
+                    >
+                      <DollarSign size={16} /> TAXABLE
+                    </button>
+                    <button
+                      onClick={() => {
+                        const updated = {...selectedTransaction, type: TransactionType.REFUND, estimatedTax: 0};
+                        onUpdate && onUpdate(updated);
+                        setSelectedTransaction(updated);
+                      }}
+                      className={`flex-1 px-3 py-2 text-xs font-bold uppercase transition flex items-center justify-center gap-2 ${
+                        selectedTransaction.type === TransactionType.REFUND || (selectedTransaction.type === TransactionType.PERSONAL && selectedTransaction.amount > 0)
+                          ? 'bg-red-500 text-white'
+                          : 'bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-red-500 hover:text-white'
+                      }`}
+                    >
+                      <Ban size={16} /> NON-TAXABLE
+                    </button>
+                  </div>
+                </div>
+                
                 {selectedTransaction.estimatedTax > 0 && (
                   <div className="flex justify-between pt-2 border-t-2 border-gray-200 dark:border-gray-800">
                     <span className="text-gray-500 font-bold uppercase text-xs">ESTIMATED TAX</span>
@@ -388,7 +437,16 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
               </div>
 
               <div className="flex gap-3">
-                <button className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-black uppercase transition shadow-lg">
+                <button 
+                  onClick={() => {
+                    if (selectedTransaction.referenceId) {
+                      alert('Receipt downloaded successfully!');
+                    } else {
+                      alert('Receipt not available - This transaction was not linked to a receipt or invoice.');
+                    }
+                  }}
+                  className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-black uppercase transition shadow-lg"
+                >
                   DOWNLOAD RECEIPT
                 </button>
               </div>

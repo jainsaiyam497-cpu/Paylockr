@@ -3,11 +3,13 @@ import { Plus, Download, Send, Trash2, Eye, FileText } from 'lucide-react';
 import { Invoice } from '../types';
 
 interface InvoicesProps {
-  invoices: Invoice[]; // Changed to invoices prop
+  invoices: Invoice[];
+  onAdd?: (invoice: Invoice) => void;
 }
 
-export const Invoices: React.FC<InvoicesProps> = ({ invoices }) => {
+export const Invoices: React.FC<InvoicesProps> = ({ invoices, onAdd }) => {
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const filteredInvoices = filterStatus === 'ALL' 
     ? invoices 
@@ -55,7 +57,10 @@ export const Invoices: React.FC<InvoicesProps> = ({ invoices }) => {
               <FileText className="w-8 h-8 text-yellow-400" />
               <h1 className="text-3xl font-black uppercase text-black dark:text-white">INVOICES</h1>
             </div>
-            <button className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold uppercase transition-all flex items-center gap-2">
+            <button 
+              onClick={() => setShowCreateModal(true)}
+              className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold uppercase transition-all flex items-center gap-2"
+            >
               <Plus size={20} />
               CREATE
             </button>
@@ -170,6 +175,62 @@ export const Invoices: React.FC<InvoicesProps> = ({ invoices }) => {
           </div>
         )}
       </div>
+
+      {/* Create Invoice Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-black border-4 border-yellow-400 w-full max-w-2xl p-6 my-8">
+            <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-6">CREATE PROFESSIONAL INVOICE</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const newInvoice: Invoice = {
+                id: Date.now().toString(),
+                invoiceNumber: `INV-${Date.now()}`,
+                clientName: formData.get('clientName') as string,
+                clientEmail: formData.get('clientEmail') as string,
+                amount: Number(formData.get('amount')),
+                date: new Date(),
+                dueDate: new Date(formData.get('dueDate') as string),
+                status: 'DRAFT',
+                items: []
+              };
+              onAdd && onAdd(newInvoice);
+              setShowCreateModal(false);
+            }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Client Name *</label>
+                  <input name="clientName" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Client Email *</label>
+                  <input name="clientEmail" type="email" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Amount (₹) *</label>
+                  <input name="amount" type="number" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Due Date *</label>
+                  <input name="dueDate" type="date" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Description</label>
+                  <textarea name="description" rows={3} className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none"></textarea>
+                </div>
+              </div>
+              <div className="bg-cyan-50 dark:bg-cyan-900/20 border-l-4 border-cyan-500 p-4 mt-4">
+                <p className="text-xs font-bold uppercase text-gray-600 dark:text-gray-400">💡 Invoice will be marked as TAXABLE income and added to transactions automatically</p>
+              </div>
+              <div className="flex gap-3 mt-6">
+                <button type="submit" className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-bold uppercase transition">CREATE INVOICE</button>
+                <button type="button" onClick={() => setShowCreateModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

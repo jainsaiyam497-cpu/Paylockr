@@ -10,6 +10,7 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
   const [view, setView] = useState<'timeline' | 'quarter'>('timeline');
   const [filter, setFilter] = useState<'ALL' | 'payment' | 'filing' | 'task'>('ALL');
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [showNotification, setShowNotification] = useState(true);
 
   const userData = getUserData(userId);
   const stats = userData.stats;
@@ -101,6 +102,29 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
       </div>
 
       <div className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-8">
+        {/* Upcoming Deadline Notification */}
+        {showNotification && selectedYear === CURRENT_FY && (
+          <div className="mb-6 bg-gradient-to-r from-red-500 to-orange-500 p-4 md:p-6 text-white relative animate-fade-in">
+            <button 
+              onClick={() => setShowNotification(false)}
+              className="absolute top-2 right-2 text-white hover:text-gray-200"
+            >
+              <AlertCircle size={20} />
+            </button>
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="text-base md:text-xl font-black uppercase mb-2">🚨 UPCOMING TAX DEADLINE</h3>
+                <p className="text-xs md:text-sm font-bold mb-2">NEXT ITR FILING DEADLINE: JULY 31, {CURRENT_FY + 1}</p>
+                <p className="text-xs md:text-sm font-bold">Don't miss the deadline! File your ITR-4 before July 31 to avoid penalties.</p>
+                <button className="mt-3 px-4 py-2 bg-white text-black font-bold uppercase text-xs hover:bg-gray-100 transition">
+                  SET REMINDER
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 mb-6 md:mb-8">
           <div className="bg-white dark:bg-black border-l-4 border-cyan-500 p-3 md:p-4 shadow-lg">
             <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-1">GROSS INCOME</p>

@@ -315,15 +315,41 @@ export default function App() {
               transactions={transactions}
               classifiedIncomes={classifiedIncomes}
               vaultEntries={vaultEntries}
+              setCurrentView={setView}
             />
           )}
-          {view === 'TRANSACTIONS' && <Transactions transactions={transactions} onAdd={addTransaction} />}
+          {view === 'TRANSACTIONS' && <Transactions transactions={transactions} onAdd={addTransaction} onUpdate={(updated) => {
+            setFinancialData(prev => prev ? ({
+              ...prev,
+              transactions: prev.transactions.map(t => t.id === updated.id ? updated : t)
+            }) : null);
+            setToast({ msg: 'Transaction updated', type: 'success' });
+          }} />}
           {view === 'VAULT' && <Vault documents={vaultDocuments} />}
           {view === 'INSIGHTS' && <Insights transactions={transactions} />}
           {view === 'NOTIFICATIONS' && <Notifications notifications={notifications} />}
           {view === 'SETTINGS' && <Settings settings={settings} setSettings={setSettings} isDark={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} />}
-          {view === 'INVOICES' && <Invoices invoices={invoices} />}
-          {view === 'EXPENSES' && <Expenses expenses={expenses} />}
+          {view === 'INVOICES' && <Invoices invoices={invoices} onAdd={(inv) => {
+            setFinancialData(prev => prev ? ({...prev, invoices: [inv, ...prev.invoices]}) : null);
+            const transaction = {
+              id: `txn-${inv.id}`,
+              amount: inv.amount,
+              type: 'Business Income' as any,
+              source: inv.clientName,
+              category: 'FREELANCE',
+              date: inv.date,
+              status: 'PENDING' as any,
+              estimatedTax: inv.amount * 0.1,
+              description: `Invoice ${inv.invoiceNumber}`,
+              referenceId: inv.invoiceNumber
+            };
+            addTransaction(transaction);
+            setToast({ msg: 'Invoice created and added to transactions', type: 'success' });
+          }} />}
+          {view === 'EXPENSES' && <Expenses expenses={expenses} onAdd={(exp) => {
+            setFinancialData(prev => prev ? ({...prev, expenses: [exp, ...prev.expenses]}) : null);
+            setToast({ msg: 'Expense added', type: 'success' });
+          }} />}
           {view === 'BANK_ACCOUNTS' && <BankAccounts accounts={bankAccounts} />}
           {view === 'TAX_CALENDAR' && <TaxCalendar userId={userId} />}
           {view === 'TAX_MANAGEMENT' && <TaxManagement stats={stats} />}

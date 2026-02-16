@@ -27,13 +27,15 @@ interface SmartTaxVaultProps {
   transactions?: any[];
   classifiedIncomes?: any[];
   vaultEntries?: any[];
+  setCurrentView?: (view: any) => void;
 }
 
 export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
   userId,
   transactions = [],
   classifiedIncomes = [],
-  vaultEntries = []
+  vaultEntries = [],
+  setCurrentView
 }) => {
   const [hideVaultBalance, setHideVaultBalance] = useState(false);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
@@ -353,7 +355,10 @@ export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
                 <p className="text-xs font-bold uppercase text-gray-500 mb-4">
                   PLEASE CONFIRM WHETHER THESE ARE TAXABLE OR NON-TAXABLE INCOME. THIS ENSURES ACCURATE TAX CALCULATION.
                 </p>
-                <button className="px-6 py-2 bg-yellow-400 text-black font-bold uppercase hover:bg-yellow-500 transition">
+                <button 
+                  onClick={() => setCurrentView && setCurrentView('TRANSACTIONS')}
+                  className="px-6 py-2 bg-yellow-400 text-black font-bold uppercase hover:bg-yellow-500 transition"
+                >
                   REVIEW & CONFIRM
                 </button>
               </div>

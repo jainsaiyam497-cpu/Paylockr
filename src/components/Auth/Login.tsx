@@ -46,50 +46,44 @@ export const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignup, isDar
   };
 
   return (
-    <div className={`min-h-screen flex ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}>
+    <div className={`min-h-screen flex ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       {/* Left Side - Branding */}
-      <div className={`hidden lg:flex lg:w-1/2 ${isDarkMode ? 'bg-slate-800' : 'bg-blue-600'} p-12 flex-col justify-between`}>
+      <div className={`hidden lg:flex lg:w-1/2 ${isDarkMode ? 'bg-gray-900 border-r-4 border-yellow-400' : 'bg-black'} p-12 flex-col justify-between`}>
         <div>
           <div className="flex items-center gap-3 mb-8">
-            <div className={`w-12 h-12 rounded-xl ${isDarkMode ? 'bg-blue-500' : 'bg-white'} flex items-center justify-center`}>
-              <Lock className={`w-7 h-7 ${isDarkMode ? 'text-white' : 'text-blue-600'}`} />
+            <div className="w-12 h-12 bg-yellow-400 flex items-center justify-center">
+              <Lock className="w-7 h-7 text-black" />
             </div>
-            <span className="text-3xl font-bold text-white">PayLockr</span>
+            <span className="text-3xl font-black uppercase text-white">PAYLOCKR</span>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4 leading-tight">
-            Automate Your Tax<br />Savings Effortlessly
+          <h1 className="text-4xl font-black uppercase text-white mb-4 leading-tight">
+            AUTOMATE YOUR TAX<br />SAVINGS EFFORTLESSLY
           </h1>
-          <p className="text-xl text-blue-100 leading-relaxed">
-            Real-time tax calculation and automatic vaulting for freelancers and creators.
+          <p className="text-sm font-bold uppercase tracking-wider text-gray-500 leading-relaxed">
+            REAL-TIME TAX CALCULATION AND AUTOMATIC VAULTING
           </p>
         </div>
 
         <div className="space-y-6">
-          <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-lg ${isDarkMode ? 'bg-slate-700' : 'bg-blue-700'} flex items-center justify-center flex-shrink-0`}>
-              <Calculator className="w-6 h-6 text-white" />
-            </div>
+          <div className="flex items-start gap-4 border-l-4 border-yellow-400 pl-4">
+            <Calculator className="w-8 h-8 text-yellow-400" />
             <div>
-              <h3 className="text-white font-semibold text-lg mb-1">Real-Time Tax Calculation</h3>
-              <p className="text-blue-100">Instant tax estimation on every payment you receive</p>
+              <h3 className="text-white font-black text-sm uppercase mb-1">REAL-TIME TAX CALCULATION</h3>
+              <p className="text-xs font-bold uppercase tracking-wider text-gray-500">INSTANT TAX ESTIMATION</p>
             </div>
           </div>
-          <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-lg ${isDarkMode ? 'bg-slate-700' : 'bg-blue-700'} flex items-center justify-center flex-shrink-0`}>
-              <Shield className="w-6 h-6 text-white" />
-            </div>
+          <div className="flex items-start gap-4 border-l-4 border-cyan-500 pl-4">
+            <Shield className="w-8 h-8 text-cyan-400" />
             <div>
-              <h3 className="text-white font-semibold text-lg mb-1">Automatic Tax Vaulting</h3>
-              <p className="text-blue-100">Money reserved safely so you never overspend</p>
+              <h3 className="text-white font-black text-sm uppercase mb-1">AUTOMATIC TAX VAULTING</h3>
+              <p className="text-xs font-bold uppercase tracking-wider text-gray-500">MONEY RESERVED SAFELY</p>
             </div>
           </div>
-          <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-lg ${isDarkMode ? 'bg-slate-700' : 'bg-blue-700'} flex items-center justify-center flex-shrink-0`}>
-              <TrendingUp className="w-6 h-6 text-white" />
-            </div>
+          <div className="flex items-start gap-4 border-l-4 border-green-500 pl-4">
+            <TrendingUp className="w-8 h-8 text-green-400" />
             <div>
-              <h3 className="text-white font-semibold text-lg mb-1">Smart Insights</h3>
-              <p className="text-blue-100">AI-powered recommendations for tax optimization</p>
+              <h3 className="text-white font-black text-sm uppercase mb-1">SMART INSIGHTS</h3>
+              <p className="text-xs font-bold uppercase tracking-wider text-gray-500">AI-POWERED RECOMMENDATIONS</p>
             </div>
           </div>
         </div>
@@ -246,40 +240,40 @@ export const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignup, isDar
       {/* Google Account Chooser Modal */}
       {showGoogleModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border dark:border-slate-800 animate-fade-in-up">
-             <div className="p-6 border-b dark:border-slate-800 flex justify-between items-center">
+          <div className="bg-black border-4 border-yellow-400 w-full max-w-md overflow-hidden animate-fade-in-up">
+             <div className="p-6 border-b-4 border-gray-800 flex justify-between items-center">
                <div>
-                 <h3 className="text-xl font-bold dark:text-white">Choose an account</h3>
-                 <p className="text-sm text-slate-500">to continue to PayLockr</p>
+                 <h3 className="text-xl font-black uppercase text-white">CHOOSE AN ACCOUNT</h3>
+                 <p className="text-xs font-bold uppercase text-gray-500">TO CONTINUE TO PAYLOCKR</p>
                </div>
-               <button onClick={() => setShowGoogleModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+               <button onClick={() => setShowGoogleModal(false)} className="text-gray-400 hover:text-white">
                  <X size={20} />
                </button>
              </div>
              <div className="p-2 space-y-1">
                {DEMO_USERS.map(user => (
-                 <button key={user.id} onClick={() => loginAs(user.id)} className="w-full flex items-center gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition text-left group">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
-                      user.id === 'saiyam' ? 'bg-purple-100 text-purple-600' : 'bg-orange-100 text-orange-600'
+                 <button key={user.id} onClick={() => loginAs(user.id)} className="w-full flex items-center gap-4 p-4 hover:bg-gray-900 transition text-left group">
+                    <div className={`w-10 h-10 flex items-center justify-center font-black text-lg ${
+                      user.id === 'saiyam' ? 'bg-cyan-500 text-black' : 'bg-yellow-400 text-black'
                     }`}>
                       {user.name.charAt(0)}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{user.name}</p>
-                      <p className="text-sm text-slate-500">{user.email}</p>
+                      <p className="font-black uppercase text-white group-hover:text-cyan-400 transition-colors">{user.name}</p>
+                      <p className="text-xs font-bold uppercase text-gray-500">{user.email}</p>
                     </div>
                  </button>
                ))}
-               <button className="w-full flex items-center gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition text-left group">
-                  <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-400">
+               <button className="w-full flex items-center gap-4 p-4 hover:bg-gray-900 transition text-left group">
+                  <div className="w-10 h-10 bg-gray-800 flex items-center justify-center text-white">
                     <User size={20} />
                   </div>
-                  <p className="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Use another account</p>
+                  <p className="font-black uppercase text-white group-hover:text-cyan-400 transition-colors">USE ANOTHER ACCOUNT</p>
                </button>
              </div>
-             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-t dark:border-slate-800 text-center">
-                <p className="text-xs text-slate-500">
-                  To continue, Google will share your name, email address, and language preference with PayLockr.
+             <div className="p-4 bg-gray-900 border-t-4 border-gray-800 text-center">
+                <p className="text-xs font-bold uppercase text-gray-500">
+                  TO CONTINUE, GOOGLE WILL SHARE YOUR NAME, EMAIL ADDRESS, AND LANGUAGE PREFERENCE WITH PAYLOCKR.
                 </p>
              </div>
           </div>

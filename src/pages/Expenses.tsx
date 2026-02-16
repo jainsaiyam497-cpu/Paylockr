@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { TrendingUp, AlertCircle } from 'lucide-react';
+import { TrendingUp, AlertCircle, Receipt } from 'lucide-react';
 import { CATEGORIES } from '../utils/multiUserUnifiedData';
 import { Expense } from '../types';
 
@@ -92,43 +92,47 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20 animate-fade-in-up">
+    <div className="min-h-screen pb-20 animate-fade-in-up">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-900 border-b dark:border-slate-800 sticky top-0 z-30">
+      <div className="bg-black border-b-2 border-gray-800 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 py-6">
           
           {/* Main Expense Card */}
-          <div className="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-2xl p-8 text-white shadow-xl">
+          <div className="bg-black border-l-8 border-yellow-400 p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Receipt className="w-8 h-8 text-yellow-400" />
+              <h2 className="text-3xl font-black uppercase text-white">EXPENSES</h2>
+            </div>
             <div className="mb-6">
-              <p className="text-blue-100 text-xs font-bold uppercase tracking-wider mb-2">This Month's Spending</p>
-              <h2 className="text-4xl font-bold">{formatCurrency(totalMonthlyExpense)}</h2>
-              <p className="text-blue-100 text-sm mt-2">Total Budget: {formatCurrency(totalBudget)}</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">THIS MONTH'S SPENDING</p>
+              <h2 className="text-4xl font-black text-white">{formatCurrency(totalMonthlyExpense)}</h2>
+              <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mt-2">BUDGET: {formatCurrency(totalBudget)}</p>
             </div>
 
             {/* Budget Progress Bar */}
             <div className="mb-4">
-              <div className="flex justify-between text-xs font-medium mb-2 text-blue-100">
-                <span>Budget Usage</span>
+              <div className="flex justify-between text-xs font-bold uppercase mb-2 text-gray-500">
+                <span>BUDGET USAGE</span>
                 <span>{budgetPercentage.toFixed(1)}%</span>
               </div>
-              <div className="w-full bg-blue-900/30 rounded-full h-3 overflow-hidden backdrop-blur-sm">
+              <div className="w-full bg-gray-900 h-3 overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ${
+                  className={`h-full transition-all duration-500 ${
                     budgetPercentage > 100
-                      ? 'bg-red-400'
+                      ? 'bg-red-500'
                       : budgetPercentage > 75
-                        ? 'bg-amber-400'
-                        : 'bg-green-400'
+                        ? 'bg-yellow-400'
+                        : 'bg-green-500'
                   }`}
                   style={{ width: `${Math.min(budgetPercentage, 100)}%` }}
                 />
               </div>
             </div>
 
-            <div className="flex justify-between text-xs text-blue-100 font-medium">
-              <span>Spent: {formatCurrency(totalMonthlyExpense)}</span>
+            <div className="flex justify-between text-xs text-gray-500 font-bold uppercase">
+              <span>SPENT: {formatCurrency(totalMonthlyExpense)}</span>
               <span>
-                Remaining:{' '}
+                LEFT:{' '}
                 {totalMonthlyExpense > totalBudget
                   ? formatCurrency(0)
                   : formatCurrency(totalBudget - totalMonthlyExpense)}
@@ -142,32 +146,32 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
         {/* Top 3 Expense Categories */}
         {topExpenses.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Top Spending Categories</h3>
+            <h3 className="text-xl font-black uppercase text-white mb-4">TOP SPENDING</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {topExpenses.map(([category, data]) => {
                 const categoryInfo = CATEGORIES[category as keyof typeof CATEGORIES];
                 return (
-                  <div key={category} className="bg-white dark:bg-slate-900 rounded-xl p-5 border dark:border-slate-800 shadow-sm">
+                  <div key={category} className="bg-black border-b-4 border-cyan-500 p-5">
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-2xl">{categoryInfo?.icon}</span>
-                          <span className="font-semibold text-slate-900 dark:text-white">{category}</span>
+                          <span className="font-black uppercase text-white">{category}</span>
                         </div>
-                        <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                        <p className="text-2xl font-black text-white">
                           {formatCurrency(data.total)}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-slate-500">{data.percentage.toFixed(1)}%</p>
-                        <p className="text-xs text-slate-400">{data.count} items</p>
+                        <p className="text-sm text-gray-500 font-bold">{data.percentage.toFixed(1)}%</p>
+                        <p className="text-xs text-gray-500 font-bold uppercase">{data.count} ITEMS</p>
                       </div>
                     </div>
 
                     {/* Mini Progress */}
-                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                    <div className="w-full bg-gray-900 h-1.5 overflow-hidden">
                       <div
-                        className={`h-full rounded-full`}
+                        className={`h-full`}
                         style={{
                           width: `${Math.min((data.total / (data.budget || 1)) * 100, 100)}%`,
                           backgroundColor: categoryInfo?.color
@@ -184,12 +188,12 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
         {/* Category Breakdown */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Category Breakdown</h3>
+            <h3 className="text-xl font-black uppercase text-white">CATEGORY BREAKDOWN</h3>
             <button
               onClick={() => setShowBudgetEdit(!showBudgetEdit)}
-              className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 font-medium transition text-sm"
+              className="px-4 py-2 bg-yellow-400 text-black font-bold uppercase text-xs hover:bg-yellow-500 transition"
             >
-              {showBudgetEdit ? 'Done' : 'Edit Budgets'}
+              {showBudgetEdit ? 'DONE' : 'EDIT BUDGETS'}
             </button>
           </div>
 
@@ -202,46 +206,47 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                 <div
                   key={category}
                   onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
-                  className="bg-white dark:bg-slate-900 rounded-xl p-4 border dark:border-slate-800 hover:shadow-md transition cursor-pointer"
+                  className="bg-black border-l-4 p-4 hover:bg-gray-900 transition cursor-pointer"
+                  style={{ borderColor: categoryInfo?.color }}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-4">
                       <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center text-xl"
+                        className="w-12 h-12 flex items-center justify-center text-xl"
                         style={{ backgroundColor: `${categoryInfo?.color}20` }}
                       >
                         {categoryInfo?.icon}
                       </div>
                       <div>
-                        <h4 className="font-semibold text-slate-900 dark:text-white">{category}</h4>
-                        <p className="text-sm text-slate-500">{data.count} transactions</p>
+                        <h4 className="font-black uppercase text-white">{category}</h4>
+                        <p className="text-xs font-bold uppercase text-gray-500">{data.count} TRANSACTIONS</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-slate-900 dark:text-white">{formatCurrency(data.total)}</p>
-                      <p className="text-sm text-slate-500">{data.percentage.toFixed(1)}% of total</p>
+                      <p className="text-lg font-black text-white">{formatCurrency(data.total)}</p>
+                      <p className="text-xs font-bold uppercase text-gray-500">{data.percentage.toFixed(1)}% OF TOTAL</p>
                     </div>
                   </div>
 
                   {/* Budget Progress */}
-                  <div className="mb-2 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
+                  <div className="mb-2 bg-gray-900 p-3">
                     <div className="flex justify-between text-xs mb-2">
-                      <span className="text-slate-500 font-medium">Budget: {formatCurrency(data.budget)}</span>
+                      <span className="text-gray-500 font-bold uppercase">BUDGET: {formatCurrency(data.budget)}</span>
                       <span
-                        className={`font-semibold ${
-                          data.isOver ? 'text-red-500' : 'text-green-500'
+                        className={`font-bold uppercase ${
+                          data.isOver ? 'text-red-400' : 'text-green-400'
                         }`}
                       >
                         {data.isOver
-                          ? `Over by ${formatCurrency(data.total - data.budget)}`
-                          : `${formatCurrency(data.remaining)} left`}
+                          ? `OVER BY ${formatCurrency(data.total - data.budget)}`
+                          : `${formatCurrency(data.remaining)} LEFT`}
                       </span>
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-gray-800 h-2 overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${
+                        className={`h-full ${
                           budgetPercentage > 100 ? 'bg-red-500' : 
-                          budgetPercentage > 75 ? 'bg-amber-500' : 'bg-green-500'
+                          budgetPercentage > 75 ? 'bg-yellow-400' : 'bg-green-500'
                         }`}
                         style={{ width: `${Math.min(budgetPercentage, 100)}%` }}
                       />
@@ -250,9 +255,9 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
 
                   {/* Budget Edit Mode */}
                   {showBudgetEdit && (
-                    <div className="mt-3 pt-3 border-t dark:border-slate-800" onClick={(e) => e.stopPropagation()}>
+                    <div className="mt-3 pt-3 border-t-2 border-gray-800" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-3">
-                        <span className="text-sm text-slate-500">Set Budget:</span>
+                        <span className="text-xs font-bold uppercase text-gray-500">SET BUDGET:</span>
                         <input
                           type="number"
                           value={budgets[category] || 0}
@@ -262,7 +267,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                               [category]: Number(e.target.value)
                             })
                           }
-                          className="flex-1 px-3 py-2 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                          className="flex-1 px-3 py-2 border-2 border-gray-800 bg-gray-900 text-sm text-white focus:border-cyan-500 outline-none"
                         />
                       </div>
                     </div>
@@ -270,16 +275,16 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
 
                   {/* Expanded View */}
                   {selectedCategory === category && !showBudgetEdit && (
-                    <div className="mt-4 pt-4 border-t dark:border-slate-800 animate-fade-in">
-                      <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Recent {category} Transactions</h5>
+                    <div className="mt-4 pt-4 border-t-2 border-gray-800 animate-fade-in">
+                      <h5 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">RECENT {category} TRANSACTIONS</h5>
                       <div className="space-y-2 max-h-64 overflow-y-auto">
                         {monthlyExpenses
                           .filter(e => e.category === category)
                           .slice(0, 5)
                           .map(exp => (
-                            <div key={exp.id} className="flex justify-between text-sm p-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg">
-                              <span className="text-slate-700 dark:text-slate-300">{exp.description}</span>
-                              <span className="text-slate-900 dark:text-white font-medium">
+                            <div key={exp.id} className="flex justify-between text-sm p-2 hover:bg-gray-900">
+                              <span className="text-gray-400 font-bold">{exp.description}</span>
+                              <span className="text-white font-black">
                                 {formatCurrency(exp.amount)}
                               </span>
                             </div>
@@ -294,34 +299,34 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
         </div>
 
         {/* Spending Insights */}
-        <div className="bg-white dark:bg-slate-900 rounded-lg p-6 border dark:border-slate-800">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Smart Insights</h3>
+        <div className="bg-black border-b-4 border-cyan-500 p-6">
+          <h3 className="text-xl font-black uppercase text-white mb-4">SMART INSIGHTS</h3>
           <div className="space-y-3">
             {Object.entries(categorySummary)
               .filter(([, data]) => data.isOver)
               .map(([category, data]) => (
-                <div key={category} className="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <AlertCircle className="text-red-500 flex-shrink-0 mt-1" size={18} />
+                <div key={category} className="flex items-start gap-3 p-3 bg-gray-900 border-l-4 border-red-500">
+                  <AlertCircle className="text-red-400 flex-shrink-0 mt-1" size={18} />
                   <div>
-                    <p className="font-medium text-red-900 dark:text-red-300">
-                      Over budget in {category.toLowerCase()}
+                    <p className="font-black uppercase text-white">
+                      OVER BUDGET IN {category.toLowerCase()}
                     </p>
-                    <p className="text-sm text-red-700 dark:text-red-400/80">
-                      You've spent {formatCurrency(data.total - data.budget)} more than your{' '}
-                      {formatCurrency(data.budget)} budget
+                    <p className="text-xs font-bold uppercase text-gray-500">
+                      YOU'VE SPENT {formatCurrency(data.total - data.budget)} MORE THAN YOUR{' '}
+                      {formatCurrency(data.budget)} BUDGET
                     </p>
                   </div>
                 </div>
               ))}
 
             {topExpenses[0] && (
-              <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <TrendingUp className="text-blue-500 flex-shrink-0 mt-1" size={18} />
+              <div className="flex items-start gap-3 p-3 bg-gray-900 border-l-4 border-cyan-500">
+                <TrendingUp className="text-cyan-400 flex-shrink-0 mt-1" size={18} />
                 <div>
-                  <p className="font-medium text-blue-900 dark:text-blue-300">Highest spending category</p>
-                  <p className="text-sm text-blue-700 dark:text-blue-400/80">
-                    {topExpenses[0][0]} accounts for {topExpenses[0][1].percentage.toFixed(1)}% of
-                    your spending
+                  <p className="font-black uppercase text-white">HIGHEST SPENDING CATEGORY</p>
+                  <p className="text-xs font-bold uppercase text-gray-500">
+                    {topExpenses[0][0]} ACCOUNTS FOR {topExpenses[0][1].percentage.toFixed(1)}% OF
+                    YOUR SPENDING
                   </p>
                 </div>
               </div>

@@ -13,67 +13,59 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ setCurrentView, vaul
     <div className="space-y-4">
       <button
         onClick={() => setCurrentView('VAULT')}
-        className={`w-full ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-white hover:shadow-md border-gray-200'} border-2 rounded-xl p-5 text-left transition-all shadow-sm hover:scale-[1.02]`}
+        className={`w-full ${isDarkMode ? 'bg-black border-b-4 border-green-500 hover:border-green-400' : 'bg-white border-b-4 border-green-500 hover:border-green-600'} p-5 text-left transition-all group`}
       >
         <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 rounded-lg ${isDarkMode ? 'bg-green-500/10' : 'bg-green-50'} flex items-center justify-center flex-shrink-0`}>
-            <Lock className={`w-6 h-6 ${isDarkMode ? 'text-green-400' : 'text-green-600'}`} />
-          </div>
+          <Lock className={`w-10 h-10 ${isDarkMode ? 'text-green-400' : 'text-green-500'}`} />
           <div className="flex-1 min-w-0">
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'} mb-1`}>Tax Vault</p>
-            <p className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+            <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-1`}>TAX VAULT</p>
+            <p className={`text-2xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>
               ₹{vaultBalance.toLocaleString('en-IN')}
             </p>
           </div>
-          <ChevronRight className={`w-5 h-5 ${isDarkMode ? 'text-slate-500' : 'text-gray-400'}`} />
+          <ChevronRight className={`w-6 h-6 ${isDarkMode ? 'text-green-400' : 'text-green-500'}`} />
         </div>
       </button>
 
       <button
         onClick={() => setCurrentView('INVOICES')}
-        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl p-5 text-left transition-all shadow-md hover:shadow-lg hover:scale-[1.02] text-white"
+        className="w-full bg-yellow-400 hover:bg-yellow-500 p-5 text-left transition-all hover:shadow-xl text-black group"
       >
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-            <FileText className="w-6 h-6" />
-          </div>
+          <FileText className="w-10 h-10" />
           <div className="flex-1">
-            <p className="text-blue-100 text-sm mb-1">Create Invoice</p>
-            <p className="text-lg font-semibold">New Invoice</p>
+            <p className="text-xs font-bold uppercase tracking-wider mb-1">CREATE INVOICE</p>
+            <p className="text-xl font-black">NEW INVOICE</p>
           </div>
-          <Plus className="w-5 h-5" />
+          <Plus className="w-6 h-6" />
         </div>
       </button>
 
       <button
         onClick={() => setCurrentView('EXPENSES')}
-        className={`w-full ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-white hover:shadow-md border-gray-200'} border-2 rounded-xl p-5 text-left transition-all shadow-sm hover:scale-[1.02]`}
+        className={`w-full ${isDarkMode ? 'bg-black border-b-4 border-cyan-500 hover:border-cyan-400' : 'bg-white border-b-4 border-cyan-500 hover:border-cyan-600'} p-5 text-left transition-all group`}
       >
         <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 rounded-lg ${isDarkMode ? 'bg-purple-500/10' : 'bg-purple-50'} flex items-center justify-center flex-shrink-0`}>
-            <Receipt className={`w-6 h-6 ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`} />
-          </div>
+          <Receipt className={`w-10 h-10 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'}`} />
           <div className="flex-1">
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'} mb-1`}>Track Expenses</p>
-            <p className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Add Expense</p>
+            <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-1`}>TRACK EXPENSES</p>
+            <p className={`text-xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>ADD EXPENSE</p>
           </div>
-          <ArrowRight className={`w-5 h-5 ${isDarkMode ? 'text-slate-500' : 'text-gray-400'}`} />
+          <ArrowRight className={`w-6 h-6 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'}`} />
         </div>
       </button>
 
       <button
         onClick={() => setCurrentView('INSIGHTS')}
-        className={`w-full ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700 border-slate-700' : 'bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-md border-amber-200'} border-2 rounded-xl p-5 text-left transition-all shadow-sm hover:scale-[1.02]`}
+        className={`w-full ${isDarkMode ? 'bg-black border-b-4 border-yellow-400 hover:border-yellow-300' : 'bg-white border-b-4 border-yellow-400 hover:border-yellow-500'} p-5 text-left transition-all group`}
       >
         <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 rounded-lg ${isDarkMode ? 'bg-amber-500/10' : 'bg-amber-100'} flex items-center justify-center flex-shrink-0`}>
-            <Sparkles className={`w-6 h-6 ${isDarkMode ? 'text-amber-400' : 'text-amber-600'}`} />
-          </div>
+          <Sparkles className={`w-10 h-10 ${isDarkMode ? 'text-yellow-400' : 'text-yellow-500'}`} />
           <div className="flex-1">
-            <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-700'} mb-1`}>AI Insights</p>
-            <p className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Get Tips</p>
+            <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-1`}>AI INSIGHTS</p>
+            <p className={`text-xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>GET TIPS</p>
           </div>
-          <ArrowRight className={`w-5 h-5 ${isDarkMode ? 'text-slate-500' : 'text-amber-600'}`} />
+          <ArrowRight className={`w-6 h-6 ${isDarkMode ? 'text-yellow-400' : 'text-yellow-500'}`} />
         </div>
       </button>
     </div>

@@ -35,27 +35,28 @@ export const Vault: React.FC<VaultProps> = ({ documents }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 pb-20 animate-fade-in-up">
+    <div className="min-h-screen pb-20 animate-fade-in-up">
       {/* Header */}
-      <div className="backdrop-blur-lg bg-white/80 dark:bg-slate-900/80 border-b border-gray-200/50 dark:border-slate-800/50">
+      <div className="bg-black border-b-2 border-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-6 pl-16 md:pl-4">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Secure Vault</h1>
-            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
-              <Lock size={18} />
-              <span className="font-medium">Encrypted</span>
-            </div>
+          <div className="flex items-center gap-3 mb-4">
+            <Lock className="w-8 h-8 text-yellow-400" />
+            <h1 className="text-3xl font-black uppercase text-white">DOCUMENT VAULT</h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-400">All your important documents stored securely</p>
+          <div className="flex items-center gap-2 text-green-400 mb-2">
+            <Lock size={18} />
+            <span className="font-bold uppercase text-xs">ENCRYPTED</span>
+          </div>
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">ALL DOCUMENTS STORED SECURELY</p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Add Document Button */}
         <div className="mb-8">
-          <button className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:shadow-lg transition font-medium flex items-center gap-2 justify-center">
+          <button className="w-full md:w-auto px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold uppercase transition-all flex items-center gap-2 justify-center">
             <Plus size={20} />
-            Upload Document
+            UPLOAD DOCUMENT
           </button>
         </div>
 

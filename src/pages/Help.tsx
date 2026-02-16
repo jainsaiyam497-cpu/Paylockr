@@ -106,24 +106,22 @@ export const Help: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
-      <div className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 p-8 md:p-12 rounded-2xl text-white shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24 blur-3xl" />
+      <div className="bg-black border-l-8 border-yellow-400 p-8 md:p-12 relative overflow-hidden">
         <div className="relative z-10 text-center">
-          <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <HelpCircle className="w-8 h-8" />
+          <div className="w-16 h-16 bg-yellow-400 flex items-center justify-center mx-auto mb-4">
+            <HelpCircle className="w-8 h-8 text-black" />
           </div>
-          <h1 className="text-4xl font-black mb-3">How can we help you?</h1>
-          <p className="text-indigo-100 text-lg mb-6">Find answers to common questions about PayLockr</p>
+          <h1 className="text-4xl font-black uppercase text-white mb-3">HOW CAN WE HELP YOU?</h1>
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-6">FIND ANSWERS TO COMMON QUESTIONS ABOUT PAYLOCKR</p>
           
           <div className="max-w-2xl mx-auto relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
             <input 
               type="text" 
-              placeholder="Search for help topics, features, or questions..." 
+              placeholder="SEARCH FOR HELP TOPICS, FEATURES, OR QUESTIONS..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-md focus:bg-white/20 focus:border-white/40 outline-none text-white placeholder:text-white/60 shadow-lg"
+              className="w-full pl-12 pr-4 py-4 border-2 border-gray-800 bg-gray-900 focus:bg-black focus:border-cyan-500 outline-none text-white placeholder:text-gray-500 font-bold uppercase text-xs"
             />
           </div>
         </div>
@@ -131,39 +129,39 @@ export const Help: React.FC = () => {
 
       {/* Contact Options */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-800 hover:shadow-lg transition cursor-pointer group">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+        <div className="bg-black border-b-4 border-cyan-500 p-6 hover:bg-gray-900 transition cursor-pointer group">
+          <div className="w-12 h-12 bg-cyan-500 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <MessageCircle size={24} />
           </div>
-          <h3 className="font-bold text-lg dark:text-white mb-2">Live Chat</h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">Chat with our support team</p>
-          <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">Available 9 AM - 6 PM IST</span>
+          <h3 className="font-black uppercase text-white mb-2">LIVE CHAT</h3>
+          <p className="text-xs font-bold uppercase text-gray-500 mb-3">CHAT WITH OUR SUPPORT TEAM</p>
+          <span className="text-xs font-bold uppercase text-cyan-400">AVAILABLE 9 AM - 6 PM IST</span>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border-2 border-green-200 dark:border-green-800 hover:shadow-lg transition cursor-pointer group">
-          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+        <div className="bg-black border-b-4 border-green-500 p-6 hover:bg-gray-900 transition cursor-pointer group">
+          <div className="w-12 h-12 bg-green-500 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <Mail size={24} />
           </div>
-          <h3 className="font-bold text-lg dark:text-white mb-2">Email Support</h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">saiyam468@gmail.com</p>
-          <span className="text-xs font-semibold text-green-600 dark:text-green-400">Response within 24 hours</span>
+          <h3 className="font-black uppercase text-white mb-2">EMAIL SUPPORT</h3>
+          <p className="text-xs font-bold uppercase text-gray-500 mb-3">saiyam468@gmail.com</p>
+          <span className="text-xs font-bold uppercase text-green-400">RESPONSE WITHIN 24 HOURS</span>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border-2 border-purple-200 dark:border-purple-800 hover:shadow-lg transition cursor-pointer group">
-          <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+        <div className="bg-black border-b-4 border-yellow-400 p-6 hover:bg-gray-900 transition cursor-pointer group">
+          <div className="w-12 h-12 bg-yellow-400 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <Shield size={24} />
           </div>
-          <h3 className="font-bold text-lg dark:text-white mb-2">Priority Support</h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">For premium users</p>
-          <span className="text-xs font-semibold text-purple-600 dark:text-purple-400">Instant assistance</span>
+          <h3 className="font-black uppercase text-white mb-2">PRIORITY SUPPORT</h3>
+          <p className="text-xs font-bold uppercase text-gray-500 mb-3">FOR PREMIUM USERS</p>
+          <span className="text-xs font-bold uppercase text-yellow-400">INSTANT ASSISTANCE</span>
         </div>
       </div>
 
       {/* Category Filter */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border dark:border-slate-700 p-4">
+      <div className="bg-black border-b-4 border-cyan-500 p-4">
         <div className="flex items-center gap-2 mb-3">
-          <FileQuestion className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          <h3 className="font-bold text-lg dark:text-white">Browse by Topic</h3>
+          <FileQuestion className="w-5 h-5 text-cyan-400" />
+          <h3 className="font-black uppercase text-white">BROWSE BY TOPIC</h3>
         </div>
         <div className="flex flex-wrap gap-2">
           {categories.map(cat => {
@@ -172,10 +170,10 @@ export const Help: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center gap-2 ${
+                className={`px-4 py-2 font-bold uppercase text-xs transition flex items-center gap-2 ${
                   selectedCategory === cat.id
-                    ? 'bg-indigo-600 text-white shadow-md'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                    ? 'bg-yellow-400 text-black'
+                    : 'bg-gray-900 text-white hover:bg-gray-800 border-2 border-gray-800'
                 }`}
               >
                 <Icon size={16} />
@@ -187,27 +185,27 @@ export const Help: React.FC = () => {
       </div>
 
       {/* FAQ Accordion */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border dark:border-slate-700 p-6">
-        <h3 className="text-2xl font-bold dark:text-white mb-6">Frequently Asked Questions</h3>
+      <div className="bg-black border-b-4 border-cyan-500 p-6">
+        <h3 className="text-2xl font-black uppercase text-white mb-6">FREQUENTLY ASKED QUESTIONS</h3>
         <div className="space-y-3">
           {filteredFAQs.map((faq, index) => (
             <div
               key={index}
-              className="border dark:border-slate-700 rounded-xl overflow-hidden transition-all"
+              className="border-2 border-gray-800 overflow-hidden transition-all"
             >
               <button
                 onClick={() => setExpandedFAQ(expandedFAQ === index ? null : index)}
-                className="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition text-left"
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-900 transition text-left"
               >
-                <span className="font-semibold text-slate-900 dark:text-white pr-4">{faq.question}</span>
+                <span className="font-black uppercase text-xs text-white pr-4">{faq.question}</span>
                 <ChevronDown
-                  className={`w-5 h-5 text-slate-400 flex-shrink-0 transition-transform ${
+                  className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${
                     expandedFAQ === index ? 'rotate-180' : ''
                   }`}
                 />
               </button>
               {expandedFAQ === index && (
-                <div className="px-4 pb-4 text-slate-600 dark:text-slate-400 animate-fade-in">
+                <div className="px-4 pb-4 text-xs font-bold uppercase text-gray-500 animate-fade-in">
                   {faq.answer}
                 </div>
               )}
@@ -216,15 +214,15 @@ export const Help: React.FC = () => {
         </div>
         {filteredFAQs.length === 0 && (
           <div className="text-center py-12">
-            <FileQuestion className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-500 dark:text-slate-400">No FAQs found matching your search</p>
+            <FileQuestion className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <p className="text-xs font-bold uppercase text-gray-500">NO FAQS FOUND MATCHING YOUR SEARCH</p>
           </div>
         )}
       </div>
 
       {/* Quick Links */}
-      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border-2 border-indigo-200 dark:border-indigo-800 p-6">
-        <h3 className="text-xl font-bold dark:text-white mb-4">Quick Links</h3>
+      <div className="bg-black border-l-8 border-yellow-400 p-6">
+        <h3 className="text-xl font-black uppercase text-white mb-4">QUICK LINKS</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {quickLinks.map((link, idx) => {
             const Icon = link.icon;
@@ -232,12 +230,12 @@ export const Help: React.FC = () => {
               <a
                 key={idx}
                 href={link.link}
-                className="flex items-center gap-3 p-4 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl hover:shadow-md transition group"
+                className="flex items-center gap-3 p-4 bg-gray-900 hover:bg-gray-800 transition group"
               >
-                <div className={`w-10 h-10 bg-${link.color}-100 dark:bg-${link.color}-900/30 text-${link.color}-600 dark:text-${link.color}-400 rounded-lg flex items-center justify-center group-hover:scale-110 transition`}>
+                <div className={`w-10 h-10 bg-${link.color === 'blue' ? 'cyan' : link.color}-500 text-black flex items-center justify-center group-hover:scale-110 transition`}>
                   <Icon size={20} />
                 </div>
-                <span className="font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
+                <span className="font-black uppercase text-xs text-white group-hover:text-cyan-400 transition">
                   {link.title}
                 </span>
               </a>
@@ -247,25 +245,25 @@ export const Help: React.FC = () => {
       </div>
 
       {/* Still Need Help */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 text-white text-center">
-        <h3 className="text-2xl font-bold mb-2">Still need help?</h3>
-        <p className="text-blue-100 mb-6">Our support team is here to assist you</p>
+      <div className="bg-black border-l-8 border-cyan-500 p-8 text-center">
+        <h3 className="text-2xl font-black uppercase text-white mb-2">STILL NEED HELP?</h3>
+        <p className="text-xs font-bold uppercase text-gray-500 mb-6">OUR SUPPORT TEAM IS HERE TO ASSIST YOU</p>
         <div className="flex flex-wrap justify-center gap-3">
           <a 
             href="https://wa.me/919911566610?text=Hi%2C%20I%20need%20support%20with%20PayLockr"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition shadow-lg"
+            className="px-6 py-3 bg-yellow-400 text-black font-black uppercase hover:bg-yellow-500 transition"
           >
-            Contact Support
+            CONTACT SUPPORT
           </a>
           <a 
             href="https://wa.me/919911566610?text=Hi%2C%20I%20want%20to%20schedule%20a%20call%20with%20PayLockr%20team"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition"
+            className="px-6 py-3 bg-gray-900 text-white font-black uppercase hover:bg-gray-800 transition"
           >
-            Schedule a Call
+            SCHEDULE A CALL
           </a>
         </div>
       </div>

@@ -18,36 +18,34 @@ interface ChartProps {
 
 export const Chart: React.FC<ChartProps> = ({ data, isDarkMode }) => {
   return (
-    <div className={`lg:col-span-2 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'} border-2 rounded-xl p-6 shadow-sm`}>
+    <div className={`lg:col-span-2 ${isDarkMode ? 'bg-black border-b-4 border-cyan-500' : 'bg-white border-b-4 border-cyan-500'} p-6`}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-            Income vs Tax Trend
+          <h3 className={`text-xl font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            INCOME VS TAX TREND
           </h3>
-          <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'} mt-1`}>
-            Last 6 months performance
+          <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mt-2`}>
+            LAST 6 MONTHS
           </p>
         </div>
-        <div className={`p-2 rounded-lg ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}`}>
-          <BarChart3 className={`w-6 h-6 ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`} />
-        </div>
+        <BarChart3 className={`w-8 h-8 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'}`} />
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? '#334155' : '#e5e7eb'} />
-          <XAxis dataKey="name" stroke={isDarkMode ? '#94a3b8' : '#6b7280'} style={{ fontSize: '12px' }} />
-          <YAxis stroke={isDarkMode ? '#94a3b8' : '#6b7280'} style={{ fontSize: '12px' }} />
+          <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? '#1F2937' : '#D1D5DB'} />
+          <XAxis dataKey="name" stroke={isDarkMode ? '#6B7280' : '#6B7280'} style={{ fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase' }} />
+          <YAxis stroke={isDarkMode ? '#6B7280' : '#6B7280'} style={{ fontSize: '11px', fontWeight: 'bold' }} />
           <Tooltip 
             contentStyle={{
-              backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
-              border: `2px solid ${isDarkMode ? '#334155' : '#e5e7eb'}`,
-              borderRadius: '12px',
-              color: isDarkMode ? '#fff' : '#111827',
-              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+              backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
+              border: `3px solid ${isDarkMode ? '#FBBF24' : '#06B6D4'}`,
+              borderRadius: '0',
+              color: isDarkMode ? '#fff' : '#000',
+              fontWeight: 'bold'
             }}
           />
-          <Area type="monotone" dataKey="income" stroke="#3b82f6" fill="#3b82f6" fillOpacity={isDarkMode ? 0.1 : 0.2} strokeWidth={2} name="Income" />
-          <Area type="monotone" dataKey="tax" stroke="#a855f7" fill="#a855f7" fillOpacity={isDarkMode ? 0.1 : 0.2} strokeWidth={2} name="Tax" />
+          <Area type="monotone" dataKey="income" stroke="#FBBF24" fill="#FBBF24" fillOpacity={0.2} strokeWidth={3} name="Income" />
+          <Area type="monotone" dataKey="tax" stroke="#06B6D4" fill="#06B6D4" fillOpacity={0.2} strokeWidth={3} name="Tax" />
         </AreaChart>
       </ResponsiveContainer>
     </div>

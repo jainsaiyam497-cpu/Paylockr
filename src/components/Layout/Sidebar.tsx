@@ -50,12 +50,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ view, setView, handleLogout })
       )}
 
       {/* Sidebar */}
-      <aside className={`w-64 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col fixed h-full transition-transform duration-300 ${
+      <aside className={`w-64 bg-black border-r-4 border-yellow-400 flex flex-col fixed h-full transition-transform duration-300 ${
         isMobileOpen ? 'translate-x-0 z-40' : '-translate-x-full md:translate-x-0 z-40'
       }`}>
-        <div className="p-6 pl-16 md:pl-6 flex items-center gap-3 border-b border-gray-200 dark:border-slate-800">
-          <ShieldCheck className="text-blue-600" size={28} />
-          <span className="text-xl font-black text-gray-900 dark:text-white tracking-tight">PayLockr</span>
+        <div className="p-6 pl-16 md:pl-6 flex items-center gap-3 border-b-2 border-gray-800">
+          <ShieldCheck className="text-yellow-400" size={28} />
+          <span className="text-xl font-black uppercase text-white tracking-tight">PAYLOCKR</span>
         </div>
       
       <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
@@ -78,10 +78,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ view, setView, handleLogout })
               setView(item.id as ViewState);
               setIsMobileOpen(false);
             }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${
+            className={`w-full flex items-center gap-3 px-4 py-3 font-bold uppercase text-xs transition-all ${
               view === item.id 
-                ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' 
-                : 'text-gray-600 hover:bg-gray-50 dark:text-slate-400 dark:hover:bg-slate-800'
+                ? 'bg-yellow-400 text-black' 
+                : 'text-white hover:bg-gray-900'
             }`}
           >
             <item.icon size={20} />
@@ -90,9 +90,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ view, setView, handleLogout })
         ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-200 dark:border-slate-800">
-        <button onClick={handleLogout} className="flex items-center gap-3 text-red-500 px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg w-full transition-colors">
-          <LogOut size={20} /> Logout
+      <div className="p-4 border-t-2 border-gray-800">
+        <button onClick={handleLogout} className="flex items-center gap-3 text-red-400 px-4 py-2 hover:bg-red-900/20 w-full transition-colors font-bold uppercase text-xs">
+          <LogOut size={20} /> LOGOUT
         </button>
       </div>
     </aside>

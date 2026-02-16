@@ -271,7 +271,7 @@ export default function App() {
   const userId = session.user.id || 'saiyam';
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-neutral-950' : 'bg-gray-100'}`}>
       {toast && <Toast message={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
       
       <Sidebar view={view} setView={setView} handleLogout={handleLogout} />

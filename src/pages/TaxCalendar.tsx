@@ -74,60 +74,56 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-8 rounded-2xl text-white shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32 blur-3xl" />
+      <div className="bg-black border-l-8 border-yellow-400 p-8 relative overflow-hidden">
         <div className="relative z-10">
           <div className="flex items-center gap-4 mb-3">
-            <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-              <Calendar className="w-8 h-8" />
-            </div>
+            <Calendar className="w-14 h-14 text-yellow-400" />
             <div>
-              <h1 className="text-4xl font-black">Tax Calendar FY 2024-25</h1>
-              <p className="text-indigo-100 text-lg font-medium">Complete compliance calendar with {allTaxEvents.length}+ deadlines</p>
+              <h1 className="text-4xl font-black uppercase text-white">TAX CALENDAR FY 2024-25</h1>
+              <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mt-2">{allTaxEvents.length}+ DEADLINES</p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="bg-black border-b-4 border-green-500 p-6">
           <div className="flex items-center justify-between mb-2">
-            <CheckCircle2 className="w-8 h-8 opacity-80" />
-            <span className="text-3xl font-black">{completedCount}</span>
+            <CheckCircle2 className="w-8 h-8 text-green-400" />
+            <span className="text-3xl font-black text-white">{completedCount}</span>
           </div>
-          <p className="text-green-100 font-semibold">Completed</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">COMPLETED</p>
         </div>
-        <div className="bg-gradient-to-br from-orange-500 to-red-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="bg-black border-b-4 border-red-500 p-6">
           <div className="flex items-center justify-between mb-2">
-            <Clock className="w-8 h-8 opacity-80" />
-            <span className="text-3xl font-black">{pendingCount}</span>
+            <Clock className="w-8 h-8 text-red-400" />
+            <span className="text-3xl font-black text-white">{pendingCount}</span>
           </div>
-          <p className="text-orange-100 font-semibold">Pending</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">PENDING</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="bg-black border-b-4 border-cyan-500 p-6">
           <div className="flex items-center justify-between mb-2">
-            <Bell className="w-8 h-8 opacity-80" />
-            <span className="text-3xl font-black">{upcomingCount}</span>
+            <Bell className="w-8 h-8 text-cyan-400" />
+            <span className="text-3xl font-black text-white">{upcomingCount}</span>
           </div>
-          <p className="text-blue-100 font-semibold">Upcoming</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">UPCOMING</p>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border dark:border-slate-700 p-4">
+      <div className="bg-black border-2 border-gray-800 p-4">
         <div className="flex items-center gap-2 mb-2">
-          <Filter className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          <span className="font-semibold text-slate-700 dark:text-slate-300">Filter by Category:</span>
+          <Filter className="w-5 h-5 text-white" />
+          <span className="font-black uppercase text-white text-sm">FILTER CATEGORY</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {categories.map(cat => (
             <button
               key={cat.value}
               onClick={() => setFilterType(cat.value)}
-              className={`px-4 py-2 rounded-lg font-semibold text-sm transition ${
+              className={`px-4 py-2 font-bold uppercase text-xs transition ${
                 filterType === cat.value
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                  ? 'bg-yellow-400 text-black'
+                  : 'bg-gray-900 text-white hover:bg-gray-800 border-2 border-gray-800'
               }`}
             >
               {cat.label}
@@ -137,15 +133,15 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
       </div>
 
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border dark:border-slate-700 overflow-hidden">
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+        <div className="bg-black border-b-4 border-cyan-500 p-6">
           <div className="flex items-center justify-between">
-            <button onClick={handlePrevMonth} className="p-3 hover:bg-white/20 rounded-xl transition text-white">
+            <button onClick={handlePrevMonth} className="p-3 hover:bg-gray-900 transition text-white">
               <ChevronLeft size={24} />
             </button>
-            <h2 className="text-3xl font-black text-white">
+            <h2 className="text-3xl font-black uppercase text-white">
               {monthNames[currentMonth]} {currentYear}
             </h2>
-            <button onClick={handleNextMonth} className="p-3 hover:bg-white/20 rounded-xl transition text-white">
+            <button onClick={handleNextMonth} className="p-3 hover:bg-gray-900 transition text-white">
               <ChevronRight size={24} />
             </button>
           </div>
@@ -154,7 +150,7 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
         <div className="p-6">
           <div className="grid grid-cols-7 gap-3 mb-4">
             {dayNames.map(day => (
-              <div key={day} className="text-center font-bold text-slate-600 dark:text-slate-400 py-3 text-lg">
+              <div key={day} className="text-center font-black uppercase text-white py-3 text-lg">
                 {day}
               </div>
             ))}
@@ -174,15 +170,15 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
                 <div
                   key={day}
                   onClick={() => hasEvents && setSelectedEvent(events[0])}
-                  className={`aspect-square border-2 rounded-2xl p-3 transition-all cursor-pointer ${
+                  className={`aspect-square border-2 p-3 transition-all cursor-pointer ${
                     isToday(day)
-                      ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white border-blue-600 shadow-xl scale-105'
+                      ? 'bg-cyan-500 text-black border-cyan-500 scale-105'
                       : hasEvents
-                      ? 'bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/30 dark:to-red-900/30 border-orange-300 dark:border-orange-700 hover:shadow-lg hover:scale-105'
-                      : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105'
+                      ? 'bg-gray-900 border-yellow-400 hover:bg-gray-800 hover:scale-105'
+                      : 'bg-black border-gray-800 hover:bg-gray-900 hover:scale-105'
                   }`}
                 >
-                  <div className={`text-lg font-black mb-1 ${isToday(day) ? 'text-white' : 'text-slate-700 dark:text-slate-300'}`}>
+                  <div className={`text-lg font-black mb-1 ${isToday(day) ? 'text-black' : 'text-white'}`}>
                     {day}
                   </div>
                   {hasEvents && (
@@ -215,42 +211,42 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border dark:border-slate-700 p-6">
-          <h3 className="text-2xl font-bold dark:text-white mb-6 flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center">
-              <Clock className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+        <div className="bg-black border-b-4 border-yellow-400 p-6">
+          <h3 className="text-2xl font-black uppercase text-white mb-6 flex items-center gap-3">
+            <div className="w-10 h-10 bg-yellow-400 flex items-center justify-center">
+              <Clock className="w-6 h-6 text-black" />
             </div>
-            Upcoming Deadlines
+            UPCOMING DEADLINES
           </h3>
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {upcomingEvents.map((event, idx) => {
               const daysLeft = calculateDaysLeft(event.date);
               return (
-                <div key={idx} className="flex items-start gap-4 p-4 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-xl border dark:border-slate-700 hover:shadow-md transition">
-                  <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${
+                <div key={idx} className="flex items-start gap-4 p-4 bg-gray-900 border-l-4 border-cyan-500 hover:bg-gray-800 transition">
+                  <div className={`w-3 h-3 mt-2 flex-shrink-0 ${
                     event.type === 'PAYMENT' ? 'bg-red-500 animate-pulse' :
-                    event.type === 'FILING' ? 'bg-purple-500 animate-pulse' :
-                    event.type === 'DEADLINE' ? 'bg-orange-500 animate-pulse' : 'bg-blue-500 animate-pulse'
+                    event.type === 'FILING' ? 'bg-yellow-400 animate-pulse' :
+                    event.type === 'DEADLINE' ? 'bg-yellow-400 animate-pulse' : 'bg-cyan-500 animate-pulse'
                   }`} />
                   <div className="flex-1">
-                    <p className="font-bold text-lg dark:text-white">{event.title}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{event.description}</p>
+                    <p className="font-black uppercase text-white">{event.title}</p>
+                    <p className="text-xs font-bold uppercase text-gray-500">{event.description}</p>
                     <div className="flex items-center gap-3 mt-2">
-                      <p className="text-xs text-slate-500 dark:text-slate-500 font-semibold">
-                        {event.date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      <p className="text-xs text-gray-500 font-bold uppercase">
+                        {event.date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
-                      <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                        daysLeft <= 7 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-                        daysLeft <= 30 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' :
-                        'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                      <span className={`text-xs font-bold uppercase px-2 py-1 ${
+                        daysLeft <= 7 ? 'bg-red-500 text-black' :
+                        daysLeft <= 30 ? 'bg-yellow-400 text-black' :
+                        'bg-cyan-500 text-black'
                       }`}>
-                        {daysLeft} days left
+                        {daysLeft} DAYS LEFT
                       </span>
                     </div>
                   </div>
                   {event.amount > 0 && (
                     <div className="text-right">
-                      <p className="text-sm font-bold text-red-600 dark:text-red-400">₹{event.amount.toLocaleString()}</p>
+                      <p className="text-sm font-black text-red-400">₹{event.amount.toLocaleString()}</p>
                     </div>
                   )}
                 </div>
@@ -259,25 +255,25 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 rounded-2xl border-2 border-blue-300 dark:border-blue-800 p-6 shadow-lg">
-          <h3 className="text-2xl font-bold dark:text-white mb-6 flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
-              <AlertCircle className="w-6 h-6 text-white" />
+        <div className="bg-black border-b-4 border-cyan-500 p-6">
+          <h3 className="text-2xl font-black uppercase text-white mb-6 flex items-center gap-3">
+            <div className="w-10 h-10 bg-cyan-500 flex items-center justify-center">
+              <AlertCircle className="w-6 h-6 text-black" />
             </div>
-            Quick Tips
+            QUICK TIPS
           </h3>
-          <ul className="space-y-4 text-sm text-slate-700 dark:text-slate-300">
+          <ul className="space-y-4 text-sm">
             {[
-              { icon: '💰', text: 'Advance Tax: Pay quarterly (15th Jun, Sep, Dec, Mar)' },
-              { icon: '📄', text: 'ITR Filing: July 31 (if tax paid), Aug 31 (regular)' },
-              { icon: '📊', text: 'GST: File GSTR-3B by 20th, GSTR-1 by 13th monthly' },
-              { icon: '💳', text: 'TDS: Deposit by 7th of next month' },
-              { icon: '👥', text: 'PF/ESI: Deposit by 7th and 15th respectively' },
-              { icon: '🎯', text: 'Investments: Complete 80C by March 31st' },
+              { icon: '💰', text: 'ADVANCE TAX: PAY QUARTERLY (15TH JUN, SEP, DEC, MAR)' },
+              { icon: '📄', text: 'ITR FILING: JULY 31 (IF TAX PAID), AUG 31 (REGULAR)' },
+              { icon: '📊', text: 'GST: FILE GSTR-3B BY 20TH, GSTR-1 BY 13TH MONTHLY' },
+              { icon: '💳', text: 'TDS: DEPOSIT BY 7TH OF NEXT MONTH' },
+              { icon: '👥', text: 'PF/ESI: DEPOSIT BY 7TH AND 15TH RESPECTIVELY' },
+              { icon: '🎯', text: 'INVESTMENTS: COMPLETE 80C BY MARCH 31ST' },
             ].map((tip, idx) => (
-              <li key={idx} className="flex items-start gap-3 p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl backdrop-blur-sm">
+              <li key={idx} className="flex items-start gap-3 p-3 bg-gray-900 border-l-4 border-yellow-400">
                 <span className="text-2xl">{tip.icon}</span>
-                <span className="font-medium">{tip.text}</span>
+                <span className="font-bold uppercase text-white">{tip.text}</span>
               </li>
             ))}
           </ul>

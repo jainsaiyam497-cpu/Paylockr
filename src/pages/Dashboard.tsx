@@ -103,19 +103,19 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
   return (
     <>
-      <div className={`${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'} border-b shadow-sm`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pl-16 md:pl-4">
+      <div className={`${isDarkMode ? 'bg-black border-b-2 border-gray-800' : 'bg-white border-b-2 border-gray-200'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pl-16 md:pl-4">
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0">
-              <h1 className={`text-xl md:text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} truncate`}>
-                {currentUser ? `Welcome back, ${currentUser.name ? currentUser.name.split(' ')[0] : 'Freelancer'}! 👋` : 'Dashboard'}
+              <h1 className={`text-2xl md:text-4xl font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'} truncate`}>
+                {currentUser ? `${currentUser.name ? currentUser.name.split(' ')[0] : 'FREELANCER'}` : 'DASHBOARD'}
               </h1>
-              <div className="flex items-center gap-2 mt-1">
-                <span className={`text-xs md:text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>
-                  Tax Health:
+              <div className="flex items-center gap-3 mt-2">
+                <span className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+                  TAX HEALTH:
                 </span>
-                <span className={`text-xs md:text-sm font-semibold ${taxHealth.color}`}>
-                  {taxHealth.icon} {taxHealth.status}
+                <span className={`text-xs font-bold uppercase px-3 py-1 ${taxHealth.color === (isDarkMode ? 'text-green-400' : 'text-green-600') ? 'bg-green-500 text-black' : taxHealth.color === (isDarkMode ? 'text-blue-400' : 'text-blue-600') ? 'bg-cyan-500 text-black' : 'bg-yellow-400 text-black'}`}>
+                  {taxHealth.status}
                 </span>
               </div>
             </div>
@@ -124,13 +124,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <div className="relative" ref={notificationRef}>
                 <button
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className={`relative p-2 rounded-lg ${
-                    isDarkMode ? 'hover:bg-slate-700' : 'hover:bg-gray-100'
-                  } transition-colors`}
+                  className={`relative p-3 border-2 ${isDarkMode ? 'border-gray-800 hover:border-yellow-400' : 'border-gray-300 hover:border-yellow-400'} transition-all`}
                 >
-                  <Bell className={`w-5 h-5 md:w-6 md:h-6 ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`} />
+                  <Bell className={`w-5 h-5 md:w-6 md:h-6 ${isDarkMode ? 'text-white' : 'text-black'}`} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-0 right-0 w-4 h-4 md:w-5 md:h-5 bg-red-500 text-white text-[10px] md:text-xs font-bold rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 text-black text-xs font-black flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
@@ -138,19 +136,19 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
                 {showNotifications && (
                   <div className={`fixed md:absolute right-4 md:right-0 top-16 md:top-auto md:mt-2 w-[calc(100vw-2rem)] md:w-96 ${
-                    isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'
-                  } border-2 rounded-xl shadow-2xl max-h-[32rem] overflow-hidden flex flex-col z-[100]`}>
-                    <div className={`p-4 border-b ${isDarkMode ? 'border-slate-700' : 'border-gray-200'}`}>
+                    isDarkMode ? 'bg-black border-yellow-400' : 'bg-white border-yellow-400'
+                  } border-4 max-h-[32rem] overflow-hidden flex flex-col z-[100]`}>
+                    <div className={`p-4 border-b-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                       <div className="flex items-center justify-between">
-                        <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                          Notifications
+                        <h3 className={`font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                          NOTIFICATIONS
                         </h3>
                         {unreadCount > 0 && (
                           <button
                             onClick={markAllAsRead}
-                            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                            className="text-xs font-bold uppercase text-cyan-500 hover:text-cyan-400"
                           >
-                            Mark all as read
+                            MARK ALL AS READ
                           </button>
                         )}
                       </div>
@@ -159,9 +157,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <div className="overflow-y-auto flex-1">
                       {notifications.length === 0 ? (
                         <div className="p-8 text-center">
-                          <Bell className={`w-12 h-12 mx-auto mb-3 ${isDarkMode ? 'text-slate-600' : 'text-gray-400'}`} />
-                          <p className={`${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>
-                            No notifications yet
+                          <Bell className={`w-12 h-12 mx-auto mb-3 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`} />
+                          <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+                            NO NOTIFICATIONS YET
                           </p>
                         </div>
                       ) : (
@@ -178,20 +176,20 @@ export const Dashboard: React.FC<DashboardProps> = ({
                           return (
                           <div
                             key={notification.id}
-                            className={`p-4 border-b ${
-                              isDarkMode ? 'border-slate-700' : 'border-gray-200'
+                            className={`p-4 border-b-2 ${
+                              isDarkMode ? 'border-gray-800' : 'border-gray-200'
                             } ${
                               !notification.read 
-                                ? isDarkMode ? 'bg-slate-700/50' : 'bg-blue-50' 
+                                ? isDarkMode ? 'bg-gray-900' : 'bg-gray-100' 
                                 : ''
-                            } hover:${isDarkMode ? 'bg-slate-700' : 'bg-gray-50'} transition-colors cursor-pointer`}
+                            } hover:${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors cursor-pointer`}
                             onClick={handleNotificationClick}
                           >
                             <div className="flex items-start gap-3">
                               {getNotificationIcon(notification.type)}
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-2">
-                                  <h4 className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'} truncate`}>
+                                  <h4 className={`font-black uppercase text-xs ${isDarkMode ? 'text-white' : 'text-black'} truncate`}>
                                     {notification.title}
                                   </h4>
                                   <button
@@ -199,15 +197,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
                                       e.stopPropagation();
                                       deleteNotification(notification.id);
                                     }}
-                                    className={`flex-shrink-0 ${isDarkMode ? 'text-slate-500 hover:text-slate-400' : 'text-gray-400 hover:text-gray-600'}`}
+                                    className={`flex-shrink-0 ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-600'}`}
                                   >
                                     <X className="w-4 h-4" />
                                   </button>
                                 </div>
-                                <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'} mt-1`}>
+                                <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mt-1`}>
                                   {notification.message}
                                 </p>
-                                <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-gray-500'} mt-2`}>
+                                <p className={`text-xs ${isDarkMode ? 'text-gray-600' : 'text-gray-500'} mt-2 font-bold`}>
                                   {getRelativeTime(notification.timestamp)}
                                 </p>
                               </div>
@@ -223,14 +221,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
               <button
                 onClick={() => setCurrentView('HELP')}
-                className={`p-2 md:px-4 md:py-2 rounded-lg font-medium ${
-                  isDarkMode 
-                    ? 'bg-slate-700 hover:bg-slate-600 text-white' 
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                } transition-colors flex items-center gap-2`}
+                className={`p-3 border-2 font-bold uppercase text-xs ${isDarkMode ? 'border-gray-800 hover:border-cyan-500 text-white' : 'border-gray-300 hover:border-cyan-500 text-black'} transition-all flex items-center gap-2`}
               >
                 <HelpCircle className="w-5 h-5" />
-                <span className="hidden md:inline">Help</span>
+                <span className="hidden md:inline">HELP</span>
               </button>
             </div>
           </div>
@@ -247,26 +241,24 @@ export const Dashboard: React.FC<DashboardProps> = ({
         />
 
         {nextDeadline && (
-          <div className={`mb-6 md:mb-8 p-4 md:p-6 rounded-xl border-2 ${isDarkMode ? 'bg-amber-500/5 border-amber-500/20' : 'bg-amber-50 border-amber-200'}`}>
+          <div className={`mb-8 p-6 border-l-8 ${isDarkMode ? 'bg-black border-yellow-400' : 'bg-white border-yellow-400'}`}>
             <div className="flex flex-col md:flex-row items-start gap-4">
-              <div className={`w-12 h-12 rounded-lg ${isDarkMode ? 'bg-amber-500/10' : 'bg-amber-100'} flex items-center justify-center flex-shrink-0`}>
-                <Calendar className={`w-6 h-6 ${isDarkMode ? 'text-amber-400' : 'text-amber-600'}`} />
-              </div>
+              <Calendar className={`w-12 h-12 ${isDarkMode ? 'text-yellow-400' : 'text-yellow-500'} flex-shrink-0`} />
               <div className="flex-1">
-                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-1 text-sm md:text-base`}>
-                  Next Tax Deadline: {nextDeadline.quarter} Advance Tax
+                <h3 className={`text-lg font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'} mb-2`}>
+                  NEXT DEADLINE: {nextDeadline.quarter}
                 </h3>
-                <p className={`text-xs md:text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'} mb-3`}>
-                  Due on {new Date(nextDeadline.dueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+                <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-4`}>
+                  {new Date(nextDeadline.dueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}
                 </p>
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-wrap items-center gap-6">
                   <div>
-                    <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-gray-500'}`}>Estimated Amount</p>
-                    <p className={`text-base md:text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>₹{nextDeadline.estimatedAmount.toLocaleString('en-IN')}</p>
+                    <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>ESTIMATED</p>
+                    <p className={`text-2xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>₹{nextDeadline.estimatedAmount.toLocaleString('en-IN')}</p>
                   </div>
                   <div>
-                    <p className={`text-xs ${isDarkMode ? 'text-slate-500' : 'text-gray-500'}`}>Vault Balance</p>
-                    <p className={`text-base md:text-lg font-bold ${vaultBalance >= nextDeadline.estimatedAmount ? (isDarkMode ? 'text-green-400' : 'text-green-600') : (isDarkMode ? 'text-red-400' : 'text-red-600')}`}>
+                    <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>VAULT</p>
+                    <p className={`text-2xl font-black ${vaultBalance >= nextDeadline.estimatedAmount ? (isDarkMode ? 'text-green-400' : 'text-green-500') : (isDarkMode ? 'text-red-400' : 'text-red-500')}`}>
                       ₹{vaultBalance.toLocaleString('en-IN')} {vaultBalance >= nextDeadline.estimatedAmount ? '✓' : '⚠'}
                     </p>
                   </div>
@@ -274,9 +266,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </div>
               <button
                 onClick={() => setCurrentView('TAX_CALENDAR')}
-                className={`w-full md:w-auto px-4 py-2 rounded-lg font-medium text-sm ${isDarkMode ? 'bg-amber-500 hover:bg-amber-600' : 'bg-amber-600 hover:bg-amber-700'} text-white transition-colors`}
+                className="w-full md:w-auto px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold uppercase transition-all"
               >
-                View Calendar
+                VIEW CALENDAR
               </button>
             </div>
           </div>
@@ -287,21 +279,21 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <QuickActions setCurrentView={setCurrentView} vaultBalance={vaultBalance} isDarkMode={isDarkMode} />
         </div>
 
-        <div className={`${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'} border-2 rounded-xl p-6 shadow-sm`}>
+        <div className={`${isDarkMode ? 'bg-black border-b-4 border-cyan-500' : 'bg-white border-b-4 border-cyan-500'} p-6`}>
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                Recent Transactions
+              <h3 className={`text-xl font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                RECENT TRANSACTIONS
               </h3>
-              <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'} mt-1`}>
-                Latest {recentTransactions.length} transactions
+              <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mt-2`}>
+                LATEST {recentTransactions.length}
               </p>
             </div>
             <button
               onClick={() => setCurrentView('TRANSACTIONS')}
-              className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1"
+              className="text-cyan-500 hover:text-cyan-400 font-bold uppercase text-xs flex items-center gap-1 transition-colors"
             >
-              View All
+              VIEW ALL
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -310,37 +302,39 @@ export const Dashboard: React.FC<DashboardProps> = ({
             {recentTransactions.map(transaction => (
               <div
                 key={transaction.id}
-                className={`flex items-center justify-between p-4 rounded-xl ${
-                  isDarkMode ? 'bg-slate-700/50 hover:bg-slate-700 border border-slate-700' : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
-                } transition-all cursor-pointer group`}
+                className={`flex items-center justify-between p-4 border-l-4 ${
+                  transaction.type === TransactionType.BUSINESS 
+                    ? 'border-green-500' 
+                    : 'border-cyan-500'
+                } ${isDarkMode ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-50 hover:bg-gray-100'} transition-all cursor-pointer`}
                 onClick={() => setCurrentView('TRANSACTIONS')}
               >
                 <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-lg ${
+                  <div className={`w-12 h-12 ${
                     transaction.type === TransactionType.BUSINESS 
-                      ? isDarkMode ? 'bg-green-500/10 text-green-400' : 'bg-green-50 text-green-600'
-                      : isDarkMode ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-50 text-blue-600'
+                      ? isDarkMode ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600'
+                      : isDarkMode ? 'bg-cyan-500/20 text-cyan-400' : 'bg-cyan-100 text-cyan-600'
                   } flex items-center justify-center`}>
                     {transaction.type === TransactionType.BUSINESS ? (
-                      <TrendingUp className="w-5 h-5" />
+                      <TrendingUp className="w-6 h-6" />
                     ) : (
-                      <ArrowDownLeft className="w-5 h-5" />
+                      <ArrowDownLeft className="w-6 h-6" />
                     )}
                   </div>
                   <div>
-                    <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <p className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>
                       {transaction.source}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>
-                        {new Date(transaction.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                      <span className={`text-xs font-bold uppercase ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+                        {new Date(transaction.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }).toUpperCase()}
                       </span>
-                      <span className={`text-xs px-2 py-0.5 rounded ${
+                      <span className={`text-xs font-bold uppercase px-2 py-0.5 ${
                         transaction.status === TransactionStatus.VAULTED
-                          ? isDarkMode ? 'bg-green-500/10 text-green-400' : 'bg-green-50 text-green-700'
+                          ? 'bg-green-500 text-black'
                           : transaction.status === TransactionStatus.PENDING
-                          ? isDarkMode ? 'bg-amber-500/10 text-amber-400' : 'bg-amber-50 text-amber-700'
-                          : isDarkMode ? 'bg-slate-600 text-slate-300' : 'bg-gray-200 text-gray-700'
+                          ? 'bg-yellow-400 text-black'
+                          : isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-300 text-gray-700'
                       }`}>
                         {transaction.status}
                       </span>
@@ -348,12 +342,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>
                     ₹{transaction.amount.toLocaleString('en-IN')}
                   </p>
                   {transaction.estimatedTax > 0 && (
-                    <p className={`text-xs ${isDarkMode ? 'text-purple-400' : 'text-purple-600'} mt-1`}>
-                      Tax: ₹{transaction.estimatedTax.toLocaleString('en-IN')}
+                    <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'} mt-1`}>
+                      TAX: ₹{transaction.estimatedTax.toLocaleString('en-IN')}
                     </p>
                   )}
                 </div>

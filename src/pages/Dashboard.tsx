@@ -241,7 +241,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
         />
 
         {nextDeadline && (
-          <div className={`mb-8 p-6 border-l-8 ${isDarkMode ? 'bg-black border-yellow-400' : 'bg-white border-yellow-400'}`}>
+          <div className={`mb-8 p-6 border-l-8 ${isDarkMode ? 'bg-black border-yellow-400' : 'bg-white border-yellow-400'} shadow-lg`}>
             <div className="flex flex-col md:flex-row items-start gap-4">
               <Calendar className={`w-12 h-12 ${isDarkMode ? 'text-yellow-400' : 'text-yellow-500'} flex-shrink-0`} />
               <div className="flex-1">
@@ -279,7 +279,26 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <QuickActions setCurrentView={setCurrentView} vaultBalance={vaultBalance} isDarkMode={isDarkMode} />
         </div>
 
-        <div className={`${isDarkMode ? 'bg-black border-b-4 border-cyan-500' : 'bg-white border-b-4 border-cyan-500'} p-6`}>
+        {/* Financial Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className={`${isDarkMode ? 'bg-black border-l-4 border-green-500' : 'bg-white border-l-4 border-green-500'} p-6`}>
+            <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-2`}>MONTHLY INCOME</p>
+            <p className={`text-3xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>₹{totalIncome.toLocaleString('en-IN')}</p>
+            <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-green-400' : 'text-green-600'} mt-2`}>+15% FROM LAST MONTH</p>
+          </div>
+          <div className={`${isDarkMode ? 'bg-black border-l-4 border-red-500' : 'bg-white border-l-4 border-red-500'} p-6`}>
+            <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-2`}>TAX LIABILITY</p>
+            <p className={`text-3xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>₹{estimatedTax.toLocaleString('en-IN')}</p>
+            <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mt-2`}>{((estimatedTax/totalIncome)*100).toFixed(1)}% OF INCOME</p>
+          </div>
+          <div className={`${isDarkMode ? 'bg-black border-l-4 border-cyan-500' : 'bg-white border-l-4 border-cyan-500'} p-6`}>
+            <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-2`}>SAVINGS RATE</p>
+            <p className={`text-3xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>{((vaultBalance/totalIncome)*100).toFixed(0)}%</p>
+            <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'} mt-2`}>EXCELLENT PROGRESS</p>
+          </div>
+        </div>
+
+        <div className={`${isDarkMode ? 'bg-black border-l-8 border-cyan-500' : 'bg-white border-l-8 border-cyan-500'} p-6 shadow-lg`}>
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className={`text-xl font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>
@@ -302,18 +321,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
             {recentTransactions.map(transaction => (
               <div
                 key={transaction.id}
-                className={`flex items-center justify-between p-4 border-l-4 ${
+                className={`flex items-center justify-between p-4 border-l-8 ${
                   transaction.type === TransactionType.BUSINESS 
                     ? 'border-green-500' 
-                    : 'border-cyan-500'
-                } ${isDarkMode ? 'bg-gray-900 hover:bg-gray-800' : 'bg-gray-50 hover:bg-gray-100'} transition-all cursor-pointer`}
+                    : 'border-red-500'
+                } ${isDarkMode ? 'bg-black hover:bg-gray-900' : 'bg-white hover:bg-gray-50'} transition-all cursor-pointer shadow-lg`}
                 onClick={() => setCurrentView('TRANSACTIONS')}
               >
                 <div className="flex items-center gap-4">
                   <div className={`w-12 h-12 ${
                     transaction.type === TransactionType.BUSINESS 
                       ? isDarkMode ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600'
-                      : isDarkMode ? 'bg-cyan-500/20 text-cyan-400' : 'bg-cyan-100 text-cyan-600'
+                      : isDarkMode ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-600'
                   } flex items-center justify-center`}>
                     {transaction.type === TransactionType.BUSINESS ? (
                       <TrendingUp className="w-6 h-6" />
@@ -322,14 +341,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     )}
                   </div>
                   <div>
-                    <p className={`font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                    <p className={`font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>
                       {transaction.source}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className={`text-xs font-bold uppercase ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
                         {new Date(transaction.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }).toUpperCase()}
                       </span>
-                      <span className={`text-xs font-bold uppercase px-2 py-0.5 ${
+                      <span className={`text-xs font-black uppercase px-2 py-0.5 ${
                         transaction.status === TransactionStatus.VAULTED
                           ? 'bg-green-500 text-black'
                           : transaction.status === TransactionStatus.PENDING
@@ -342,11 +361,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`text-xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                  <p className={`text-2xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>
                     ₹{transaction.amount.toLocaleString('en-IN')}
                   </p>
                   {transaction.estimatedTax > 0 && (
-                    <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'} mt-1`}>
+                    <p className={`text-xs font-black uppercase ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'} mt-1`}>
                       TAX: ₹{transaction.estimatedTax.toLocaleString('en-IN')}
                     </p>
                   )}

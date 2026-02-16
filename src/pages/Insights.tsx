@@ -32,8 +32,8 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      <div className="bg-black border-l-8 border-yellow-400 p-8 relative overflow-hidden">
+    <div className="max-w-6xl mx-auto space-y-6 pb-20">
+      <div className="bg-black border-l-8 border-yellow-400 p-8 relative overflow-hidden shadow-lg">
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-3">
             <Sparkles className="w-12 h-12 text-yellow-400" />
@@ -44,7 +44,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-black border-b-4 border-green-500 p-6">
+        <div className="bg-black border-l-4 border-green-500 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <DollarSign className="w-8 h-8 text-green-400" />
             <TrendingUp className="w-5 h-5 text-green-400" />
@@ -53,7 +53,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
           <p className="text-3xl font-black text-white">₹{totalIncome.toLocaleString()}</p>
         </div>
 
-        <div className="bg-black border-b-4 border-red-500 p-6">
+        <div className="bg-black border-l-4 border-red-500 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <PieChart className="w-8 h-8 text-red-400" />
             <TrendingDown className="w-5 h-5 text-red-400" />
@@ -62,7 +62,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
           <p className="text-3xl font-black text-white">₹{totalTax.toLocaleString()}</p>
         </div>
 
-        <div className="bg-black border-b-4 border-cyan-500 p-6">
+        <div className="bg-black border-l-4 border-cyan-500 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <Target className="w-8 h-8 text-cyan-400" />
             <Zap className="w-5 h-5 text-cyan-400" />
@@ -71,7 +71,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
           <p className="text-3xl font-black text-white">{taxRate.toFixed(1)}%</p>
         </div>
 
-        <div className="bg-black border-b-4 border-yellow-400 p-6">
+        <div className="bg-black border-l-4 border-yellow-400 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <Shield className="w-8 h-8 text-yellow-400" />
             <DollarSign className="w-5 h-5 text-yellow-400" />
@@ -82,7 +82,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
       </div>
 
       {!insights && !error && (
-        <div className="bg-black border-l-8 border-yellow-400 p-10 text-center">
+        <div className="bg-black border-l-8 border-yellow-400 p-10 text-center shadow-lg">
           <div className="w-20 h-20 bg-yellow-400 flex items-center justify-center mx-auto mb-6">
             <Sparkles className="w-10 h-10 text-black" />
           </div>
@@ -107,7 +107,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
       )}
 
       {isLoading && (
-        <div className="bg-black border-l-8 border-cyan-500 p-16 text-center">
+        <div className="bg-black border-l-8 border-cyan-500 p-16 text-center shadow-lg">
           <Loader2 className="w-16 h-16 text-cyan-400 animate-spin mx-auto mb-6" />
           <p className="text-xl font-black uppercase text-white mb-2">ANALYZING YOUR FINANCIAL DATA...</p>
           <p className="text-xs font-bold uppercase text-gray-500">AI IS PROCESSING {transactions.length} TRANSACTIONS</p>
@@ -115,7 +115,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
       )}
 
       {error && (
-        <div className="bg-black border-l-8 border-red-500 p-8">
+        <div className="bg-black border-l-8 border-red-500 p-8 shadow-lg">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-red-500 flex items-center justify-center flex-shrink-0">
               <AlertCircle className="w-6 h-6 text-black" />
@@ -134,7 +134,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
 
       {insights && !isLoading && (
         <div className="space-y-6">
-          <div className="bg-black border-l-8 border-cyan-500 p-8">
+          <div className="bg-black border-l-8 border-cyan-500 p-8 shadow-lg">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-14 h-14 bg-cyan-500 flex items-center justify-center">
                 <Sparkles className="w-7 h-7 text-black" />
@@ -160,7 +160,7 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
         </div>
       )}
 
-      <div className="bg-black border-b-4 border-green-500 p-8">
+      <div className="bg-black border-l-8 border-green-500 p-8 shadow-lg">
         <h3 className="text-2xl font-black uppercase text-white mb-6 flex items-center gap-3">
           <div className="w-10 h-10 bg-green-500 flex items-center justify-center">
             <TrendingUp className="w-6 h-6 text-black" />

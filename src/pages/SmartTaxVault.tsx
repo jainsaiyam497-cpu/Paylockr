@@ -51,14 +51,14 @@ export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
     <div className="min-h-screen pb-20 animate-fade-in-up">
       {/* Main Vault Card - Hero Section */}
       <div className="bg-black border-b-2 border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-8 pl-16 md:pl-4">
+        <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-3xl font-black uppercase text-white mb-2">💼 SMART TAX VAULT</h1>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-8">
             AUTOMATIC TAX SAVING SYSTEM FOR FREELANCERS
           </p>
 
           {/* Main Vault Display */}
-          <div className="bg-black border-l-8 border-yellow-400 p-8 mb-8">
+          <div className="bg-black border-l-8 border-yellow-400 p-8 mb-8 shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Vault Balance */}
               <div>
@@ -123,7 +123,7 @@ export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
           {/* Vault Status & Compliance */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Vault Status */}
-            <div className={`bg-black p-6 border-b-4 ${
+            <div className={`bg-black p-6 border-l-4 shadow-lg ${
               dashboard.vaultBalance >= (dashboard.monthlyReport?.estimatedTax || 0) * 0.9
                 ? 'border-green-500'
                 : dashboard.vaultBalance >= (dashboard.monthlyReport?.estimatedTax || 0) * 0.5
@@ -154,7 +154,7 @@ export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
             </div>
 
             {/* Compliance Score */}
-            <div className="bg-black p-6 border-b-4 border-cyan-500">
+            <div className="bg-black p-6 border-l-4 border-cyan-500 shadow-lg">
               <div className="flex items-start gap-3">
                 <CheckCircle className="text-cyan-400" size={24} />
                 <div className="flex-1">
@@ -241,53 +241,53 @@ export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
 
         {/* Monthly Report */}
         {dashboard.monthlyReport && (
-          <div className="bg-black border-b-4 border-cyan-500 p-6 mb-8">
+          <div className="bg-black border-l-8 border-cyan-500 p-6 mb-8 shadow-lg">
             <h2 className="text-2xl font-black uppercase text-white mb-6">📊 MONTHLY REPORT</h2>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-gray-900 p-4">
+              <div className="bg-black border-l-4 border-cyan-500 p-4 shadow-lg">
                 <p className="text-xs font-bold uppercase text-gray-500 mb-1">TOTAL INCOME</p>
                 <p className="text-xl font-black text-cyan-400">
                   {formatCurrency(dashboard.monthlyReport.totalIncome)}
                 </p>
               </div>
 
-              <div className="bg-gray-900 p-4">
+              <div className="bg-black border-l-4 border-yellow-400 p-4 shadow-lg">
                 <p className="text-xs font-bold uppercase text-gray-500 mb-1">TAXABLE INCOME</p>
                 <p className="text-xl font-black text-yellow-400">
                   {formatCurrency(dashboard.monthlyReport.taxableIncome)}
                 </p>
               </div>
 
-              <div className="bg-gray-900 p-4">
+              <div className="bg-black border-l-4 border-green-500 p-4 shadow-lg">
                 <p className="text-xs font-bold uppercase text-gray-500 mb-1">NON-TAXABLE</p>
                 <p className="text-xl font-black text-green-400">
                   {formatCurrency(dashboard.monthlyReport.nonTaxableIncome)}
                 </p>
               </div>
 
-              <div className="bg-gray-900 p-4">
+              <div className="bg-black border-l-4 border-red-500 p-4 shadow-lg">
                 <p className="text-xs font-bold uppercase text-gray-500 mb-1">EST. TAX</p>
                 <p className="text-xl font-black text-red-400">
                   {formatCurrency(dashboard.monthlyReport.estimatedTax)}
                 </p>
               </div>
 
-              <div className="bg-gray-900 p-4">
+              <div className="bg-black border-l-4 border-yellow-400 p-4 shadow-lg">
                 <p className="text-xs font-bold uppercase text-gray-500 mb-1">VAULT ADDITION</p>
                 <p className="text-xl font-black text-yellow-400">
                   {formatCurrency(dashboard.monthlyReport.vaultAddition)}
                 </p>
               </div>
 
-              <div className="bg-gray-900 p-4">
+              <div className="bg-black border-l-4 border-white p-4 shadow-lg">
                 <p className="text-xs font-bold uppercase text-gray-500 mb-1">EXPENSES</p>
                 <p className="text-xl font-black text-white">
                   {formatCurrency(dashboard.monthlyReport.expenses)}
                 </p>
               </div>
 
-              <div className="bg-gray-900 p-4 md:col-span-2">
+              <div className="bg-black border-l-4 border-green-500 p-4 md:col-span-2 shadow-lg">
                 <p className="text-xs font-bold uppercase text-gray-500 mb-1">NET SPENDABLE</p>
                 <p className="text-2xl font-black text-green-400">
                   {formatCurrency(dashboard.monthlyReport.netSpendable)}
@@ -296,7 +296,7 @@ export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
             </div>
 
             {/* Flow Visualization */}
-            <div className="bg-gray-900 p-6">
+            <div className="bg-black border-l-8 border-cyan-500 p-6 shadow-lg">
               <p className="font-black uppercase text-white mb-4">HOW YOUR MONEY FLOWS</p>
               <div className="space-y-3">
                 <div className="flex items-center gap-4">
@@ -455,7 +455,7 @@ export const SmartTaxVault: React.FC<SmartTaxVaultProps> = ({
             </div>
           </div>
 
-          <div className="mt-8 p-6 bg-gray-900 border-l-4 border-cyan-500">
+          <div className="mt-8 p-6 bg-black border-l-8 border-cyan-500 shadow-lg">
             <p className="text-lg font-black uppercase text-white mb-2">💡 KEY BENEFIT</p>
             <p className="text-xs font-bold uppercase text-gray-500">
               "PAYLOCKR'S SMART TAX VAULT IS LIKE AN AUTOMATIC TDS SYSTEM FOR FREELANCERS — IT LOCKS TAX MONEY EVERY TIME INCOME COMES."

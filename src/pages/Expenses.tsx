@@ -14,13 +14,13 @@ interface ExpensesProps {
 export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [budgets, setBudgets] = useState<Budget>({
-    FOOD: 5000,
-    SHOPPING: 8000,
-    TRAVEL: 3000,
-    ENTERTAINMENT: 2000,
-    UTILITIES: 3000,
-    HEALTHCARE: 2000,
-    EDUCATION: 5000
+    FOOD: 10000,
+    SHOPPING: 15000,
+    TRAVEL: 8000,
+    ENTERTAINMENT: 5000,
+    UTILITIES: 6000,
+    HEALTHCARE: 4000,
+    EDUCATION: 10000
   });
   const [showBudgetEdit, setShowBudgetEdit] = useState(false);
 
@@ -133,9 +133,9 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
               <span>SPENT: {formatCurrency(totalMonthlyExpense)}</span>
               <span>
                 LEFT:{' '}
-                {totalMonthlyExpense > totalBudget
-                  ? formatCurrency(0)
-                  : formatCurrency(totalBudget - totalMonthlyExpense)}
+                {totalBudget > 0 && totalMonthlyExpense <= totalBudget
+                  ? formatCurrency(totalBudget - totalMonthlyExpense)
+                  : formatCurrency(0)}
               </span>
             </div>
           </div>
@@ -295,42 +295,6 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                 </div>
               );
             })}
-          </div>
-        </div>
-
-        {/* Spending Insights */}
-        <div className="bg-black border-b-4 border-cyan-500 p-6">
-          <h3 className="text-xl font-black uppercase text-white mb-4">SMART INSIGHTS</h3>
-          <div className="space-y-3">
-            {Object.entries(categorySummary)
-              .filter(([, data]) => data.isOver)
-              .map(([category, data]) => (
-                <div key={category} className="flex items-start gap-3 p-3 bg-gray-900 border-l-4 border-red-500">
-                  <AlertCircle className="text-red-400 flex-shrink-0 mt-1" size={18} />
-                  <div>
-                    <p className="font-black uppercase text-white">
-                      OVER BUDGET IN {category.toLowerCase()}
-                    </p>
-                    <p className="text-xs font-bold uppercase text-gray-500">
-                      YOU'VE SPENT {formatCurrency(data.total - data.budget)} MORE THAN YOUR{' '}
-                      {formatCurrency(data.budget)} BUDGET
-                    </p>
-                  </div>
-                </div>
-              ))}
-
-            {topExpenses[0] && (
-              <div className="flex items-start gap-3 p-3 bg-gray-900 border-l-4 border-cyan-500">
-                <TrendingUp className="text-cyan-400 flex-shrink-0 mt-1" size={18} />
-                <div>
-                  <p className="font-black uppercase text-white">HIGHEST SPENDING CATEGORY</p>
-                  <p className="text-xs font-bold uppercase text-gray-500">
-                    {topExpenses[0][0]} ACCOUNTS FOR {topExpenses[0][1].percentage.toFixed(1)}% OF
-                    YOUR SPENDING
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

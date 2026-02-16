@@ -144,7 +144,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
     <div className="min-h-screen pb-20 animate-fade-in-up">
       {modalOpen && <TransactionModal onClose={() => setModalOpen(false)} onSave={onAdd} />}
       
-      <div className="bg-black border-b-2 border-gray-800 shadow-sm sticky top-0 z-30">
+      <div className="bg-black border-b-2 border-gray-800 shadow-lg sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
@@ -274,7 +274,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
                     <div
                       key={txn.id}
                       onClick={() => setSelectedTransaction(txn)}
-                      className="bg-black border-l-4 border-cyan-500 p-4 hover:bg-gray-900 transition cursor-pointer"
+                      className="bg-black border-l-4 border-cyan-500 p-4 hover:bg-gray-900 hover:shadow-lg transition cursor-pointer"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4 flex-1">
@@ -329,18 +329,18 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
 
       {selectedTransaction && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-4"
           onClick={() => setSelectedTransaction(null)}
         >
           <div
-            className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-6 shadow-2xl animate-fade-in-up"
+            className="bg-black border-4 border-yellow-400 w-full max-w-md p-6 shadow-2xl animate-fade-in-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold dark:text-white">Transaction Details</h3>
+              <h3 className="text-xl font-black uppercase text-white">TRANSACTION DETAILS</h3>
               <button
                 onClick={() => setSelectedTransaction(null)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="text-gray-400 hover:text-white p-1 transition-colors"
               >
                 <X size={20} />
               </button>
@@ -348,48 +348,48 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
 
             <div className="space-y-6">
               <div className="text-center">
-                <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3`}
+                <div className={`w-16 h-16 mx-auto flex items-center justify-center mb-3`}
                      style={{ backgroundColor: `${getCategoryInfo(selectedTransaction.category || 'OTHER').color}20` }}
                 >
                    <span className="text-3xl">{getCategoryInfo(selectedTransaction.category || 'OTHER').icon}</span>
                 </div>
-                <p className="text-3xl font-bold dark:text-white">
+                <p className="text-3xl font-black text-white">
                   {selectedTransaction.type === TransactionType.PERSONAL ? '-' : '+'}
                   {formatCurrency(selectedTransaction.amount)}
                 </p>
-                <p className="text-slate-500 mt-1">{selectedTransaction.source}</p>
+                <p className="text-gray-500 mt-1 font-bold uppercase text-xs">{selectedTransaction.source}</p>
               </div>
 
-              <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 space-y-3 text-sm">
+              <div className="bg-gray-900 p-4 space-y-3 text-sm border-l-4 border-cyan-500">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Date</span>
-                  <span className="font-medium dark:text-white">{getTxnDate(selectedTransaction).toLocaleDateString()}</span>
+                  <span className="text-gray-500 font-bold uppercase text-xs">DATE</span>
+                  <span className="font-black text-white">{getTxnDate(selectedTransaction).toLocaleDateString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Category</span>
-                  <span className="font-medium dark:text-white">{selectedTransaction.category}</span>
+                  <span className="text-gray-500 font-bold uppercase text-xs">CATEGORY</span>
+                  <span className="font-black text-white">{selectedTransaction.category}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Status</span>
-                  <span className="font-medium dark:text-white capitalize">{selectedTransaction.status.toLowerCase()}</span>
+                  <span className="text-gray-500 font-bold uppercase text-xs">STATUS</span>
+                  <span className="font-black text-white uppercase">{selectedTransaction.status.toLowerCase()}</span>
                 </div>
                 {selectedTransaction.estimatedTax > 0 && (
-                  <div className="flex justify-between pt-2 border-t dark:border-slate-700">
-                    <span className="text-slate-500">Estimated Tax</span>
-                    <span className="font-medium text-red-500">{formatCurrency(selectedTransaction.estimatedTax)}</span>
+                  <div className="flex justify-between pt-2 border-t-2 border-gray-800">
+                    <span className="text-gray-500 font-bold uppercase text-xs">ESTIMATED TAX</span>
+                    <span className="font-black text-red-400">{formatCurrency(selectedTransaction.estimatedTax)}</span>
                   </div>
                 )}
                 {selectedTransaction.referenceId && (
-                  <div className="flex justify-between pt-2 border-t dark:border-slate-700">
-                    <span className="text-slate-500">Reference ID</span>
-                    <span className="font-medium dark:text-slate-300 font-mono">{selectedTransaction.referenceId}</span>
+                  <div className="flex justify-between pt-2 border-t-2 border-gray-800">
+                    <span className="text-gray-500 font-bold uppercase text-xs">REFERENCE ID</span>
+                    <span className="font-black text-gray-300 font-mono">{selectedTransaction.referenceId}</span>
                   </div>
                 )}
               </div>
 
               <div className="flex gap-3">
-                <button className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition shadow-lg shadow-blue-500/20">
-                  Download Receipt
+                <button className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-black uppercase transition shadow-lg">
+                  DOWNLOAD RECEIPT
                 </button>
               </div>
             </div>

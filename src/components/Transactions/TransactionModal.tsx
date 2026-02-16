@@ -39,42 +39,42 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({ onClose, onS
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md shadow-2xl border dark:border-slate-800">
-        <div className="p-6 border-b dark:border-slate-800 flex justify-between items-center">
-          <h2 className="text-xl font-bold dark:text-white">New Transaction</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-white"><X size={20} /></button>
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-black border-4 border-yellow-400 w-full max-w-md shadow-2xl">
+        <div className="p-6 border-b-2 border-gray-800 flex justify-between items-center">
+          <h2 className="text-xl font-black uppercase text-white">NEW TRANSACTION</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-white"><X size={20} /></button>
         </div>
         
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5 dark:text-slate-300">Source</label>
+            <label className="block text-xs font-bold uppercase mb-2 text-gray-500">SOURCE</label>
             <input 
               required
               type="text" 
               value={source} 
               onChange={(e) => setSource(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border dark:bg-slate-800 dark:border-slate-700 dark:text-white"
-              placeholder="e.g. Freelance Client"
+              className="w-full px-4 py-3 border-2 border-gray-800 bg-gray-900 text-white focus:border-cyan-500 outline-none font-bold"
+              placeholder="E.G. FREELANCE CLIENT"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5 dark:text-slate-300">Amount (₹)</label>
+            <label className="block text-xs font-bold uppercase mb-2 text-gray-500">AMOUNT (₹)</label>
             <input 
               required
               type="number" 
               value={amount} 
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className="w-full px-4 py-3 border-2 border-gray-800 bg-gray-900 text-white focus:border-cyan-500 outline-none font-bold"
               placeholder="0.00"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5 dark:text-slate-300">Type</label>
+            <label className="block text-xs font-bold uppercase mb-2 text-gray-500">TYPE</label>
             <select 
               value={type}
               onChange={(e) => setType(e.target.value as TransactionType)}
-              className="w-full px-4 py-2 rounded-lg border dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              className="w-full px-4 py-3 border-2 border-gray-800 bg-gray-900 text-white focus:border-cyan-500 outline-none font-bold uppercase"
             >
               {Object.values(TransactionType).map(t => (
                 <option key={t} value={t}>{t}</option>
@@ -84,9 +84,9 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({ onClose, onS
           <Button 
             type="submit" 
             isLoading={isProcessing}
-            className="w-full mt-2"
+            className="w-full mt-2 bg-yellow-400 hover:bg-yellow-500 text-black font-black uppercase"
           >
-            Add Transaction
+            ADD TRANSACTION
           </Button>
         </form>
       </div>

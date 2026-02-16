@@ -104,9 +104,9 @@ export const Help: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8 pb-20">
       {/* Header */}
-      <div className="bg-black border-l-8 border-yellow-400 p-8 md:p-12 relative overflow-hidden">
+      <div className="bg-black border-l-8 border-yellow-400 p-8 md:p-12 relative overflow-hidden shadow-lg">
         <div className="relative z-10 text-center">
           <div className="w-16 h-16 bg-yellow-400 flex items-center justify-center mx-auto mb-4">
             <HelpCircle className="w-8 h-8 text-black" />
@@ -129,7 +129,7 @@ export const Help: React.FC = () => {
 
       {/* Contact Options */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-black border-b-4 border-cyan-500 p-6 hover:bg-gray-900 transition cursor-pointer group">
+        <div className="bg-black border-l-4 border-cyan-500 p-6 hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
           <div className="w-12 h-12 bg-cyan-500 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <MessageCircle size={24} />
           </div>
@@ -138,7 +138,7 @@ export const Help: React.FC = () => {
           <span className="text-xs font-bold uppercase text-cyan-400">AVAILABLE 9 AM - 6 PM IST</span>
         </div>
 
-        <div className="bg-black border-b-4 border-green-500 p-6 hover:bg-gray-900 transition cursor-pointer group">
+        <div className="bg-black border-l-4 border-green-500 p-6 hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
           <div className="w-12 h-12 bg-green-500 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <Mail size={24} />
           </div>
@@ -147,7 +147,7 @@ export const Help: React.FC = () => {
           <span className="text-xs font-bold uppercase text-green-400">RESPONSE WITHIN 24 HOURS</span>
         </div>
 
-        <div className="bg-black border-b-4 border-yellow-400 p-6 hover:bg-gray-900 transition cursor-pointer group">
+        <div className="bg-black border-l-4 border-yellow-400 p-6 hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
           <div className="w-12 h-12 bg-yellow-400 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <Shield size={24} />
           </div>
@@ -158,7 +158,7 @@ export const Help: React.FC = () => {
       </div>
 
       {/* Category Filter */}
-      <div className="bg-black border-b-4 border-cyan-500 p-4">
+      <div className="bg-black border-l-4 border-cyan-500 p-4 shadow-lg">
         <div className="flex items-center gap-2 mb-3">
           <FileQuestion className="w-5 h-5 text-cyan-400" />
           <h3 className="font-black uppercase text-white">BROWSE BY TOPIC</h3>
@@ -185,7 +185,7 @@ export const Help: React.FC = () => {
       </div>
 
       {/* FAQ Accordion */}
-      <div className="bg-black border-b-4 border-cyan-500 p-6">
+      <div className="bg-black border-l-8 border-cyan-500 p-6 shadow-lg">
         <h3 className="text-2xl font-black uppercase text-white mb-6">FREQUENTLY ASKED QUESTIONS</h3>
         <div className="space-y-3">
           {filteredFAQs.map((faq, index) => (
@@ -221,7 +221,7 @@ export const Help: React.FC = () => {
       </div>
 
       {/* Quick Links */}
-      <div className="bg-black border-l-8 border-yellow-400 p-6">
+      <div className="bg-black border-l-8 border-yellow-400 p-6 shadow-lg">
         <h3 className="text-xl font-black uppercase text-white mb-4">QUICK LINKS</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {quickLinks.map((link, idx) => {
@@ -245,7 +245,7 @@ export const Help: React.FC = () => {
       </div>
 
       {/* Still Need Help */}
-      <div className="bg-black border-l-8 border-cyan-500 p-8 text-center">
+      <div className="bg-black border-l-8 border-cyan-500 p-8 text-center shadow-lg">
         <h3 className="text-2xl font-black uppercase text-white mb-2">STILL NEED HELP?</h3>
         <p className="text-xs font-bold uppercase text-gray-500 mb-6">OUR SUPPORT TEAM IS HERE TO ASSIST YOU</p>
         <div className="flex flex-wrap justify-center gap-3">

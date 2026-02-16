@@ -50,12 +50,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ view, setView, handleLogout })
       )}
 
       {/* Sidebar */}
-      <aside className={`w-64 bg-black border-r-4 border-yellow-400 flex flex-col fixed h-full transition-transform duration-300 ${
+      <aside className={`w-64 bg-white dark:bg-black border-r-4 border-yellow-400 flex flex-col fixed h-full transition-transform duration-300 ${
         isMobileOpen ? 'translate-x-0 z-40' : '-translate-x-full md:translate-x-0 z-40'
       }`}>
-        <div className="p-6 pl-16 md:pl-6 flex items-center gap-3 border-b-2 border-gray-800">
-          <ShieldCheck className="text-yellow-400" size={28} />
-          <span className="text-xl font-black uppercase text-white tracking-tight">PAYLOCKR</span>
+        <div className="p-6 pl-16 md:pl-6 flex items-center gap-3 border-b-2 border-gray-200 dark:border-gray-800">
+          <ShieldCheck className="text-yellow-500 dark:text-yellow-400" size={28} />
+          <span className="text-xl font-black uppercase text-black dark:text-white tracking-tight">PAYLOCKR</span>
         </div>
       
       <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
@@ -81,7 +81,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ view, setView, handleLogout })
             className={`w-full flex items-center gap-3 px-4 py-3 font-bold uppercase text-xs transition-all ${
               view === item.id 
                 ? 'bg-yellow-400 text-black' 
-                : 'text-white hover:bg-gray-900'
+                : 'text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900'
             }`}
           >
             <item.icon size={20} />
@@ -90,8 +90,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ view, setView, handleLogout })
         ))}
       </nav>
 
-      <div className="p-4 border-t-2 border-gray-800">
-        <button onClick={handleLogout} className="flex items-center gap-3 text-red-400 px-4 py-2 hover:bg-red-900/20 w-full transition-colors font-bold uppercase text-xs">
+      <div className="p-4 border-t-2 border-gray-200 dark:border-gray-800">
+        <button onClick={handleLogout} className="flex items-center gap-3 text-red-500 dark:text-red-400 px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 w-full transition-colors font-bold uppercase text-xs">
           <LogOut size={20} /> LOGOUT
         </button>
       </div>

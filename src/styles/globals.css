@@ -7,6 +7,11 @@
     font-family: 'Inter', sans-serif;
   }
   
+  /* Light mode background */
+  body:not(.dark) {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  }
+  
   /* Scrollbar styles */
   ::-webkit-scrollbar {
     width: 6px;
@@ -41,6 +46,13 @@
   }
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .mobile-compact {
+      padding: 0.75rem;
+    }
   }
 }
 

@@ -105,29 +105,27 @@ export const Settings: React.FC<SettingsProps> = ({ settings, setSettings, isDar
 
   return (
     <div className="min-h-screen pb-20 animate-fade-in-up">
-      {/* Header */}
-      <div className="sticky top-0 z-30 bg-black border-b-2 border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
+      <div className="bg-white dark:bg-black border-b-2 border-gray-200 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center gap-3">
-            <SettingsIcon className="text-yellow-400" size={32} />
-            <h1 className="text-2xl md:text-3xl font-black uppercase text-white">SETTINGS</h1>
+            <SettingsIcon className="w-8 h-8 text-yellow-500 dark:text-yellow-400" />
+            <h1 className="text-3xl font-black uppercase text-black dark:text-white">SETTINGS</h1>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8 pt-20 md:pt-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
-          {/* Sidebar Tabs */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-1">
-            <div className="bg-black border-2 border-gray-800 p-3 md:p-4 sticky top-24 md:top-28">
+            <div className="bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-4 shadow-lg">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full text-left px-4 py-3 mb-2 font-bold uppercase text-xs transition flex items-center gap-3 ${
                     activeTab === tab.id
-                      ? 'bg-yellow-400 text-black border-l-4 border-yellow-400'
-                      : 'text-white hover:bg-gray-900'
+                      ? 'bg-yellow-400 text-black'
+                      : 'text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900'
                   }`}
                 >
                   <tab.icon size={18} />
@@ -135,156 +133,150 @@ export const Settings: React.FC<SettingsProps> = ({ settings, setSettings, isDar
                 </button>
               ))}
               
-              <div className="my-4 border-t-2 border-gray-800" />
+              <div className="my-4 border-t-2 border-gray-200 dark:border-gray-800" />
               
-              <button
-                className="w-full text-left px-4 py-3 font-bold uppercase text-xs text-red-400 hover:bg-red-900/20 transition flex items-center gap-3"
-              >
+              <button className="w-full text-left px-4 py-3 font-bold uppercase text-xs text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition flex items-center gap-3">
                 <LogOut size={18} />
                 SIGN OUT
               </button>
             </div>
           </div>
 
-          {/* Content Area */}
           <div className="md:col-span-3">
-            <div className="bg-black border-2 border-gray-800 p-6 md:p-8">
+            <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-6 shadow-lg">
               {activeTab === 'account' && (
-                <div className="space-y-8 animate-fade-in">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Account Settings</h2>
-                    
-                    <div className="space-y-4 max-w-xl">
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
-                        <input type="text" defaultValue="Saiyam Jain" className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none" />
-                      </div>
+                <div className="space-y-6 animate-fade-in">
+                  <h2 className="text-2xl font-black uppercase text-black dark:text-white mb-6">ACCOUNT SETTINGS</h2>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">FULL NAME</label>
+                      <input type="text" defaultValue="Saiyam Jain" className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-bold focus:border-cyan-500 outline-none" />
+                    </div>
 
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
-                        <input type="email" defaultValue="saiyam@paylockr.app" className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none" />
-                      </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">EMAIL ADDRESS</label>
+                      <input type="email" defaultValue="saiyam@paylockr.app" className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-bold focus:border-cyan-500 outline-none" />
+                    </div>
 
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
-                        <input type="tel" defaultValue="+91-9876543210" className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none" />
-                      </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">PHONE NUMBER</label>
+                      <input type="tel" defaultValue="+91-9876543210" className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-bold focus:border-cyan-500 outline-none" />
+                    </div>
 
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">PAN Number</label>
-                        <input type="text" defaultValue="ABCDE1234F" className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-gray-900 dark:text-white font-mono uppercase focus:ring-2 focus:ring-blue-500 outline-none" />
-                      </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">PAN NUMBER</label>
+                      <input type="text" defaultValue="ABCDE1234F" className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-mono font-bold uppercase focus:border-cyan-500 outline-none" />
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-gray-200 dark:border-slate-800">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Appearance</h3>
-                    <div className="flex items-center justify-between max-w-xl p-4 bg-gray-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700">
+                  <div className="pt-6 border-t-2 border-gray-200 dark:border-gray-800">
+                    <h3 className="text-lg font-black uppercase text-black dark:text-white mb-4">APPEARANCE</h3>
+                    <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-800">
                       <div className="flex items-center gap-3">
-                        {isDark ? <Moon className="text-blue-400" size={20} /> : <Sun className="text-amber-500" size={20} />}
-                        <span className="font-medium text-gray-900 dark:text-white">Dark Mode</span>
+                        {isDark ? <Moon className="text-cyan-500 dark:text-cyan-400" size={20} /> : <Sun className="text-yellow-500 dark:text-yellow-400" size={20} />}
+                        <span className="font-bold uppercase text-black dark:text-white text-xs">DARK MODE</span>
                       </div>
                       <button 
                         onClick={toggleTheme}
-                        className={`w-12 h-6 rounded-full transition-colors relative ${isDark ? 'bg-blue-600' : 'bg-slate-300'}`}
+                        className={`px-4 py-2 font-bold uppercase text-xs ${isDark ? 'bg-cyan-500 text-black' : 'bg-gray-300 dark:bg-gray-800 text-black dark:text-white'}`}
                       >
-                        <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform ${isDark ? 'left-7' : 'left-1'}`} />
+                        {isDark ? 'ON' : 'OFF'}
                       </button>
                     </div>
                   </div>
 
                   <div className="flex justify-end pt-4">
-                    <button className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition shadow-sm">
-                      Save Changes
+                    <button className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-black uppercase transition">
+                      SAVE CHANGES
                     </button>
                   </div>
                 </div>
               )}
 
               {activeTab === 'security' && (
-                <div className="space-y-8 animate-fade-in">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Security Settings</h2>
+                <div className="space-y-6 animate-fade-in">
+                  <h2 className="text-2xl font-black uppercase text-black dark:text-white mb-6">SECURITY SETTINGS</h2>
                   
-                  <div className="space-y-6 max-w-xl">
-                    <div className="p-6 border border-gray-200 dark:border-slate-700 rounded-xl">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Change Password</h3>
+                  <div className="space-y-6">
+                    <div className="p-6 border-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+                      <h3 className="text-lg font-black uppercase text-black dark:text-white mb-4">CHANGE PASSWORD</h3>
                       <div className="space-y-4">
-                        <input type="password" placeholder="Current Password" className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg dark:text-white" />
-                        <input type="password" placeholder="New Password" className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg dark:text-white" />
-                        <input type="password" placeholder="Confirm New Password" className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg dark:text-white" />
-                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">Update Password</button>
+                        <input type="password" placeholder="CURRENT PASSWORD" className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white font-bold uppercase placeholder-gray-500 focus:border-cyan-500 outline-none" />
+                        <input type="password" placeholder="NEW PASSWORD" className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white font-bold uppercase placeholder-gray-500 focus:border-cyan-500 outline-none" />
+                        <input type="password" placeholder="CONFIRM NEW PASSWORD" className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white font-bold uppercase placeholder-gray-500 focus:border-cyan-500 outline-none" />
+                        <button className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-black uppercase transition">UPDATE PASSWORD</button>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-slate-700 rounded-xl">
+                    <div className="flex items-center justify-between p-6 border-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
                       <div>
-                        <h4 className="font-bold text-gray-900 dark:text-white">Two-Factor Authentication</h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Add an extra layer of security to your account.</p>
+                        <h4 className="font-black uppercase text-black dark:text-white text-sm">TWO-FACTOR AUTHENTICATION</h4>
+                        <p className="text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mt-1">EXTRA SECURITY LAYER</p>
                       </div>
-                      <button className="px-4 py-2 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-lg font-medium hover:bg-blue-50 dark:hover:bg-blue-900/10">Enable</button>
+                      <button className="px-4 py-2 border-2 border-cyan-500 text-cyan-600 dark:text-cyan-400 font-black uppercase text-xs hover:bg-cyan-500 hover:text-black transition">ENABLE</button>
                     </div>
                   </div>
                 </div>
               )}
 
               {activeTab === 'financial' && (
-                <div className="space-y-8 animate-fade-in">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Financial Preferences</h2>
+                <div className="space-y-6 animate-fade-in">
+                  <h2 className="text-2xl font-black uppercase text-black dark:text-white mb-6">FINANCIAL PREFERENCES</h2>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Financial Year</label>
-                      <select className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg dark:text-white">
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">FINANCIAL YEAR</label>
+                      <select className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-bold uppercase focus:border-cyan-500 outline-none">
+                        <option>FY 2025-26</option>
                         <option>FY 2024-25</option>
                         <option>FY 2023-24</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Tax Regime</label>
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">TAX REGIME</label>
                       <select 
                         value={settings.regime}
                         onChange={(e) => setSettings({...settings, regime: e.target.value as any})}
-                        className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg dark:text-white"
+                        className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-bold uppercase focus:border-cyan-500 outline-none"
                       >
-                        <option value="New">New Regime (Default)</option>
-                        <option value="Old">Old Regime (With Exemptions)</option>
+                        <option value="New">NEW REGIME (DEFAULT)</option>
+                        <option value="Old">OLD REGIME (WITH EXEMPTIONS)</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Currency</label>
-                      <select className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg dark:text-white" disabled>
-                        <option>Indian Rupee (₹)</option>
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">CURRENCY</label>
+                      <select className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-bold uppercase focus:border-cyan-500 outline-none" disabled>
+                        <option>INDIAN RUPEE (₹)</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Business Type</label>
-                      <select className="w-full px-4 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg dark:text-white">
-                        <option>Freelancer / Individual</option>
-                        <option>Sole Proprietorship</option>
-                        <option>Private Limited</option>
+                      <label className="block text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-2">BUSINESS TYPE</label>
+                      <select className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900 text-black dark:text-white font-bold uppercase focus:border-cyan-500 outline-none">
+                        <option>FREELANCER / INDIVIDUAL</option>
+                        <option>SOLE PROPRIETORSHIP</option>
+                        <option>PRIVATE LIMITED</option>
                       </select>
                     </div>
                   </div>
 
-                  <div className="p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <Wallet className="text-blue-600 dark:text-blue-400" size={24} />
+                  <div className="p-6 bg-gray-50 dark:bg-gray-900 border-l-4 border-cyan-500">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Wallet className="text-cyan-600 dark:text-cyan-400" size={24} />
                       <div>
-                        <h4 className="font-bold text-gray-900 dark:text-white">Target Vault Amount</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Your goal for tax savings this year.</p>
+                        <h4 className="font-black uppercase text-black dark:text-white text-sm">TARGET VAULT AMOUNT</h4>
+                        <p className="text-xs font-bold uppercase text-gray-600 dark:text-gray-500">YOUR TAX SAVINGS GOAL</p>
                       </div>
                     </div>
-                    <div className="mt-4">
-                      <input 
-                        type="number" 
-                        value={settings.targetVaultAmount}
-                        onChange={(e) => setSettings({...settings, targetVaultAmount: parseInt(e.target.value) || 0})}
-                        className="w-full px-4 py-2.5 border border-blue-300 dark:border-blue-700 bg-white dark:bg-slate-800 rounded-lg text-lg font-bold text-blue-600 dark:text-blue-400 focus:ring-2 focus:ring-blue-500 outline-none"
-                      />
-                    </div>
+                    <input 
+                      type="number" 
+                      value={settings.targetVaultAmount}
+                      onChange={(e) => setSettings({...settings, targetVaultAmount: parseInt(e.target.value) || 0})}
+                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white font-black text-lg focus:border-cyan-500 outline-none"
+                    />
                   </div>
                 </div>
               )}
@@ -481,25 +473,22 @@ export const Settings: React.FC<SettingsProps> = ({ settings, setSettings, isDar
               )}
 
               {activeTab === 'notifications' && (
-                <div className="space-y-8 animate-fade-in">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Notification Preferences</h2>
+                <div className="space-y-6 animate-fade-in">
+                  <h2 className="text-2xl font-black uppercase text-black dark:text-white mb-6">NOTIFICATION PREFERENCES</h2>
                   
                   <div className="space-y-4">
                     {[
-                      { title: 'Tax Deadlines', desc: 'Get alerts 7 days before due dates' },
-                      { title: 'Invoice Reminders', desc: 'When invoices are overdue' },
-                      { title: 'Payment Received', desc: 'Instant alerts for incoming payments' },
-                      { title: 'Weekly Summary', desc: 'Weekly email report of finances' }
+                      { title: 'TAX DEADLINES', desc: 'ALERTS 7 DAYS BEFORE DUE DATES' },
+                      { title: 'INVOICE REMINDERS', desc: 'WHEN INVOICES ARE OVERDUE' },
+                      { title: 'PAYMENT RECEIVED', desc: 'INSTANT ALERTS FOR INCOMING PAYMENTS' },
+                      { title: 'WEEKLY SUMMARY', desc: 'WEEKLY EMAIL REPORT OF FINANCES' }
                     ].map((item, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-4 border border-gray-200 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800/50 transition">
+                      <div key={idx} className="flex items-center justify-between p-4 border-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-black transition">
                         <div>
-                          <h4 className="font-bold text-gray-900 dark:text-white">{item.title}</h4>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
+                          <h4 className="font-black uppercase text-black dark:text-white text-sm">{item.title}</h4>
+                          <p className="text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mt-1">{item.desc}</p>
                         </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input type="checkbox" className="sr-only peer" defaultChecked />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                        </label>
+                        <button className="px-4 py-2 bg-green-500 text-black font-black uppercase text-xs">ON</button>
                       </div>
                     ))}
                   </div>
@@ -507,28 +496,28 @@ export const Settings: React.FC<SettingsProps> = ({ settings, setSettings, isDar
               )}
 
               {activeTab === 'data' && (
-                <div className="space-y-8 animate-fade-in">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Data & Privacy</h2>
+                <div className="space-y-6 animate-fade-in">
+                  <h2 className="text-2xl font-black uppercase text-black dark:text-white mb-6">DATA & PRIVACY</h2>
                   
-                  <div className="grid grid-cols-1 gap-6">
-                    <div className="p-6 border border-gray-200 dark:border-slate-700 rounded-xl">
+                  <div className="space-y-6">
+                    <div className="p-6 border-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
                       <div className="flex items-center gap-4 mb-4">
-                        <Download className="text-blue-600 dark:text-blue-400" size={24} />
+                        <Download className="text-cyan-600 dark:text-cyan-400" size={24} />
                         <div>
-                          <h4 className="font-bold text-gray-900 dark:text-white">Export Financial Data</h4>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">Download all your transactions and reports.</p>
+                          <h4 className="font-black uppercase text-black dark:text-white text-sm">EXPORT FINANCIAL DATA</h4>
+                          <p className="text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mt-1">DOWNLOAD ALL TRANSACTIONS & REPORTS</p>
                         </div>
                       </div>
                       <div className="flex gap-3">
-                        <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 font-medium transition">CSV Format</button>
-                        <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 font-medium transition">PDF Report</button>
+                        <button className="px-4 py-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-black dark:text-white font-black uppercase text-xs transition">CSV FORMAT</button>
+                        <button className="px-4 py-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-black dark:text-white font-black uppercase text-xs transition">PDF REPORT</button>
                       </div>
                     </div>
 
-                    <div className="p-6 border border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 rounded-xl">
-                      <h4 className="font-bold text-red-700 dark:text-red-400 mb-2">Delete Account</h4>
-                      <p className="text-sm text-red-600 dark:text-red-300 mb-4">Permanently remove your account and all associated data. This action cannot be undone.</p>
-                      <button className="px-6 py-2 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition">Delete My Account</button>
+                    <div className="p-6 border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20">
+                      <h4 className="font-black uppercase text-red-600 dark:text-red-400 text-sm mb-2">DELETE ACCOUNT</h4>
+                      <p className="text-xs font-bold uppercase text-red-500 dark:text-red-300 mb-4">PERMANENTLY REMOVE YOUR ACCOUNT. THIS ACTION CANNOT BE UNDONE.</p>
+                      <button className="px-6 py-3 bg-red-500 hover:bg-red-600 text-black font-black uppercase transition">DELETE MY ACCOUNT</button>
                     </div>
                   </div>
                 </div>

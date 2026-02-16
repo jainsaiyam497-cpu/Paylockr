@@ -94,18 +94,18 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
   return (
     <div className="min-h-screen pb-20 animate-fade-in-up">
       {/* Header */}
-      <div className="bg-black border-b-2 border-gray-800 sticky top-0 z-30">
+      <div className="bg-white dark:bg-black border-b-2 border-gray-200 dark:border-gray-800 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 py-6">
           
           {/* Main Expense Card */}
-          <div className="bg-black border-l-8 border-yellow-400 p-8">
+          <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-8">
             <div className="flex items-center gap-3 mb-4">
               <Receipt className="w-8 h-8 text-yellow-400" />
-              <h2 className="text-3xl font-black uppercase text-white">EXPENSES</h2>
+              <h2 className="text-3xl font-black uppercase text-black dark:text-white">EXPENSES</h2>
             </div>
             <div className="mb-6">
               <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">THIS MONTH'S SPENDING</p>
-              <h2 className="text-4xl font-black text-white">{formatCurrency(totalMonthlyExpense)}</h2>
+              <h2 className="text-4xl font-black text-black dark:text-white">{formatCurrency(totalMonthlyExpense)}</h2>
               <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mt-2">BUDGET: {formatCurrency(totalBudget)}</p>
             </div>
 
@@ -115,7 +115,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                 <span>BUDGET USAGE</span>
                 <span>{budgetPercentage.toFixed(1)}%</span>
               </div>
-              <div className="w-full bg-gray-900 h-3 overflow-hidden">
+              <div className="w-full bg-gray-200 dark:bg-gray-900 h-3 overflow-hidden">
                 <div
                   className={`h-full transition-all duration-500 ${
                     budgetPercentage > 100
@@ -146,19 +146,19 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
         {/* Top 3 Expense Categories */}
         {topExpenses.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-xl font-black uppercase text-white mb-4">TOP SPENDING</h3>
+            <h3 className="text-xl font-black uppercase text-black dark:text-white mb-4">TOP SPENDING</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {topExpenses.map(([category, data]) => {
                 const categoryInfo = CATEGORIES[category as keyof typeof CATEGORIES];
                 return (
-                  <div key={category} className="bg-black border-b-4 border-cyan-500 p-5">
+                  <div key={category} className="bg-white dark:bg-black border-b-4 border-cyan-500 p-5">
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-2xl">{categoryInfo?.icon}</span>
-                          <span className="font-black uppercase text-white">{category}</span>
+                          <span className="font-black uppercase text-black dark:text-white">{category}</span>
                         </div>
-                        <p className="text-2xl font-black text-white">
+                        <p className="text-2xl font-black text-black dark:text-white">
                           {formatCurrency(data.total)}
                         </p>
                       </div>
@@ -169,7 +169,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                     </div>
 
                     {/* Mini Progress */}
-                    <div className="w-full bg-gray-900 h-1.5 overflow-hidden">
+                    <div className="w-full bg-gray-200 dark:bg-gray-900 h-1.5 overflow-hidden">
                       <div
                         className={`h-full`}
                         style={{
@@ -188,7 +188,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
         {/* Category Breakdown */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-black uppercase text-white">CATEGORY BREAKDOWN</h3>
+            <h3 className="text-xl font-black uppercase text-black dark:text-white">CATEGORY BREAKDOWN</h3>
             <button
               onClick={() => setShowBudgetEdit(!showBudgetEdit)}
               className="px-4 py-2 bg-yellow-400 text-black font-bold uppercase text-xs hover:bg-yellow-500 transition"
@@ -206,7 +206,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                 <div
                   key={category}
                   onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
-                  className="bg-black border-l-4 p-4 hover:bg-gray-900 transition cursor-pointer"
+                  className="bg-white dark:bg-black border-l-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-900 transition cursor-pointer"
                   style={{ borderColor: categoryInfo?.color }}
                 >
                   <div className="flex items-center justify-between mb-3">
@@ -218,23 +218,23 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                         {categoryInfo?.icon}
                       </div>
                       <div>
-                        <h4 className="font-black uppercase text-white">{category}</h4>
+                        <h4 className="font-black uppercase text-black dark:text-white">{category}</h4>
                         <p className="text-xs font-bold uppercase text-gray-500">{data.count} TRANSACTIONS</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-black text-white">{formatCurrency(data.total)}</p>
+                      <p className="text-lg font-black text-black dark:text-white">{formatCurrency(data.total)}</p>
                       <p className="text-xs font-bold uppercase text-gray-500">{data.percentage.toFixed(1)}% OF TOTAL</p>
                     </div>
                   </div>
 
                   {/* Budget Progress */}
-                  <div className="mb-2 bg-gray-900 p-3">
+                  <div className="mb-2 bg-gray-50 dark:bg-gray-900 p-3">
                     <div className="flex justify-between text-xs mb-2">
                       <span className="text-gray-500 font-bold uppercase">BUDGET: {formatCurrency(data.budget)}</span>
                       <span
                         className={`font-bold uppercase ${
-                          data.isOver ? 'text-red-400' : 'text-green-400'
+                          data.isOver ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400'
                         }`}
                       >
                         {data.isOver
@@ -242,7 +242,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                           : `${formatCurrency(data.remaining)} LEFT`}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-800 h-2 overflow-hidden">
+                    <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 overflow-hidden">
                       <div
                         className={`h-full ${
                           budgetPercentage > 100 ? 'bg-red-500' : 
@@ -255,7 +255,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
 
                   {/* Budget Edit Mode */}
                   {showBudgetEdit && (
-                    <div className="mt-3 pt-3 border-t-2 border-gray-800" onClick={(e) => e.stopPropagation()}>
+                    <div className="mt-3 pt-3 border-t-2 border-gray-200 dark:border-gray-800" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-3">
                         <span className="text-xs font-bold uppercase text-gray-500">SET BUDGET:</span>
                         <input
@@ -267,7 +267,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
                               [category]: Number(e.target.value)
                             })
                           }
-                          className="flex-1 px-3 py-2 border-2 border-gray-800 bg-gray-900 text-sm text-white focus:border-cyan-500 outline-none"
+                          className="flex-1 px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-sm text-black dark:text-white focus:border-cyan-500 outline-none"
                         />
                       </div>
                     </div>
@@ -275,16 +275,16 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses }) => {
 
                   {/* Expanded View */}
                   {selectedCategory === category && !showBudgetEdit && (
-                    <div className="mt-4 pt-4 border-t-2 border-gray-800 animate-fade-in">
+                    <div className="mt-4 pt-4 border-t-2 border-gray-200 dark:border-gray-800 animate-fade-in">
                       <h5 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">RECENT {category} TRANSACTIONS</h5>
                       <div className="space-y-2 max-h-64 overflow-y-auto">
                         {monthlyExpenses
                           .filter(e => e.category === category)
                           .slice(0, 5)
                           .map(exp => (
-                            <div key={exp.id} className="flex justify-between text-sm p-2 hover:bg-gray-900">
+                            <div key={exp.id} className="flex justify-between text-sm p-2 hover:bg-gray-50 dark:hover:bg-gray-900">
                               <span className="text-gray-400 font-bold">{exp.description}</span>
-                              <span className="text-white font-black">
+                              <span className="text-black dark:text-white font-black">
                                 {formatCurrency(exp.amount)}
                               </span>
                             </div>

@@ -103,7 +103,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
   return (
     <>
-      <div className={`${isDarkMode ? 'bg-black border-b-2 border-gray-800' : 'bg-white border-b-2 border-gray-200'}`}>
+      <div className={`${isDarkMode ? 'bg-black border-b-2 border-gray-800' : 'bg-white dark:bg-black border-b-2 border-gray-200 dark:border-gray-800'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pl-16 md:pl-4">
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0">
@@ -136,7 +136,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
                 {showNotifications && (
                   <div className={`fixed md:absolute right-4 md:right-0 top-16 md:top-auto md:mt-2 w-[calc(100vw-2rem)] md:w-96 ${
-                    isDarkMode ? 'bg-black border-yellow-400' : 'bg-white border-yellow-400'
+                    isDarkMode ? 'bg-black border-yellow-400' : 'bg-white dark:bg-black border-yellow-400'
                   } border-4 max-h-[32rem] overflow-hidden flex flex-col z-[100]`}>
                     <div className={`p-4 border-b-4 ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
                       <div className="flex items-center justify-between">
@@ -281,24 +281,24 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
         {/* Financial Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className={`${isDarkMode ? 'bg-black border-l-4 border-green-500' : 'bg-white border-l-4 border-green-500'} p-6`}>
+          <div className={`${isDarkMode ? 'bg-black border-l-4 border-green-500' : 'bg-white dark:bg-black border-l-4 border-green-500'} p-6`}>
             <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-2`}>MONTHLY INCOME</p>
             <p className={`text-3xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>₹{totalIncome.toLocaleString('en-IN')}</p>
             <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-green-400' : 'text-green-600'} mt-2`}>+15% FROM LAST MONTH</p>
           </div>
-          <div className={`${isDarkMode ? 'bg-black border-l-4 border-red-500' : 'bg-white border-l-4 border-red-500'} p-6`}>
+          <div className={`${isDarkMode ? 'bg-black border-l-4 border-red-500' : 'bg-white dark:bg-black border-l-4 border-red-500'} p-6`}>
             <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-2`}>TAX LIABILITY</p>
             <p className={`text-3xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>₹{estimatedTax.toLocaleString('en-IN')}</p>
             <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mt-2`}>{((estimatedTax/totalIncome)*100).toFixed(1)}% OF INCOME</p>
           </div>
-          <div className={`${isDarkMode ? 'bg-black border-l-4 border-cyan-500' : 'bg-white border-l-4 border-cyan-500'} p-6`}>
+          <div className={`${isDarkMode ? 'bg-black border-l-4 border-cyan-500' : 'bg-white dark:bg-black border-l-4 border-cyan-500'} p-6`}>
             <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-600'} mb-2`}>SAVINGS RATE</p>
             <p className={`text-3xl font-black ${isDarkMode ? 'text-white' : 'text-black'}`}>{((vaultBalance/totalIncome)*100).toFixed(0)}%</p>
             <p className={`text-xs font-bold uppercase ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'} mt-2`}>EXCELLENT PROGRESS</p>
           </div>
         </div>
 
-        <div className={`${isDarkMode ? 'bg-black border-l-8 border-cyan-500' : 'bg-white border-l-8 border-cyan-500'} p-6 shadow-lg`}>
+        <div className={`${isDarkMode ? 'bg-black border-l-8 border-cyan-500' : 'bg-white dark:bg-black border-l-8 border-cyan-500'} p-6 shadow-lg`}>
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className={`text-xl font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>
@@ -325,7 +325,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   transaction.type === TransactionType.BUSINESS 
                     ? 'border-green-500' 
                     : 'border-red-500'
-                } ${isDarkMode ? 'bg-black hover:bg-gray-900' : 'bg-white hover:bg-gray-50'} transition-all cursor-pointer shadow-lg`}
+                } ${isDarkMode ? 'bg-black hover:bg-gray-900' : 'bg-white dark:bg-black hover:bg-gray-50 dark:hover:bg-gray-900'} transition-all cursor-pointer shadow-lg`}
                 onClick={() => setCurrentView('TRANSACTIONS')}
               >
                 <div className="flex items-center gap-4">

@@ -67,25 +67,25 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
 
   return (
     <div className="min-h-screen pb-20 animate-fade-in-up">
-      <div className="bg-black border-b-2 border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between mb-4">
+      <div className="bg-white dark:bg-black border-b-2 border-gray-200 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 py-4 md:py-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Calendar className="w-8 h-8 text-yellow-400" />
+              <Calendar className="w-6 h-6 md:w-8 md:h-8 text-yellow-500 dark:text-yellow-400" />
               <div>
-                <h1 className="text-3xl font-black uppercase text-white">TAX CALENDAR FY {selectedYear}-{(selectedYear+1)%100}</h1>
-                <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mt-1">
-                  APRIL 1, {selectedYear} - MARCH 31, {selectedYear+1} | ASSESSMENT YEAR {selectedYear+1}-{(selectedYear+2)%100}
+                <h1 className="text-xl md:text-3xl font-black uppercase text-black dark:text-white">TAX CALENDAR FY {selectedYear}-{(selectedYear+1)%100}</h1>
+                <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-500 mt-1">
+                  APRIL 1, {selectedYear} - MARCH 31, {selectedYear+1}
                 </p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
               {AVAILABLE_YEARS.map(year => (
                 <button
                   key={year}
                   onClick={() => setSelectedYear(year)}
-                  className={`px-4 py-2 font-bold uppercase text-xs ${
-                    selectedYear === year ? 'bg-yellow-400 text-black' : 'bg-gray-900 text-white border-2 border-gray-800'
+                  className={`px-3 py-2 md:px-4 md:py-2 font-bold uppercase text-[10px] md:text-xs whitespace-nowrap ${
+                    selectedYear === year ? 'bg-yellow-400 text-black' : 'bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-2 border-gray-300 dark:border-gray-800'
                   }`}
                 >
                   FY {year}-{(year+1)%100}
@@ -93,63 +93,63 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-2 text-green-400">
-            <CheckCircle size={18} />
-            <span className="font-bold uppercase text-xs">ALL COMPLIANT ✓ | ITR FILED</span>
+          <div className="flex items-center gap-2 text-green-500 dark:text-green-400 mt-3">
+            <CheckCircle size={16} className="md:w-5 md:h-5" />
+            <span className="font-bold uppercase text-[10px] md:text-xs">ALL COMPLIANT ✓ | ITR FILED</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-          <div className="bg-black border-l-4 border-cyan-500 p-4 shadow-lg">
-            <p className="text-xs font-bold uppercase text-gray-500 mb-1">GROSS INCOME</p>
-            <p className="text-xl font-black text-white">{formatCurrency(yearData.grossIncome)}</p>
+      <div className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 mb-6 md:mb-8">
+          <div className="bg-white dark:bg-black border-l-4 border-cyan-500 p-3 md:p-4 shadow-lg">
+            <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-1">GROSS INCOME</p>
+            <p className="text-sm md:text-xl font-black text-black dark:text-white">{formatCurrency(yearData.grossIncome)}</p>
           </div>
-          <div className="bg-black border-l-4 border-yellow-400 p-4 shadow-lg">
-            <p className="text-xs font-bold uppercase text-gray-500 mb-1">DEDUCTIONS</p>
-            <p className="text-xl font-black text-white">{formatCurrency(yearData.totalDeductions)}</p>
+          <div className="bg-white dark:bg-black border-l-4 border-yellow-400 p-3 md:p-4 shadow-lg">
+            <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-1">DEDUCTIONS</p>
+            <p className="text-sm md:text-xl font-black text-black dark:text-white">{formatCurrency(yearData.totalDeductions)}</p>
           </div>
-          <div className="bg-black border-l-4 border-green-500 p-4 shadow-lg">
-            <p className="text-xs font-bold uppercase text-gray-500 mb-1">NET INCOME</p>
-            <p className="text-xl font-black text-white">{formatCurrency(yearData.netIncome)}</p>
+          <div className="bg-white dark:bg-black border-l-4 border-green-500 p-3 md:p-4 shadow-lg">
+            <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-1">NET INCOME</p>
+            <p className="text-sm md:text-xl font-black text-black dark:text-white">{formatCurrency(yearData.netIncome)}</p>
           </div>
-          <div className="bg-black border-l-4 border-red-500 p-4 shadow-lg">
-            <p className="text-xs font-bold uppercase text-gray-500 mb-1">TAX PAID</p>
-            <p className="text-xl font-black text-white">{formatCurrency(yearData.totalTax)}</p>
+          <div className="bg-white dark:bg-black border-l-4 border-red-500 p-3 md:p-4 shadow-lg">
+            <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-1">TAX PAID</p>
+            <p className="text-sm md:text-xl font-black text-black dark:text-white">{formatCurrency(yearData.totalTax)}</p>
           </div>
-          <div className="bg-black border-l-4 border-white p-4 shadow-lg">
-            <p className="text-xs font-bold uppercase text-gray-500 mb-1">ITR STATUS</p>
-            <p className="text-sm font-black text-green-400">FILED ✓</p>
+          <div className="bg-white dark:bg-black border-l-4 border-gray-800 dark:border-white p-3 md:p-4 shadow-lg col-span-2 md:col-span-1">
+            <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-1">ITR STATUS</p>
+            <p className="text-xs md:text-sm font-black text-green-500 dark:text-green-400">FILED ✓</p>
           </div>
         </div>
 
-        <div className="flex gap-4 mb-8">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 mb-6 md:mb-8">
           <div className="flex gap-2">
             <button
               onClick={() => setView('timeline')}
-              className={`px-4 py-2 font-bold uppercase text-xs ${
-                view === 'timeline' ? 'bg-yellow-400 text-black' : 'bg-gray-900 text-white border-2 border-gray-800'
+              className={`flex-1 md:flex-none px-4 py-2 font-bold uppercase text-xs ${
+                view === 'timeline' ? 'bg-yellow-400 text-black' : 'bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-2 border-gray-300 dark:border-gray-800'
               }`}
             >
               TIMELINE
             </button>
             <button
               onClick={() => setView('quarter')}
-              className={`px-4 py-2 font-bold uppercase text-xs ${
-                view === 'quarter' ? 'bg-yellow-400 text-black' : 'bg-gray-900 text-white border-2 border-gray-800'
+              className={`flex-1 md:flex-none px-4 py-2 font-bold uppercase text-xs ${
+                view === 'quarter' ? 'bg-yellow-400 text-black' : 'bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-2 border-gray-300 dark:border-gray-800'
               }`}
             >
               QUARTERLY
             </button>
           </div>
-          <div className="flex gap-2 flex-1">
+          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
             {['ALL', 'payment', 'filing', 'task'].map(f => (
               <button
                 key={f}
                 onClick={() => setFilter(f as any)}
-                className={`px-4 py-2 font-bold uppercase text-xs ${
-                  filter === f ? 'bg-cyan-500 text-black' : 'bg-gray-900 text-white border-2 border-gray-800'
+                className={`px-3 md:px-4 py-2 font-bold uppercase text-xs whitespace-nowrap ${
+                  filter === f ? 'bg-cyan-500 text-black' : 'bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-2 border-gray-300 dark:border-gray-800'
                 }`}
               >
                 {f}
@@ -159,27 +159,27 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
         </div>
 
         {view === 'quarter' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
             {yearData.quarters.map((q, idx) => (
-              <div key={q.q} className="bg-black border-l-8 border-cyan-500 p-6 shadow-lg">
-                <h3 className="text-2xl font-black uppercase text-white mb-2">{q.q}</h3>
-                <p className="text-xs font-bold uppercase text-gray-500 mb-4">{q.period}</p>
+              <div key={q.q} className="bg-white dark:bg-black border-l-8 border-cyan-500 p-4 md:p-6 shadow-lg">
+                <h3 className="text-xl md:text-2xl font-black uppercase text-black dark:text-white mb-2">{q.q}</h3>
+                <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mb-3 md:mb-4">{q.period}</p>
                 <div className="space-y-2">
                   <div>
-                    <p className="text-xs font-bold uppercase text-gray-500">INCOME</p>
-                    <p className="text-lg font-black text-green-400">{formatCurrency(q.income)}</p>
+                    <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500">INCOME</p>
+                    <p className="text-base md:text-lg font-black text-green-600 dark:text-green-400">{formatCurrency(q.income)}</p>
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase text-gray-500">EXPENSES</p>
-                    <p className="text-lg font-black text-red-400">{formatCurrency(q.expenses)}</p>
+                    <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500">EXPENSES</p>
+                    <p className="text-base md:text-lg font-black text-red-600 dark:text-red-400">{formatCurrency(q.expenses)}</p>
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase text-gray-500">TAX PAID</p>
-                    <p className="text-lg font-black text-yellow-400">{formatCurrency(q.tax)}</p>
+                    <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500">TAX PAID</p>
+                    <p className="text-base md:text-lg font-black text-yellow-600 dark:text-yellow-400">{formatCurrency(q.tax)}</p>
                   </div>
                 </div>
-                <div className="mt-4 pt-4 border-t-2 border-gray-800">
-                  <span className="text-xs font-black uppercase px-2 py-1 bg-green-500 text-black">PAID ✓</span>
+                <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t-2 border-gray-200 dark:border-gray-800">
+                  <span className="text-[10px] md:text-xs font-black uppercase px-2 py-1 bg-green-500 text-black">PAID ✓</span>
                 </div>
               </div>
             ))}
@@ -187,32 +187,32 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
         )}
 
         {view === 'timeline' && (
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {filteredEvents.map((event, idx) => (
               <div
                 key={idx}
                 onClick={() => setSelectedEvent(event)}
-                className={`bg-black border-l-8 p-6 shadow-lg cursor-pointer hover:bg-gray-900 transition ${
+                className={`bg-white dark:bg-black border-l-4 md:border-l-8 p-4 md:p-6 shadow-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 transition ${
                   event.type === 'payment' ? 'border-yellow-400' :
                   event.type === 'filing' ? 'border-green-500' :
                   event.type === 'milestone' ? 'border-cyan-500' :
-                  'border-white'
+                  'border-gray-800 dark:border-white'
                 }`}
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      {event.type === 'payment' && <FileText className="w-6 h-6 text-yellow-400" />}
-                      {event.type === 'filing' && <CheckCircle className="w-6 h-6 text-green-400" />}
-                      {event.type === 'milestone' && <Calendar className="w-6 h-6 text-cyan-400" />}
-                      {event.type === 'task' && <Clock className="w-6 h-6 text-white" />}
-                      <h3 className="text-xl font-black uppercase text-white">{event.title}</h3>
+                <div className="flex flex-col md:flex-row items-start justify-between gap-3">
+                  <div className="flex-1 w-full">
+                    <div className="flex items-center gap-2 md:gap-3 mb-2">
+                      {event.type === 'payment' && <FileText className="w-5 h-5 md:w-6 md:h-6 text-yellow-500 dark:text-yellow-400" />}
+                      {event.type === 'filing' && <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-green-600 dark:text-green-400" />}
+                      {event.type === 'milestone' && <Calendar className="w-5 h-5 md:w-6 md:h-6 text-cyan-600 dark:text-cyan-400" />}
+                      {event.type === 'task' && <Clock className="w-5 h-5 md:w-6 md:h-6 text-gray-800 dark:text-white" />}
+                      <h3 className="text-sm md:text-xl font-black uppercase text-black dark:text-white">{event.title}</h3>
                     </div>
-                    <div className="flex items-center gap-4 mt-2">
-                      <p className="text-xs font-bold uppercase text-gray-500">
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-2">
+                      <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500">
                         {new Date(event.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase()}
                       </p>
-                      <span className={`text-xs font-black uppercase px-2 py-1 ${
+                      <span className={`text-[10px] md:text-xs font-black uppercase px-2 py-1 ${
                         event.status === 'PAID' || event.status === 'FILED' || event.status === 'COMPLETED' 
                           ? 'bg-green-500 text-black' 
                           : 'bg-yellow-400 text-black'
@@ -220,25 +220,25 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
                         {event.status}
                       </span>
                       {event.quarter && (
-                        <span className="text-xs font-black uppercase px-2 py-1 bg-cyan-500 text-black">
+                        <span className="text-[10px] md:text-xs font-black uppercase px-2 py-1 bg-cyan-500 text-black">
                           {event.quarter}
                         </span>
                       )}
                     </div>
                     {event.challan && (
-                      <p className="text-xs font-bold uppercase text-gray-500 mt-2">
+                      <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mt-2">
                         CHALLAN: {event.challan}
                       </p>
                     )}
                     {event.itr && (
-                      <p className="text-xs font-bold uppercase text-gray-500 mt-2">
+                      <p className="text-[10px] md:text-xs font-bold uppercase text-gray-600 dark:text-gray-500 mt-2">
                         ITR ACK: {event.itr}
                       </p>
                     )}
                   </div>
                   {event.amount > 0 && (
-                    <div className="text-right">
-                      <p className="text-2xl font-black text-white">{formatCurrency(event.amount)}</p>
+                    <div className="text-left md:text-right">
+                      <p className="text-lg md:text-2xl font-black text-black dark:text-white">{formatCurrency(event.amount)}</p>
                     </div>
                   )}
                 </div>
@@ -247,9 +247,9 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
           </div>
         )}
 
-        <div className="mt-8 bg-black border-l-8 border-green-500 p-6 shadow-lg">
-          <h3 className="text-xl font-black uppercase text-white mb-4">COMPLIANCE CHECKLIST</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="mt-6 md:mt-8 bg-white dark:bg-black border-l-4 md:border-l-8 border-green-500 p-4 md:p-6 shadow-lg">
+          <h3 className="text-base md:text-xl font-black uppercase text-black dark:text-white mb-3 md:mb-4">COMPLIANCE CHECKLIST</h3>
+          <div className="grid grid-cols-1 gap-2 md:gap-3">
             {[
               'ALL 4 ADVANCE TAX PAYMENTS MADE ON TIME',
               'ITR-4 FILED WITHIN DEADLINE',
@@ -261,8 +261,8 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
               'NO OUTSTANDING LIABILITIES'
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-xs font-bold uppercase text-white">{item}</span>
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                <span className="text-[10px] md:text-xs font-bold uppercase text-black dark:text-white">{item}</span>
               </div>
             ))}
           </div>

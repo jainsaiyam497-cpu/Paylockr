@@ -33,60 +33,60 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-20">
-      <div className="bg-black border-l-8 border-yellow-400 p-8 relative overflow-hidden shadow-lg">
+      <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-8 relative overflow-hidden shadow-lg">
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-3">
             <Sparkles className="w-12 h-12 text-yellow-400" />
-            <h1 className="text-4xl font-black uppercase text-white">AI TAX INSIGHTS</h1>
+            <h1 className="text-4xl font-black uppercase text-black dark:text-white">AI TAX INSIGHTS</h1>
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500">POWERED BY GOOGLE GEMINI</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-black border-l-4 border-green-500 p-6 shadow-lg">
+        <div className="bg-white dark:bg-black border-l-4 border-green-500 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <DollarSign className="w-8 h-8 text-green-400" />
             <TrendingUp className="w-5 h-5 text-green-400" />
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">TOTAL INCOME</p>
-          <p className="text-3xl font-black text-white">₹{totalIncome.toLocaleString()}</p>
+          <p className="text-3xl font-black text-black dark:text-white">₹{totalIncome.toLocaleString()}</p>
         </div>
 
-        <div className="bg-black border-l-4 border-red-500 p-6 shadow-lg">
+        <div className="bg-white dark:bg-black border-l-4 border-red-500 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <PieChart className="w-8 h-8 text-red-400" />
             <TrendingDown className="w-5 h-5 text-red-400" />
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">ESTIMATED TAX</p>
-          <p className="text-3xl font-black text-white">₹{totalTax.toLocaleString()}</p>
+          <p className="text-3xl font-black text-black dark:text-white">₹{totalTax.toLocaleString()}</p>
         </div>
 
-        <div className="bg-black border-l-4 border-cyan-500 p-6 shadow-lg">
+        <div className="bg-white dark:bg-black border-l-4 border-cyan-500 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <Target className="w-8 h-8 text-cyan-400" />
             <Zap className="w-5 h-5 text-cyan-400" />
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">TAX RATE</p>
-          <p className="text-3xl font-black text-white">{taxRate.toFixed(1)}%</p>
+          <p className="text-3xl font-black text-black dark:text-white">{taxRate.toFixed(1)}%</p>
         </div>
 
-        <div className="bg-black border-l-4 border-yellow-400 p-6 shadow-lg">
+        <div className="bg-white dark:bg-black border-l-4 border-yellow-400 p-6 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <Shield className="w-8 h-8 text-yellow-400" />
             <DollarSign className="w-5 h-5 text-yellow-400" />
           </div>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">AVG TRANSACTION</p>
-          <p className="text-3xl font-black text-white">₹{Math.round(avgTransaction).toLocaleString()}</p>
+          <p className="text-3xl font-black text-black dark:text-white">₹{Math.round(avgTransaction).toLocaleString()}</p>
         </div>
       </div>
 
       {!insights && !error && (
-        <div className="bg-black border-l-8 border-yellow-400 p-10 text-center shadow-lg">
+        <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-10 text-center shadow-lg">
           <div className="w-20 h-20 bg-yellow-400 flex items-center justify-center mx-auto mb-6">
             <Sparkles className="w-10 h-10 text-black" />
           </div>
-          <h3 className="text-2xl font-black uppercase text-white mb-3">READY FOR AI-POWERED ANALYSIS?</h3>
+          <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-3">READY FOR AI-POWERED ANALYSIS?</h3>
           <p className="text-xs font-bold uppercase text-gray-500 mb-8 max-w-lg mx-auto">
             OUR AI WILL ANALYZE YOUR {transactions.length} TRANSACTIONS AND PROVIDE PERSONALIZED TAX-SAVING RECOMMENDATIONS
           </p>
@@ -107,21 +107,21 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
       )}
 
       {isLoading && (
-        <div className="bg-black border-l-8 border-cyan-500 p-16 text-center shadow-lg">
+        <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-16 text-center shadow-lg">
           <Loader2 className="w-16 h-16 text-cyan-400 animate-spin mx-auto mb-6" />
-          <p className="text-xl font-black uppercase text-white mb-2">ANALYZING YOUR FINANCIAL DATA...</p>
+          <p className="text-xl font-black uppercase text-black dark:text-white mb-2">ANALYZING YOUR FINANCIAL DATA...</p>
           <p className="text-xs font-bold uppercase text-gray-500">AI IS PROCESSING {transactions.length} TRANSACTIONS</p>
         </div>
       )}
 
       {error && (
-        <div className="bg-black border-l-8 border-red-500 p-8 shadow-lg">
+        <div className="bg-white dark:bg-black border-l-8 border-red-500 p-8 shadow-lg">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-red-500 flex items-center justify-center flex-shrink-0">
               <AlertCircle className="w-6 h-6 text-black" />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-black uppercase text-white mb-2">UNABLE TO GENERATE INSIGHTS</h3>
+              <h3 className="text-xl font-black uppercase text-black dark:text-white mb-2">UNABLE TO GENERATE INSIGHTS</h3>
               <p className="text-xs font-bold uppercase text-gray-500 mb-6">{error}</p>
               <Button variant="outline" onClick={handleGenerateInsights}>
                 <Sparkles className="w-4 h-4 mr-2" />
@@ -134,18 +134,18 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
 
       {insights && !isLoading && (
         <div className="space-y-6">
-          <div className="bg-black border-l-8 border-cyan-500 p-8 shadow-lg">
+          <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-8 shadow-lg">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-14 h-14 bg-cyan-500 flex items-center justify-center">
                 <Sparkles className="w-7 h-7 text-black" />
               </div>
               <div>
-                <h3 className="text-2xl font-black uppercase text-white">YOUR PERSONALIZED TAX INSIGHTS</h3>
+                <h3 className="text-2xl font-black uppercase text-black dark:text-white">YOUR PERSONALIZED TAX INSIGHTS</h3>
                 <p className="text-xs font-bold uppercase text-gray-500">GENERATED BY AI</p>
               </div>
             </div>
-            <div className="bg-gray-900 p-6 border-l-4 border-cyan-500">
-              <p className="text-white whitespace-pre-line leading-relaxed text-lg font-bold">
+            <div className="bg-gray-50 dark:bg-gray-900 p-6 border-l-4 border-cyan-500">
+              <p className="text-black dark:text-white whitespace-pre-line leading-relaxed text-lg font-bold">
                 {insights}
               </p>
             </div>
@@ -160,8 +160,8 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
         </div>
       )}
 
-      <div className="bg-black border-l-8 border-green-500 p-8 shadow-lg">
-        <h3 className="text-2xl font-black uppercase text-white mb-6 flex items-center gap-3">
+      <div className="bg-white dark:bg-black border-l-8 border-green-500 p-8 shadow-lg">
+        <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-6 flex items-center gap-3">
           <div className="w-10 h-10 bg-green-500 flex items-center justify-center">
             <TrendingUp className="w-6 h-6 text-black" />
           </div>
@@ -174,9 +174,9 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
             { tip: 'PAY ADVANCE TAX QUARTERLY TO AVOID INTEREST PENALTIES', color: 'green' },
             { tip: 'MAINTAIN PROPER INVOICES AND RECEIPTS FOR ALL BUSINESS EXPENSES', color: 'red' },
           ].map((item, idx) => (
-            <div key={idx} className={`flex items-start gap-3 p-4 bg-gray-900 border-l-4 border-${item.color}-500`}>
+            <div key={idx} className={`flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-900 border-l-4 border-${item.color}-500`}>
               <div className={`w-2 h-2 bg-${item.color}-500 mt-2 flex-shrink-0`} />
-              <p className="text-white font-bold uppercase text-xs">{item.tip}</p>
+              <p className="text-black dark:text-white font-bold uppercase text-xs">{item.tip}</p>
             </div>
           ))}
         </div>

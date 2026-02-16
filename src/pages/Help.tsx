@@ -106,12 +106,12 @@ export const Help: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-20">
       {/* Header */}
-      <div className="bg-black border-l-8 border-yellow-400 p-8 md:p-12 relative overflow-hidden shadow-lg">
+      <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-8 md:p-12 relative overflow-hidden shadow-lg">
         <div className="relative z-10 text-center">
           <div className="w-16 h-16 bg-yellow-400 flex items-center justify-center mx-auto mb-4">
             <HelpCircle className="w-8 h-8 text-black" />
           </div>
-          <h1 className="text-4xl font-black uppercase text-white mb-3">HOW CAN WE HELP YOU?</h1>
+          <h1 className="text-4xl font-black uppercase text-black dark:text-white mb-3">HOW CAN WE HELP YOU?</h1>
           <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-6">FIND ANSWERS TO COMMON QUESTIONS ABOUT PAYLOCKR</p>
           
           <div className="max-w-2xl mx-auto relative">
@@ -121,7 +121,7 @@ export const Help: React.FC = () => {
               placeholder="SEARCH FOR HELP TOPICS, FEATURES, OR QUESTIONS..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 border-2 border-gray-800 bg-gray-900 focus:bg-black focus:border-cyan-500 outline-none text-white placeholder:text-gray-500 font-bold uppercase text-xs"
+              className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:bg-white dark:focus:bg-black focus:border-cyan-500 outline-none text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 font-bold uppercase text-xs"
             />
           </div>
         </div>
@@ -129,39 +129,39 @@ export const Help: React.FC = () => {
 
       {/* Contact Options */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-black border-l-4 border-cyan-500 p-6 hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
+        <div className="bg-white dark:bg-black border-l-4 border-cyan-500 p-6 hover:bg-gray-50 dark:hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
           <div className="w-12 h-12 bg-cyan-500 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <MessageCircle size={24} />
           </div>
-          <h3 className="font-black uppercase text-white mb-2">LIVE CHAT</h3>
+          <h3 className="font-black uppercase text-black dark:text-white mb-2">LIVE CHAT</h3>
           <p className="text-xs font-bold uppercase text-gray-500 mb-3">CHAT WITH OUR SUPPORT TEAM</p>
           <span className="text-xs font-bold uppercase text-cyan-400">AVAILABLE 9 AM - 6 PM IST</span>
         </div>
 
-        <div className="bg-black border-l-4 border-green-500 p-6 hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
+        <div className="bg-white dark:bg-black border-l-4 border-green-500 p-6 hover:bg-gray-50 dark:hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
           <div className="w-12 h-12 bg-green-500 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <Mail size={24} />
           </div>
-          <h3 className="font-black uppercase text-white mb-2">EMAIL SUPPORT</h3>
+          <h3 className="font-black uppercase text-black dark:text-white mb-2">EMAIL SUPPORT</h3>
           <p className="text-xs font-bold uppercase text-gray-500 mb-3">saiyam468@gmail.com</p>
           <span className="text-xs font-bold uppercase text-green-400">RESPONSE WITHIN 24 HOURS</span>
         </div>
 
-        <div className="bg-black border-l-4 border-yellow-400 p-6 hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
+        <div className="bg-white dark:bg-black border-l-4 border-yellow-400 p-6 hover:bg-gray-50 dark:hover:bg-gray-900 hover:shadow-lg transition cursor-pointer group">
           <div className="w-12 h-12 bg-yellow-400 text-black flex items-center justify-center mb-4 group-hover:scale-110 transition">
             <Shield size={24} />
           </div>
-          <h3 className="font-black uppercase text-white mb-2">PRIORITY SUPPORT</h3>
+          <h3 className="font-black uppercase text-black dark:text-white mb-2">PRIORITY SUPPORT</h3>
           <p className="text-xs font-bold uppercase text-gray-500 mb-3">FOR PREMIUM USERS</p>
           <span className="text-xs font-bold uppercase text-yellow-400">INSTANT ASSISTANCE</span>
         </div>
       </div>
 
       {/* Category Filter */}
-      <div className="bg-black border-l-4 border-cyan-500 p-4 shadow-lg">
+      <div className="bg-white dark:bg-black border-l-4 border-cyan-500 p-4 shadow-lg">
         <div className="flex items-center gap-2 mb-3">
           <FileQuestion className="w-5 h-5 text-cyan-400" />
-          <h3 className="font-black uppercase text-white">BROWSE BY TOPIC</h3>
+          <h3 className="font-black uppercase text-black dark:text-white">BROWSE BY TOPIC</h3>
         </div>
         <div className="flex flex-wrap gap-2">
           {categories.map(cat => {
@@ -173,7 +173,7 @@ export const Help: React.FC = () => {
                 className={`px-4 py-2 font-bold uppercase text-xs transition flex items-center gap-2 ${
                   selectedCategory === cat.id
                     ? 'bg-yellow-400 text-black'
-                    : 'bg-gray-900 text-white hover:bg-gray-800 border-2 border-gray-800'
+                    : 'bg-gray-100 dark:bg-gray-900 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 border-2 border-gray-200 dark:border-gray-800'
                 }`}
               >
                 <Icon size={16} />
@@ -185,19 +185,19 @@ export const Help: React.FC = () => {
       </div>
 
       {/* FAQ Accordion */}
-      <div className="bg-black border-l-8 border-cyan-500 p-6 shadow-lg">
-        <h3 className="text-2xl font-black uppercase text-white mb-6">FREQUENTLY ASKED QUESTIONS</h3>
+      <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-6 shadow-lg">
+        <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-6">FREQUENTLY ASKED QUESTIONS</h3>
         <div className="space-y-3">
           {filteredFAQs.map((faq, index) => (
             <div
               key={index}
-              className="border-2 border-gray-800 overflow-hidden transition-all"
+              className="border-2 border-gray-200 dark:border-gray-800 overflow-hidden transition-all"
             >
               <button
                 onClick={() => setExpandedFAQ(expandedFAQ === index ? null : index)}
-                className="w-full flex items-center justify-between p-4 hover:bg-gray-900 transition text-left"
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-900 transition text-left"
               >
-                <span className="font-black uppercase text-xs text-white pr-4">{faq.question}</span>
+                <span className="font-black uppercase text-xs text-black dark:text-white pr-4">{faq.question}</span>
                 <ChevronDown
                   className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${
                     expandedFAQ === index ? 'rotate-180' : ''
@@ -221,8 +221,8 @@ export const Help: React.FC = () => {
       </div>
 
       {/* Quick Links */}
-      <div className="bg-black border-l-8 border-yellow-400 p-6 shadow-lg">
-        <h3 className="text-xl font-black uppercase text-white mb-4">QUICK LINKS</h3>
+      <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-6 shadow-lg">
+        <h3 className="text-xl font-black uppercase text-black dark:text-white mb-4">QUICK LINKS</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {quickLinks.map((link, idx) => {
             const Icon = link.icon;
@@ -230,12 +230,12 @@ export const Help: React.FC = () => {
               <a
                 key={idx}
                 href={link.link}
-                className="flex items-center gap-3 p-4 bg-gray-900 hover:bg-gray-800 transition group"
+                className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"
               >
                 <div className={`w-10 h-10 bg-${link.color === 'blue' ? 'cyan' : link.color}-500 text-black flex items-center justify-center group-hover:scale-110 transition`}>
                   <Icon size={20} />
                 </div>
-                <span className="font-black uppercase text-xs text-white group-hover:text-cyan-400 transition">
+                <span className="font-black uppercase text-xs text-black dark:text-white group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition">
                   {link.title}
                 </span>
               </a>
@@ -245,8 +245,8 @@ export const Help: React.FC = () => {
       </div>
 
       {/* Still Need Help */}
-      <div className="bg-black border-l-8 border-cyan-500 p-8 text-center shadow-lg">
-        <h3 className="text-2xl font-black uppercase text-white mb-2">STILL NEED HELP?</h3>
+      <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-8 text-center shadow-lg">
+        <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-2">STILL NEED HELP?</h3>
         <p className="text-xs font-bold uppercase text-gray-500 mb-6">OUR SUPPORT TEAM IS HERE TO ASSIST YOU</p>
         <div className="flex flex-wrap justify-center gap-3">
           <a 
@@ -261,7 +261,7 @@ export const Help: React.FC = () => {
             href="https://wa.me/919911566610?text=Hi%2C%20I%20want%20to%20schedule%20a%20call%20with%20PayLockr%20team"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 bg-gray-900 text-white font-black uppercase hover:bg-gray-800 transition"
+            className="px-6 py-3 bg-gray-100 dark:bg-gray-900 text-black dark:text-white font-black uppercase hover:bg-gray-200 dark:hover:bg-gray-800 transition"
           >
             SCHEDULE A CALL
           </a>

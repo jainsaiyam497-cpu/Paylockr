@@ -49,27 +49,27 @@ export const TaxManagement: React.FC<TaxManagementProps> = ({ stats }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20 animate-fade-in-up">
+    <div className="min-h-screen bg-white dark:bg-slate-950 pb-20 animate-fade-in-up">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-900 border-b dark:border-slate-800 sticky top-0 z-30">
+      <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Tax Management</h1>
+          <h1 className="text-3xl font-bold text-black dark:text-white mb-6">Tax Management</h1>
 
           {/* Tax Summary */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border dark:border-blue-800/30">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800/30">
               <p className="text-sm text-gray-600 dark:text-blue-300">Gross Income</p>
               <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{formatCurrency(grossIncome)}</p>
             </div>
-            <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border dark:border-green-800/30">
+            <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800/30">
               <p className="text-sm text-gray-600 dark:text-green-300">Est. Deductions</p>
               <p className="text-2xl font-bold text-green-600 dark:text-green-400">{formatCurrency(totalDeductions)}</p>
             </div>
-            <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-4 border dark:border-orange-800/30">
+            <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-4 border border-orange-200 dark:border-orange-800/30">
               <p className="text-sm text-gray-600 dark:text-orange-300">Taxable Income</p>
               <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{formatCurrency(taxableIncome)}</p>
             </div>
-            <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 border dark:border-red-800/30">
+            <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 border border-red-200 dark:border-red-800/30">
               <p className="text-sm text-gray-600 dark:text-red-300">Tax Liability (Est)</p>
               <p className="text-2xl font-bold text-red-600 dark:text-red-400">{formatCurrency(estimatedTax)}</p>
             </div>
@@ -78,7 +78,7 @@ export const TaxManagement: React.FC<TaxManagementProps> = ({ stats }) => {
       </div>
 
       {/* Tabs */}
-      <div className="max-w-7xl mx-auto px-4 py-6 border-b dark:border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 py-6 border-b border-gray-200 dark:border-slate-800">
         <div className="flex gap-4">
           {['CALCULATOR', 'CALENDAR', 'PLANNING'].map(tab => (
             <button
@@ -87,7 +87,7 @@ export const TaxManagement: React.FC<TaxManagementProps> = ({ stats }) => {
               className={`px-6 py-2 font-medium border-b-2 transition ${
                 activeTab === tab
                   ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                  : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
               }`}
             >
               {tab === 'CALCULATOR' && '📊 Calculator'}
@@ -103,17 +103,17 @@ export const TaxManagement: React.FC<TaxManagementProps> = ({ stats }) => {
         {activeTab === 'CALCULATOR' && (
           <div className="space-y-6 animate-fade-in">
             <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Tax Calculation (New Regime Estimate)</h3>
+              <h3 className="text-xl font-bold text-black dark:text-white mb-6">Tax Calculation (New Regime Estimate)</h3>
 
               {/* Tax Slabs */}
               <div className="space-y-3 mb-8">
                 {taxSlabs.map((slab, idx) => (
                   <div key={idx} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-900 dark:text-white">{slab.range}</p>
+                      <p className="font-semibold text-black dark:text-white">{slab.range}</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Tax Rate: {slab.rate}</p>
                     </div>
-                    <p className="text-xl font-bold text-gray-900 dark:text-white">{formatCurrency(Math.round(slab.amount))}</p>
+                    <p className="text-xl font-bold text-black dark:text-white">{formatCurrency(Math.round(slab.amount))}</p>
                   </div>
                 ))}
               </div>
@@ -128,12 +128,12 @@ export const TaxManagement: React.FC<TaxManagementProps> = ({ stats }) => {
 
             {/* Deductions */}
             <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Standard Deductions</h3>
+              <h3 className="text-xl font-bold text-black dark:text-white mb-6">Standard Deductions</h3>
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                  <span className="font-medium text-gray-900 dark:text-white">Standard Deduction (Salaried)</span>
-                  <span className="text-lg font-bold text-gray-900 dark:text-white">{formatCurrency(75000)}</span>
+                  <span className="font-medium text-black dark:text-white">Standard Deduction (Salaried)</span>
+                  <span className="text-lg font-bold text-black dark:text-white">{formatCurrency(75000)}</span>
                 </div>
               </div>
             </div>
@@ -182,19 +182,19 @@ export const TaxManagement: React.FC<TaxManagementProps> = ({ stats }) => {
               <div className="flex items-start gap-4">
                 <TrendingUp className="text-green-600 dark:text-green-400 flex-shrink-0 mt-1" size={24} />
                 <div>
-                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">Tax Optimization Suggestions</h3>
+                  <h3 className="font-bold text-black dark:text-white mb-2">Tax Optimization Suggestions</h3>
                   <p className="text-gray-600 dark:text-gray-300">Invest ₹50,000 in ELSS to save ₹15,000 in taxes</p>
                 </div>
               </div>
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Investment Recommendations</h3>
+              <h3 className="text-xl font-bold text-black dark:text-white mb-6">Investment Recommendations</h3>
               <div className="space-y-3">
                 <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
                   <div className="flex justify-between items-start">
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">ELSS (Equity Linked Saving Scheme)</p>
+                      <p className="font-semibold text-black dark:text-white">ELSS (Equity Linked Saving Scheme)</p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">Eligible under Section 80C</p>
                     </div>
                     <Info size={20} className="text-blue-500" />

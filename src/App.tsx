@@ -60,7 +60,10 @@ const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 
 export default function App() {
   const [session, setSession] = useState<any>(null);
   const [view, setView] = useState<ViewState>('LOGIN');
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode');
+    return saved ? JSON.parse(saved) : true;
+  });
   const [toast, setToast] = useState<{msg: string, type: 'success'|'error'|'info'} | null>(null);
   
   const [financialData, setFinancialData] = useState<{
@@ -88,6 +91,7 @@ export default function App() {
   });
 
   useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
     if (isDarkMode) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
   }, [isDarkMode]);

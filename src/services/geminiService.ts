@@ -17,7 +17,7 @@ const getAiInstance = () => {
 export const generateTaxInsights = async (transactions: Transaction[], annualIncome: number) => {
   try {
     const genAI = getAiInstance();
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     
     const transactionSummary = transactions
       .slice(0, 10) // Limit to recent transactions to avoid token limits

@@ -10,6 +10,8 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
   const [showBalance, setShowBalance] = useState<Record<string, boolean>>({});
   const [showAddModal, setShowAddModal] = useState(false);
   const [show2FAModal, setShow2FAModal] = useState(false);
+  const [twoFAAction, setTwoFAAction] = useState<'add' | 'download' | 'login'>('add');
+  const [otpValue, setOtpValue] = useState('');
   const [showStatementModal, setShowStatementModal] = useState(false);
 
   const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
@@ -132,7 +134,12 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
               {/* Account Actions */}
               <div className="mt-6 flex gap-3">
                 <button 
-                  onClick={() => setShowStatementModal(true)}
+                  onClick={() => {
+                    setTwoFAAction('login');
+                    setOtpValue('');
+                    setShowStatementModal(true);
+                    setShow2FAModal(true);
+                  }}
                   className="flex-1 px-4 py-2 bg-cyan-500 text-black font-bold uppercase hover:bg-cyan-400 transition"
                 >
                   VIEW STATEMENTS
@@ -177,7 +184,7 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => { setShowAddModal(false); setShow2FAModal(true); }} className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-bold uppercase transition">VERIFY & ADD</button>
+              <button onClick={() => { setShowAddModal(false); setTwoFAAction('add'); setOtpValue(''); setShow2FAModal(true); }} className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-bold uppercase transition">VERIFY & ADD</button>
               <button onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
             </div>
           </div>
@@ -192,11 +199,47 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
               <Shield className="text-red-500" size={32} />
               <h3 className="text-xl font-black uppercase text-black dark:text-white">SECURITY VERIFICATION</h3>
             </div>
-            <p className="text-xs font-bold uppercase text-gray-500 mb-4">ENTER YOUR 6-DIGIT OTP</p>
-            <input type="text" maxLength={6} placeholder="000000" className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white text-center text-2xl font-black tracking-widest focus:border-red-500 outline-none mb-4" />
+            <p className="text-xs font-bold uppercase text-gray-500 mb-4">
+              ENTER YOUR 6-DIGIT OTP TO {twoFAAction === 'add' ? 'ADD ACCOUNT' : twoFAAction === 'download' ? 'DOWNLOAD STATEMENT' : 'LOGIN TO BANK'}
+            </p>
+            <input 
+              type="text" 
+              maxLength={6} 
+              value={otpValue}
+              onChange={(e) => setOtpValue(e.target.value)}
+              placeholder="000000" 
+              className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white text-center text-2xl font-black tracking-widest focus:border-red-500 outline-none mb-4" 
+            />
             <div className="flex gap-3">
-              <button onClick={() => { setShow2FAModal(false); alert('Verified successfully!'); }} className="flex-1 px-4 py-3 bg-red-500 text-white hover:bg-red-600 font-bold uppercase transition">VERIFY</button>
-              <button onClick={() => setShow2FAModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
+              <button 
+                onClick={() => {
+                  if (otpValue === '000000') {
+                    setShow2FAModal(false);
+                    if (twoFAAction === 'add') {
+                      alert('Account added successfully!');
+                    } else if (twoFAAction === 'download') {
+                      alert('Statement downloaded successfully!');
+                    } else {
+                      alert('Bank login successful! Statements loaded.');
+                    }
+                    setOtpValue('');
+                  } else {
+                    alert('❌ INVALID CODE! Please enter 000000');
+                  }
+                }} 
+                className="flex-1 px-4 py-3 bg-red-500 text-white hover:bg-red-600 font-bold uppercase transition"
+              >
+                VERIFY
+              </button>
+              <button 
+                onClick={() => {
+                  setShow2FAModal(false);
+                  setOtpValue('');
+                }} 
+                className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition"
+              >
+                CANCEL
+              </button>
             </div>
           </div>
         </div>
@@ -211,7 +254,17 @@ export const BankAccounts: React.FC<BankAccountsProps> = ({ accounts }) => {
               {['January 2024', 'December 2023', 'November 2023'].map(month => (
                 <div key={month} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 border-l-4 border-cyan-500">
                   <span className="font-bold text-black dark:text-white">{month}</span>
-                  <button className="px-4 py-2 bg-cyan-500 text-black font-bold uppercase hover:bg-cyan-400 transition">DOWNLOAD</button>
+                  <button 
+                    onClick={() => {
+                      setShowStatementModal(false);
+                      setTwoFAAction('download');
+                      setOtpValue('');
+                      setShow2FAModal(true);
+                    }}
+                    className="px-4 py-2 bg-cyan-500 text-black font-bold uppercase hover:bg-cyan-400 transition"
+                  >
+                    DOWNLOAD
+                  </button>
                 </div>
               ))}
             </div>

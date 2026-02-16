@@ -4,6 +4,8 @@ import { VaultDocument } from '../types';
 
 interface VaultProps {
   documents: VaultDocument[];
+  onAdd?: (document: VaultDocument) => void;
+  onDelete?: (documentId: string) => void;
 }
 
 const VAULT_CATEGORIES = {
@@ -30,13 +32,17 @@ const DUMMY_DOCS: VaultDocument[] = [
   { id: '12', title: 'Driving License - KA0120230012345', category: 'PERSONAL', type: 'PDF', size: 234000, uploadedDate: new Date('2024-01-08'), encrypted: true },
 ];
 
-export const Vault: React.FC<VaultProps> = ({ documents }) => {
+export const Vault: React.FC<VaultProps> = ({ documents, onAdd, onDelete }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [show2FAModal, setShow2FAModal] = useState(false);
+  const [twoFAAction, setTwoFAAction] = useState<'download' | 'delete'>('download');
   const [downloadingDoc, setDownloadingDoc] = useState<string | null>(null);
-  const allDocs = [...documents, ...DUMMY_DOCS];
+  const [deletingDoc, setDeletingDoc] = useState<string | null>(null);
+  const [otpValue, setOtpValue] = useState('');
+  const [deletedDummyIds, setDeletedDummyIds] = useState<string[]>([]);
+  const allDocs = [...documents, ...DUMMY_DOCS.filter(d => !deletedDummyIds.includes(d.id))];
 
   const groupedDocuments = allDocs.reduce((acc, doc) => {
     if (!acc[doc.category]) acc[doc.category] = [];
@@ -185,13 +191,23 @@ export const Vault: React.FC<VaultProps> = ({ documents }) => {
                       <button 
                         onClick={() => {
                           setDownloadingDoc(doc.id);
+                          setTwoFAAction('download');
+                          setOtpValue('');
                           setShow2FAModal(true);
                         }}
                         className="p-2 hover:bg-cyan-500/20 transition"
                       >
                         <Download size={18} className="text-cyan-600 dark:text-cyan-400" />
                       </button>
-                      <button className="p-2 hover:bg-red-500/20 transition">
+                      <button 
+                        onClick={() => {
+                          setDeletingDoc(doc.id);
+                          setTwoFAAction('delete');
+                          setOtpValue('');
+                          setShow2FAModal(true);
+                        }}
+                        className="p-2 hover:bg-red-500/20 transition"
+                      >
                         <Trash2 size={18} className="text-red-600 dark:text-red-400" />
                       </button>
                     </div>
@@ -224,26 +240,43 @@ export const Vault: React.FC<VaultProps> = ({ documents }) => {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-black border-4 border-yellow-400 w-full max-w-md p-6">
             <h3 className="text-xl font-black uppercase text-black dark:text-white mb-4">UPLOAD DOCUMENT</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const newDoc: VaultDocument = {
+                id: Date.now().toString(),
+                title: formData.get('title') as string,
+                category: formData.get('category') as string,
+                type: 'PDF',
+                size: 250000,
+                uploadedDate: new Date(),
+                encrypted: true
+              };
+              onAdd && onAdd(newDoc);
+              setShowUploadModal(false);
+              alert('Document uploaded and encrypted successfully!');
+            }}>
             <div className="space-y-4">
               <div>
                 <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Document Title</label>
-                <input type="text" className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                <input name="title" type="text" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
               </div>
               <div>
                 <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Category</label>
-                <select className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none">
+                <select name="category" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none">
                   {Object.entries(VAULT_CATEGORIES).map(([key, cat]) => <option key={key} value={key}>{cat.label}</option>)}
                 </select>
               </div>
               <div>
                 <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Select File</label>
-                <input type="file" className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                <input name="file" type="file" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => { setShowUploadModal(false); alert('Document uploaded successfully!'); }} className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-bold uppercase transition">UPLOAD</button>
-              <button onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
+              <button type="submit" className="flex-1 px-4 py-3 bg-yellow-400 text-black hover:bg-yellow-500 font-bold uppercase transition">UPLOAD</button>
+              <button type="button" onClick={() => setShowUploadModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
             </div>
+            </form>
           </div>
         </div>
       )}
@@ -256,16 +289,56 @@ export const Vault: React.FC<VaultProps> = ({ documents }) => {
               <Shield className="text-red-500" size={32} />
               <h3 className="text-xl font-black uppercase text-black dark:text-white">SECURITY VERIFICATION</h3>
             </div>
-            <p className="text-xs font-bold uppercase text-gray-500 mb-4">ENTER YOUR 6-DIGIT AUTHENTICATION CODE</p>
+            <p className="text-xs font-bold uppercase text-gray-500 mb-4">
+              ENTER YOUR 6-DIGIT AUTHENTICATION CODE TO {twoFAAction === 'download' ? 'DOWNLOAD' : 'DELETE'}
+            </p>
             <div className="space-y-4">
-              <input type="text" maxLength={6} placeholder="000000" className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white text-center text-2xl font-black tracking-widest focus:border-red-500 outline-none" />
+              <input 
+                type="text" 
+                maxLength={6} 
+                value={otpValue}
+                onChange={(e) => setOtpValue(e.target.value)}
+                placeholder="000000" 
+                className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white text-center text-2xl font-black tracking-widest focus:border-red-500 outline-none" 
+              />
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-3">
                 <p className="text-xs font-bold uppercase text-gray-600 dark:text-gray-400">🔐 CODE SENT TO YOUR REGISTERED EMAIL & PHONE</p>
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => { setShow2FAModal(false); alert('Document downloaded successfully!'); }} className="flex-1 px-4 py-3 bg-red-500 text-white hover:bg-red-600 font-bold uppercase transition">VERIFY & DOWNLOAD</button>
-              <button onClick={() => setShow2FAModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
+              <button 
+                onClick={() => {
+                  if (otpValue === '000000') {
+                    setShow2FAModal(false);
+                    if (twoFAAction === 'download') {
+                      alert('Document downloaded successfully!');
+                    } else {
+                      const isDummy = DUMMY_DOCS.some(d => d.id === deletingDoc);
+                      if (isDummy) {
+                        setDeletedDummyIds([...deletedDummyIds, deletingDoc!]);
+                      } else {
+                        onDelete && onDelete(deletingDoc!);
+                      }
+                      alert('Document deleted successfully!');
+                    }
+                    setOtpValue('');
+                  } else {
+                    alert('❌ INVALID CODE! Please enter 000000');
+                  }
+                }} 
+                className="flex-1 px-4 py-3 bg-red-500 text-white hover:bg-red-600 font-bold uppercase transition"
+              >
+                VERIFY & {twoFAAction === 'download' ? 'DOWNLOAD' : 'DELETE'}
+              </button>
+              <button 
+                onClick={() => {
+                  setShow2FAModal(false);
+                  setOtpValue('');
+                }} 
+                className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition"
+              >
+                CANCEL
+              </button>
             </div>
           </div>
         </div>

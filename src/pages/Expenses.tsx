@@ -15,6 +15,7 @@ interface ExpensesProps {
 export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showBudgetModal, setShowBudgetModal] = useState(false);
   const [budgets, setBudgets] = useState<Budget>({
     FOOD: 10000,
     SHOPPING: 15000,
@@ -24,6 +25,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
     HEALTHCARE: 4000,
     EDUCATION: 10000
   });
+  const [monthlyBudget, setMonthlyBudget] = useState(58000);
   const [showBudgetEdit, setShowBudgetEdit] = useState(false);
 
   // Calculate monthly expenses
@@ -78,7 +80,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
   }, [monthlyExpenses, budgets]);
 
   const totalMonthlyExpense = monthlyExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-  const totalBudget = Object.values(budgets).reduce((sum, b) => sum + b, 0);
+  const totalBudget = monthlyBudget;
   const budgetPercentage = totalBudget > 0 ? (totalMonthlyExpense / totalBudget) * 100 : 0;
 
   const formatCurrency = (amount: number) => {
@@ -106,12 +108,20 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
                 <Receipt className="w-8 h-8 text-yellow-400" />
                 <h2 className="text-3xl font-black uppercase text-black dark:text-white">EXPENSES</h2>
               </div>
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold uppercase transition flex items-center gap-2"
-              >
-                <span className="text-xl">+</span> ADD EXPENSE
-              </button>
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold uppercase transition flex items-center gap-2 justify-center"
+                >
+                  <span className="text-xl">+</span> ADD EXPENSE
+                </button>
+                <button
+                  onClick={() => setShowBudgetModal(true)}
+                  className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold uppercase transition flex items-center gap-2 justify-center"
+                >
+                  EDIT BUDGET
+                </button>
+              </div>
             </div>
             <div className="mb-6">
               <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">THIS MONTH'S SPENDING</p>
@@ -357,6 +367,30 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
                 <button type="button" onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 font-bold uppercase transition">CANCEL</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Budget Modal */}
+      {showBudgetModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-black border-4 border-cyan-500 w-full max-w-md p-6">
+            <h3 className="text-xl font-black uppercase text-black dark:text-white mb-4">EDIT MONTHLY BUDGET</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Total Monthly Budget</label>
+                <input
+                  type="number"
+                  value={monthlyBudget}
+                  onChange={(e) => setMonthlyBudget(Number(e.target.value))}
+                  className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-cyan-500 outline-none font-bold text-lg"
+                />
+              </div>
+              <div className="bg-cyan-50 dark:bg-cyan-900/20 border-l-4 border-cyan-500 p-3">
+                <p className="text-xs font-bold uppercase text-gray-600 dark:text-gray-400">💡 Set your total monthly expense budget</p>
+              </div>
+            </div>
+            <button onClick={() => setShowBudgetModal(false)} className="w-full mt-6 px-4 py-3 bg-cyan-500 text-black hover:bg-cyan-400 font-bold uppercase transition">SAVE BUDGET</button>
           </div>
         </div>
       )}

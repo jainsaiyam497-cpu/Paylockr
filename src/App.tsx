@@ -325,7 +325,13 @@ export default function App() {
             }) : null);
             setToast({ msg: 'Transaction updated', type: 'success' });
           }} />}
-          {view === 'VAULT' && <Vault documents={vaultDocuments} />}
+          {view === 'VAULT' && <Vault documents={vaultDocuments} onAdd={(doc) => {
+            setFinancialData(prev => prev ? ({...prev, vaultDocuments: [doc, ...prev.vaultDocuments]}) : null);
+            setToast({ msg: 'Document uploaded successfully', type: 'success' });
+          }} onDelete={(docId) => {
+            setFinancialData(prev => prev ? ({...prev, vaultDocuments: prev.vaultDocuments.filter(d => d.id !== docId)}) : null);
+            setToast({ msg: 'Document deleted successfully', type: 'success' });
+          }} />}
           {view === 'INSIGHTS' && <Insights transactions={transactions} />}
           {view === 'NOTIFICATIONS' && <Notifications notifications={notifications} />}
           {view === 'SETTINGS' && <Settings settings={settings} setSettings={setSettings} isDark={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} />}

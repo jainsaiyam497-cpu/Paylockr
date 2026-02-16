@@ -117,7 +117,15 @@ export const TaxCalendar: React.FC<{ userId?: string }> = ({ userId = 'saiyam' }
                 <h3 className="text-base md:text-xl font-black uppercase mb-2">🚨 UPCOMING TAX DEADLINE</h3>
                 <p className="text-xs md:text-sm font-bold mb-2">NEXT ITR FILING DEADLINE: JULY 31, {CURRENT_FY + 1}</p>
                 <p className="text-xs md:text-sm font-bold">Don't miss the deadline! File your ITR-4 before July 31 to avoid penalties.</p>
-                <button className="mt-3 px-4 py-2 bg-white text-black font-bold uppercase text-xs hover:bg-gray-100 transition">
+                <button 
+                  onClick={() => {
+                    const reminderDate = new Date(CURRENT_FY + 1, 6, 31); // July 31
+                    const message = `🚨 TAX REMINDER SET!\n\nYou'll be reminded to file ITR-4 before:\nJuly 31, ${CURRENT_FY + 1}\n\nWe'll send you notifications starting 30 days before the deadline.`;
+                    alert(message);
+                    setShowNotification(false);
+                  }}
+                  className="mt-3 px-4 py-2 bg-white text-black font-bold uppercase text-xs hover:bg-gray-100 transition"
+                >
                   SET REMINDER
                 </button>
               </div>

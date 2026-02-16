@@ -59,20 +59,35 @@ src/
 
 3. **Create environment file**
    ```bash
-   touch .env.local
+   # The .env.local file already exists, just update it with your keys
    ```
-   Add your Supabase credentials:
-   ```
+   
+   **Add your API keys to `.env.local`:**
+   ```env
+   # Google Gemini AI (Required for AI Insights)
+   VITE_GEMINI_API_KEY=AIzaSyC_your_actual_key_here
+   
+   # Supabase (Optional - for real authentication)
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-   VITE_GEMINI_API_KEY=your_gemini_api_key
    ```
+   
+   **Get Gemini API Key (Free):**
+   - Visit: https://aistudio.google.com/app/apikey
+   - Click "Create API Key"
+   - Copy and paste into `.env.local`
+   
+   **Get Supabase Credentials (Optional):**
+   - Visit: https://supabase.com
+   - Create project and get URL + anon key from Settings → API
 
 4. **Start development server**
    ```bash
    npm run dev
    ```
    Open [http://localhost:5173](http://localhost:5173) in your browser
+   
+   **Note:** After adding API keys to `.env.local`, restart the dev server (Ctrl+C, then `npm run dev`)
 
 ### Build for Production
 
@@ -116,6 +131,14 @@ Example:
 ```
 
 ## Key Features in Detail 📋
+
+### AI-Powered Tax Insights ✨
+Get personalized tax recommendations using Google Gemini AI:
+- Analyze your transaction patterns
+- Identify tax-saving opportunities
+- Get recommendations on tax percentage to set aside
+- Understand tax slab risks
+- **Setup:** See `SETUP_GUIDE.md` for API key instructions
 
 ### Tax Calendar
 Comprehensive tax compliance calendar for Indian taxpayers including:

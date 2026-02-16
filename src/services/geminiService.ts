@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Transaction } from "../types";
 
 // Helper to get AI instance safely for Vite/Browser environment
@@ -9,16 +9,16 @@ const getAiInstance = () => {
   if (!apiKey || apiKey.trim() === '') {
     throw new Error("API Key missing. Please add VITE_GEMINI_API_KEY to your .env.local file in the project root.");
   }
-  return new GoogleGenAI({ apiKey });
+  return new GoogleGenerativeAI(apiKey);
 };
 
 export const generateTaxInsights = async (transactions: Transaction[], annualIncome: number) => {
   try {
-    const ai = getAiInstance();
-    const model = "gemini-3-flash-preview";
+    const genAI = getAiInstance();
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     
     const transactionSummary = transactions
-      .slice(0, 10) // Limit to recent transactions to avoid token limits in demo
+      .slice(0, 10) // Limit to recent transactions to avoid token limits
       .map(t => {
         // Handle date string or object safely
         const dateStr = t.date instanceof Date ? t.date.toISOString().split('T')[0] : t.date;
@@ -41,14 +41,16 @@ export const generateTaxInsights = async (transactions: Transaction[], annualInc
       Keep it professional, fintech style, and under 150 words total.
     `;
 
-    const response = await ai.models.generateContent({
-      model,
-      contents: prompt,
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    return response.text || "No insights could be generated.";
-  } catch (error) {
+    return text || "No insights could be generated.";
+  } catch (error: any) {
     console.error("Gemini API Error:", error);
-    return "AI Insights currently unavailable. Please check your API key or internet connection.";
+    if (error.message?.includes('API Key missing')) {
+      throw error;
+    }
+    throw new Error("AI Insights currently unavailable. Please check your API key or internet connection.");
   }
 };

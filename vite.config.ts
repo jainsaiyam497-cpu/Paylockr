@@ -20,13 +20,6 @@ export default defineConfig(({ mode }) => {
           },
         },
         chunkSizeWarningLimit: 1000,
-        minify: 'terser',
-        terserOptions: {
-          compress: {
-            drop_console: true,
-            drop_debugger: true,
-          },
-        },
       },
       define: {
         'process.env.VITE_GEMINI_API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY),

@@ -334,7 +334,7 @@ export default function App() {
             setFinancialData(prev => prev ? ({...prev, vaultDocuments: prev.vaultDocuments.filter(d => d.id !== docId)}) : null);
             setToast({ msg: 'Document deleted successfully', type: 'success' });
           }} />}
-          {view === 'INSIGHTS' && <Insights transactions={transactions} />}
+          {view === 'INSIGHTS' && <Insights transactions={transactions} expenses={expenses} totalIncome={stats?.totalIncome} vaultBalance={stats?.vaultBalance} taxLiability={stats?.projectedTaxLiability} />}
           {view === 'NOTIFICATIONS' && <Notifications notifications={notifications} />}
           {view === 'SETTINGS' && <Settings settings={settings} setSettings={setSettings} isDark={isDarkMode} toggleTheme={() => setIsDarkMode(!isDarkMode)} onLogout={handleLogout} />}
           {view === 'INVOICES' && <Invoices invoices={invoices} onShowToast={(msg, type) => setToast({ msg, type })} onDelete={(invId) => {

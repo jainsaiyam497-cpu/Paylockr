@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import { Transaction } from '../types';
-import { generateTaxInsights } from '../services/geminiService';
+import { Transaction, Expense } from '../types';
+import { generateTaxInsights, analyzeExpenses, getTaxSavingTips, calculateFinancialHealth } from '../services/geminiService';
 import { Sparkles, TrendingUp, AlertCircle, Loader2, DollarSign, PieChart, Target, Shield, Zap, TrendingDown } from 'lucide-react';
 import { Button } from '../components/common/Button';
 
 interface InsightsProps {
   transactions: Transaction[];
+  expenses?: Expense[];
+  totalIncome?: number;
+  vaultBalance?: number;
+  taxLiability?: number;
 }
 
-export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
+export const Insights: React.FC<InsightsProps> = ({ transactions, expenses = [], totalIncome: propIncome, vaultBalance = 0, taxLiability = 0 }) => {
   const [insights, setInsights] = useState<string>('');
+  const [expenseAnalysis, setExpenseAnalysis] = useState<string>('');
+  const [taxTips, setTaxTips] = useState<string>('');
+  const [healthScore, setHealthScore] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingType, setLoadingType] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   const formatIndianCurrency = (amount: number) => {
@@ -22,13 +30,15 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
     }).format(amount);
   };
 
-  const totalIncome = transactions.filter(t => t.type === 'Business Income').reduce((sum, t) => sum + t.amount, 0);
+  const totalIncome = propIncome || transactions.filter(t => t.type === 'Business Income').reduce((sum, t) => sum + t.amount, 0);
+  const totalExpense = expenses.reduce((sum, e) => sum + e.amount, 0);
   const totalTax = transactions.reduce((sum, t) => sum + (t.estimatedTax || 0), 0);
   const avgTransaction = totalIncome / (transactions.filter(t => t.type === 'Business Income').length || 1);
   const taxRate = totalIncome > 0 ? ((totalTax / totalIncome) * 100) : 0;
 
   const handleGenerateInsights = async () => {
     setIsLoading(true);
+    setLoadingType('insights');
     setError(null);
     try {
       const result = await generateTaxInsights(transactions, totalIncome);
@@ -37,6 +47,54 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
       setError(err.message || 'Failed to generate insights');
     } finally {
       setIsLoading(false);
+      setLoadingType('');
+    }
+  };
+
+  const handleExpenseAnalysis = async () => {
+    setIsLoading(true);
+    setLoadingType('expenses');
+    try {
+      const result = await analyzeExpenses(expenses, totalIncome);
+      setExpenseAnalysis(result);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+      setLoadingType('');
+    }
+  };
+
+  const handleTaxTips = async () => {
+    setIsLoading(true);
+    setLoadingType('tips');
+    try {
+      const result = await getTaxSavingTips(totalIncome, taxRate);
+      setTaxTips(result);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+      setLoadingType('');
+    }
+  };
+
+  const handleHealthCheck = async () => {
+    setIsLoading(true);
+    setLoadingType('health');
+    try {
+      const result = await calculateFinancialHealth({
+        income: totalIncome / 12,
+        expenses: totalExpense / 12,
+        vaultBalance,
+        taxLiability
+      });
+      setHealthScore(result);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+      setLoadingType('');
     }
   };
 
@@ -90,30 +148,33 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
         </div>
       </div>
 
-      {!insights && !error && (
-        <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-10 text-center shadow-lg">
-          <div className="w-20 h-20 bg-yellow-400 flex items-center justify-center mx-auto mb-6">
-            <Sparkles className="w-10 h-10 text-black" />
-          </div>
-          <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-3">READY FOR AI-POWERED ANALYSIS?</h3>
-          <p className="text-xs font-bold uppercase text-gray-500 mb-8 max-w-lg mx-auto">
-            OUR AI WILL ANALYZE YOUR {transactions.length} TRANSACTIONS AND PROVIDE PERSONALIZED TAX-SAVING RECOMMENDATIONS
-          </p>
-          <Button
-            onClick={handleGenerateInsights}
-            isLoading={isLoading}
-            disabled={transactions.length === 0}
-            size="lg"
-            className="mx-auto"
-          >
-            <Sparkles className="w-5 h-5 mr-2" />
-            GENERATE AI INSIGHTS
-          </Button>
-          {transactions.length === 0 && (
-            <p className="text-xs font-bold uppercase text-gray-500 mt-4">ADD SOME TRANSACTIONS FIRST TO GET INSIGHTS</p>
-          )}
+      <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-10 text-center shadow-lg">
+        <div className="w-20 h-20 bg-yellow-400 flex items-center justify-center mx-auto mb-6">
+          <Sparkles className="w-10 h-10 text-black" />
         </div>
-      )}
+        <h3 className="text-2xl font-black uppercase text-black dark:text-white mb-3">AI-POWERED FINANCIAL ANALYSIS</h3>
+        <p className="text-xs font-bold uppercase text-gray-500 mb-8 max-w-lg mx-auto">
+          GET PERSONALIZED INSIGHTS FROM {transactions.length} TRANSACTIONS
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <Button onClick={handleGenerateInsights} isLoading={isLoading && loadingType === 'insights'} disabled={transactions.length === 0}>
+            <Sparkles className="w-4 h-4 mr-2" />
+            TAX INSIGHTS
+          </Button>
+          <Button onClick={handleExpenseAnalysis} isLoading={isLoading && loadingType === 'expenses'} disabled={expenses.length === 0} variant="outline">
+            <PieChart className="w-4 h-4 mr-2" />
+            EXPENSES
+          </Button>
+          <Button onClick={handleTaxTips} isLoading={isLoading && loadingType === 'tips'} variant="outline">
+            <Target className="w-4 h-4 mr-2" />
+            TAX TIPS
+          </Button>
+          <Button onClick={handleHealthCheck} isLoading={isLoading && loadingType === 'health'} variant="outline">
+            <Shield className="w-4 h-4 mr-2" />
+            HEALTH CHECK
+          </Button>
+        </div>
+      </div>
 
       {isLoading && (
         <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-16 text-center shadow-lg">
@@ -141,29 +202,80 @@ export const Insights: React.FC<InsightsProps> = ({ transactions }) => {
         </div>
       )}
 
-      {insights && !isLoading && (
+      {(insights || expenseAnalysis || taxTips || healthScore) && !isLoading && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-8 shadow-lg">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-14 h-14 bg-cyan-500 flex items-center justify-center">
-                <Sparkles className="w-7 h-7 text-black" />
+          {insights && (
+            <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-8 shadow-lg">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-cyan-500 flex items-center justify-center">
+                  <Sparkles className="w-7 h-7 text-black" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black uppercase text-black dark:text-white">TAX INSIGHTS</h3>
+                  <p className="text-xs font-bold uppercase text-gray-500">AI ANALYSIS</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-2xl font-black uppercase text-black dark:text-white">YOUR PERSONALIZED TAX INSIGHTS</h3>
-                <p className="text-xs font-bold uppercase text-gray-500">GENERATED BY AI</p>
+              <div className="bg-gray-50 dark:bg-gray-900 p-6 border-l-4 border-cyan-500">
+                <p className="text-black dark:text-white whitespace-pre-line leading-relaxed font-bold">{insights}</p>
               </div>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-900 p-6 border-l-4 border-cyan-500">
-              <p className="text-black dark:text-white whitespace-pre-line leading-relaxed text-lg font-bold">
-                {insights}
-              </p>
+          )}
+          
+          {expenseAnalysis && (
+            <div className="bg-white dark:bg-black border-l-8 border-yellow-400 p-8 shadow-lg">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-yellow-400 flex items-center justify-center">
+                  <PieChart className="w-7 h-7 text-black" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black uppercase text-black dark:text-white">EXPENSE ANALYSIS</h3>
+                  <p className="text-xs font-bold uppercase text-gray-500">OPTIMIZATION TIPS</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-900 p-6 border-l-4 border-yellow-400">
+                <p className="text-black dark:text-white whitespace-pre-line leading-relaxed font-bold">{expenseAnalysis}</p>
+              </div>
             </div>
-          </div>
+          )}
+          
+          {taxTips && (
+            <div className="bg-white dark:bg-black border-l-8 border-green-500 p-8 shadow-lg">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-green-500 flex items-center justify-center">
+                  <Target className="w-7 h-7 text-black" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black uppercase text-black dark:text-white">TAX-SAVING STRATEGIES</h3>
+                  <p className="text-xs font-bold uppercase text-gray-500">PERSONALIZED TIPS</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-900 p-6 border-l-4 border-green-500">
+                <p className="text-black dark:text-white whitespace-pre-line leading-relaxed font-bold">{taxTips}</p>
+              </div>
+            </div>
+          )}
+          
+          {healthScore && (
+            <div className="bg-white dark:bg-black border-l-8 border-red-500 p-8 shadow-lg">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-red-500 flex items-center justify-center">
+                  <Shield className="w-7 h-7 text-black" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black uppercase text-black dark:text-white">FINANCIAL HEALTH</h3>
+                  <p className="text-xs font-bold uppercase text-gray-500">OVERALL SCORE</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-900 p-6 border-l-4 border-red-500">
+                <p className="text-black dark:text-white whitespace-pre-line leading-relaxed text-xl font-black">{healthScore}</p>
+              </div>
+            </div>
+          )}
 
-          <div className="flex justify-center">
-            <Button variant="outline" onClick={handleGenerateInsights} isLoading={isLoading} size="lg">
-              <Sparkles className="w-5 h-5 mr-2" />
-              REGENERATE INSIGHTS
+          <div className="flex justify-center gap-4">
+            <Button variant="outline" onClick={handleGenerateInsights} isLoading={isLoading && loadingType === 'insights'}>
+              <Sparkles className="w-4 h-4 mr-2" />
+              REFRESH
             </Button>
           </div>
         </div>

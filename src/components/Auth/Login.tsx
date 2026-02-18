@@ -52,7 +52,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, onNavigateToSignup, isDar
       <div className={`hidden lg:flex lg:w-1/2 ${isDarkMode ? 'bg-gray-900 border-r-4 border-yellow-400' : 'bg-black'} p-12 flex-col justify-between`}>
         <div>
           <div className="flex items-center gap-3 mb-8">
-            <PayLockrLogo size={48} />
+            <PayLockrLogo size={48} />  
             <span className="text-3xl font-black uppercase text-white">PAYLOCKR</span>
           </div>
           <h1 className="text-4xl font-black uppercase text-white mb-4 leading-tight">

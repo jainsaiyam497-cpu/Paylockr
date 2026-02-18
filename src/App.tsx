@@ -357,8 +357,15 @@ export default function App() {
             setToast({ msg: 'Invoice created and added to transactions', type: 'success' });
           }} />}
           {view === 'EXPENSES' && <Expenses expenses={expenses} onAdd={(exp) => {
-            setFinancialData(prev => prev ? ({...prev, expenses: [exp, ...prev.expenses]}) : null);
-            setToast({ msg: 'Expense added', type: 'success' });
+            setFinancialData(prev => {
+              if (!prev) return null;
+              const updatedExpenses = [exp, ...prev.expenses];
+              // Recalculate stats with new expense
+              const userId = session.user.id || 'saiyam';
+              const dashStats = getDashboardStats(userId);
+              return {...prev, expenses: updatedExpenses, stats: {...dashStats, totalExpense: dashStats.totalExpense + exp.amount}};
+            });
+            setToast({ msg: `Expense added: ₹${exp.amount}`, type: 'success' });
           }} />}
           {view === 'BANK_ACCOUNTS' && <BankAccounts accounts={bankAccounts} onDelete={(accId) => {
             setFinancialData(prev => prev ? ({...prev, bankAccounts: prev.bankAccounts.filter(a => a.id !== accId)}) : null);

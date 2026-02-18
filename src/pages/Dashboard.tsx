@@ -11,7 +11,8 @@ import {
   AlertCircle,
   ArrowRight,
   TrendingUp, 
-  ArrowDownLeft
+  ArrowDownLeft,
+  Mail
 } from 'lucide-react';
 import { Transaction, ViewState, TaxDeadline, TransactionType, TransactionStatus } from '../types';
 import { Stats } from '../components/Dashboard/Stats';
@@ -20,6 +21,7 @@ import { QuickActions } from '../components/Dashboard/QuickActions';
 import { TaxBreakdown } from '../components/Dashboard/TaxBreakdown';
 import { TaxSlabExplainer } from '../components/Dashboard/TaxSlabExplainer';
 import { calculateTax, getTaxSlab } from '../utils/taxCalculator';
+import { sendMonthlyReport } from '../services/emailService';
 
 interface DashboardProps {
   transactions: Transaction[]; 
@@ -52,9 +54,38 @@ export const Dashboard: React.FC<DashboardProps> = ({
 }) => {
   const notificationRef = useRef<HTMLDivElement>(null);
   const [incomeView, setIncomeView] = React.useState<'MONTHLY' | 'YEARLY'>('MONTHLY');
+  const [emailSending, setEmailSending] = React.useState(false);
   
   // Use passed transactions to ensure consistency
   const recentTransactions = propTransactions.slice(0, 5);
+
+  const handleSendReport = async () => {
+    const email = prompt('📧 Enter your email address:');
+    if (!email || !email.includes('@')) {
+      alert('❌ Invalid email address');
+      return;
+    }
+    
+    setEmailSending(true);
+    try {
+      const result = await sendMonthlyReport(email, {
+        income: cumulativeIncome,
+        expenses: stats?.totalExpense || 0,
+        taxSaved: vaultBalance,
+        month: new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
+      });
+      if (result.success) {
+        alert(`✅ Report sent to ${email}!`);
+      } else {
+        console.error('Email error:', result.error);
+        alert(`❌ Failed: ${result.error || 'Check EmailJS template settings'}`);
+      }
+    } catch (error) {
+      alert('❌ Email service not configured. Add EmailJS keys to .env.local');
+    } finally {
+      setEmailSending(false);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -274,6 +305,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
               Yearly
             </button>
           </div>
+          <button
+            onClick={handleSendReport}
+            disabled={emailSending}
+            className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-black font-bold uppercase text-xs transition-all flex items-center gap-2 disabled:opacity-50"
+          >
+            <Mail className="w-4 h-4" />
+            {emailSending ? 'SENDING...' : 'EMAIL REPORT'}
+          </button>
         </div>
 
         <Stats 

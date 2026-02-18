@@ -225,7 +225,7 @@ export const Invoices: React.FC<InvoicesProps> = ({ invoices, onAdd, onDelete, o
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Amount (₹) *</label>
-                  <input name="amount" type="number" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
+                  <input name="amount" type="number" min="1" required className="w-full px-3 py-2 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black text-black dark:text-white focus:border-yellow-400 outline-none" />
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase text-gray-500 block mb-2">Due Date *</label>

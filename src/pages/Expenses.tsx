@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { TrendingUp, AlertCircle, Receipt } from 'lucide-react';
+import { TrendingUp, AlertCircle, Receipt, Camera, Loader2 } from 'lucide-react';
 import { CATEGORIES } from '../utils/multiUserUnifiedData';
 import { Expense } from '../types';
+import { extractExpenseData } from '../services/ocrService';
 
 interface Budget {
   [key: string]: number;
@@ -16,6 +17,40 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showBudgetModal, setShowBudgetModal] = useState(false);
+  const [scanning, setScanning] = useState(false);
+
+  const handleScanReceipt = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setScanning(true);
+    try {
+      const expenseData = await extractExpenseData(file);
+      
+      if (!expenseData.amount || expenseData.amount === 0) {
+        alert('❌ Could not extract amount from receipt. Please add manually.');
+        setScanning(false);
+        e.target.value = '';
+        return;
+      }
+      
+      const newExpense: Expense = {
+        id: Date.now().toString(),
+        amount: expenseData.amount,
+        category: expenseData.category,
+        description: expenseData.description,
+        date: new Date(expenseData.date),
+        merchant: expenseData.description
+      };
+      onAdd && onAdd(newExpense);
+      alert(`✅ Receipt scanned! Added ${expenseData.category} expense of ₹${expenseData.amount}`);
+    } catch (error) {
+      alert('❌ Failed to scan receipt. Try again.');
+    } finally {
+      setScanning(false);
+      e.target.value = '';
+    }
+  };
   const [budgets, setBudgets] = useState<Budget>({
     FOOD: 10000,
     SHOPPING: 15000,
@@ -115,6 +150,14 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
                 >
                   <span className="text-xl">+</span> ADD EXPENSE
                 </button>
+                <label className="w-full px-4 py-2 sm:px-6 sm:py-3 bg-green-500 hover:bg-green-600 text-black font-bold uppercase transition flex items-center gap-2 justify-center cursor-pointer">
+                  {scanning ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> SCANNING...</>
+                  ) : (
+                    <><Camera className="w-4 h-4" /> SCAN RECEIPT</>
+                  )}
+                  <input type="file" accept="image/*" onChange={handleScanReceipt} className="hidden" disabled={scanning} />
+                </label>
                 <button
                   onClick={() => setShowBudgetModal(true)}
                   className="w-full px-4 py-2 sm:px-6 sm:py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold uppercase transition flex items-center gap-2 justify-center"
@@ -213,7 +256,7 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
               onClick={() => setShowBudgetEdit(!showBudgetEdit)}
               className="px-4 py-2 bg-yellow-400 text-black font-bold uppercase text-xs hover:bg-yellow-500 transition"
             >
-              {showBudgetEdit ? 'DONE' : 'EDIT BUDGETS'}
+              {showBudgetEdit ? 'SAVE' : 'SET LIMITS'}
             </button>
           </div>
 

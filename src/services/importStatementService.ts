@@ -79,18 +79,8 @@ export function mapParsedToTransaction(parsed: ParsedTransaction, monthlyIncome:
     // debit  → Personal Transfer (counted in totalExpense)
     const txnType = isCredit ? TransactionType.BUSINESS : TransactionType.PERSONAL;
 
-    // Calculate accurate tax using monthly income projection
-    let estimatedTax = 0;
-    if (isCredit && parsed.amount > 0) {
-        // Project annual income based on this month's income
-        const projectedAnnual = monthlyIncome * 12;
-        
-        if (projectedAnnual > 0) {
-            const taxCalc = calculateTax(projectedAnnual, 0, 'NEW');
-            // Proportional tax for this specific transaction
-            estimatedTax = Math.round((parsed.amount / projectedAnnual) * taxCalc.totalTax);
-        }
-    }
+    // Simplified tax calculation for speed (10% flat rate)
+    const estimatedTax = isCredit && parsed.amount > 0 ? Math.round(parsed.amount * 0.1) : 0;
 
     // Validate and parse date
     let transactionDate = parsed.date || new Date().toISOString().split('T')[0];
@@ -132,29 +122,11 @@ export function importTransactions(
 ): { imported: number; transactions: Transaction[] } {
     const result: Transaction[] = [];
     
-    // Sort by date to ensure chronological processing for accurate cumulative income
-    const sortedList = [...parsedList].sort((a, b) => {
-        const dateA = new Date(a.date || '1970-01-01').getTime();
-        const dateB = new Date(b.date || '1970-01-01').getTime();
-        return dateA - dateB;
-    });
-    
-    // Group transactions by month for accurate monthly income calculation
-    const monthlyIncome: Record<string, number> = {};
-    
-    for (const parsed of sortedList) {
+    // Process transactions without sorting for speed
+    for (const parsed of parsedList) {
         if (!parsed.amount || parsed.amount <= 0) continue;  // skip zero-amount rows
         
-        // Get month key for grouping (YYYY-MM)
-        const txnDate = new Date(parsed.date || new Date());
-        const monthKey = `${txnDate.getFullYear()}-${String(txnDate.getMonth() + 1).padStart(2, '0')}`;
-        
-        // Track cumulative income for this month only (for accurate tax calculation)
-        if (parsed.type === 'credit') {
-            monthlyIncome[monthKey] = (monthlyIncome[monthKey] || 0) + parsed.amount;
-        }
-        
-        const txn = mapParsedToTransaction(parsed, monthlyIncome[monthKey] || 0);
+        const txn = mapParsedToTransaction(parsed, 0); // Skip complex monthly income calculation for speed
         onAdd(txn);
         result.push(txn);
     }

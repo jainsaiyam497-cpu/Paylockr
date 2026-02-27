@@ -19,25 +19,26 @@ export const TaxManagement: React.FC<TaxManagementProps> = ({ stats }) => {
 
   // Derive tax data from real stats or fallback safely
   const grossIncome = stats?.totalIncome || 0;
-  // Estimate taxable income (simplified logic for UI display based on stats)
-  const taxableIncome = Math.max(0, grossIncome - 75000); // Standard deduction
   const estimatedTax = stats?.vaultBalance || 0; // Using vault balance as proxy for tax liability in this view
   const totalDeductions = 150000; // Mock deduction limit for now, or derive if available
 
-  // Dynamic Slab Calculation based on real gross income
-  const calculateSlabAmount = (income: number, min: number, max: number, rate: number) => {
+  // Dynamic Slab Calculation based on real gross income using correct FY 2025-26 slabs
+  const taxableIncome = Math.max(0, grossIncome - 75000); // Standard deduction
+  
+  const calculateSlabAmount = (income: number, min: number, max: number | null, rate: number) => {
     if (income <= min) return 0;
-    const taxableAtThisSlab = Math.min(income, max) - min;
+    const taxableAtThisSlab = max ? Math.min(income, max) - min : income - min;
     return taxableAtThisSlab * rate;
   };
 
   const taxSlabs = [
-    { range: '0 - 3L', rate: '0%', amount: 0 },
-    { range: '3L - 7L', rate: '5%', amount: calculateSlabAmount(grossIncome, 300000, 700000, 0.05) },
-    { range: '7L - 10L', rate: '10%', amount: calculateSlabAmount(grossIncome, 700000, 1000000, 0.10) },
-    { range: '10L - 12L', rate: '15%', amount: calculateSlabAmount(grossIncome, 1000000, 1200000, 0.15) },
-    { range: '12L - 15L', rate: '20%', amount: calculateSlabAmount(grossIncome, 1200000, 1500000, 0.20) },
-    { range: '15L+', rate: '30%', amount: Math.max(0, grossIncome - 1500000) * 0.30 }
+    { range: 'Up to ₹4L', rate: '0%', amount: 0 },
+    { range: '₹4L - ₹8L', rate: '5%', amount: calculateSlabAmount(taxableIncome, 400000, 800000, 0.05) },
+    { range: '₹8L - ₹12L', rate: '10%', amount: calculateSlabAmount(taxableIncome, 800000, 1200000, 0.10) },
+    { range: '₹12L - ₹16L', rate: '15%', amount: calculateSlabAmount(taxableIncome, 1200000, 1600000, 0.15) },
+    { range: '₹16L - ₹20L', rate: '20%', amount: calculateSlabAmount(taxableIncome, 1600000, 2000000, 0.20) },
+    { range: '₹20L - ₹24L', rate: '25%', amount: calculateSlabAmount(taxableIncome, 2000000, 2400000, 0.25) },
+    { range: 'Above ₹24L', rate: '30%', amount: calculateSlabAmount(taxableIncome, 2400000, null, 0.30) }
   ];
 
   const importantDates = [

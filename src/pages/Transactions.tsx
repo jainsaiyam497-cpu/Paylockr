@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ChevronDown, Search, Filter, Download, ArrowDownLeft, ArrowUpRight, Calendar as CalendarIcon, X, Plus, DollarSign, Ban, Upload, Scan } from 'lucide-react';
 import { CATEGORIES } from '../utils/multiUserUnifiedData';
 import { Transaction, TransactionType, TransactionStatus } from '../types';
@@ -31,7 +31,20 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
   const [showImportModal, setShowImportModal] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [importStatus, setImportStatus] = useState<{ msg: string; type: 'info' | 'success' | 'error' } | null>(null);
-  const [importedTxns, setImportedTxns] = useState<import('../types').Transaction[]>([]);
+  // Load imported transactions from localStorage on component mount
+  const [importedTxns, setImportedTxns] = useState<import('../types').Transaction[]>(() => {
+    try {
+      const stored = localStorage.getItem('paylockr_imported_transactions');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Persist imported transactions to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('paylockr_imported_transactions', JSON.stringify(importedTxns));
+  }, [importedTxns]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Returns true if date is missing/null/empty
@@ -218,7 +231,10 @@ export const Transactions: React.FC<TransactionsProps> = ({ transactions = [], o
       // Store in local state for IMMEDIATE display (no waiting for App.tsx state propagation)
       setImportedTxns(prev => {
         const existingIds = new Set(prev.map(t => t.id));
-        return [...mapped.filter(t => !existingIds.has(t.id)), ...prev];
+        const newTxns = [...mapped.filter(t => !existingIds.has(t.id)), ...prev];
+        // Persist to localStorage immediately
+        localStorage.setItem('paylockr_imported_transactions', JSON.stringify(newTxns));
+        return newTxns;
       });
 
       // Use bulk add (single state update) if available, otherwise fall back to loop

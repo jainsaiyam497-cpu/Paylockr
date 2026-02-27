@@ -163,6 +163,8 @@ export default function App() {
         if (!sessionStorage.getItem('userData')) {
           setSession(null);
           setFinancialData(null);
+          // Clear imported transactions when session ends
+          localStorage.removeItem('paylockr_imported_transactions');
           setView('LOGIN');
         }
       }
@@ -217,6 +219,8 @@ export default function App() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     sessionStorage.removeItem('userData');
+    // Clear imported transactions from localStorage on logout
+    localStorage.removeItem('paylockr_imported_transactions');
     setSession(null);
     setFinancialData(null);
     setView('LOGIN');

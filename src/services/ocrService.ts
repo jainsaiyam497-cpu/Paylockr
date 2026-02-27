@@ -64,28 +64,124 @@ export const extractExpenseData = async (imageFile: File): Promise<{
   date: string;
   description: string;
 }> => {
-  const scanned = await scanInvoice(imageFile);
+  try {
+    // Use direct Gemini Vision API for receipt scanning
+    const result = await scanReceiptDirect(imageFile);
+    
+    // Auto-categorize based on keywords in description using CATEGORIES keys
+    const text = (result.vendor || result.description || '').toLowerCase();
+    let category = 'SHOPPING'; // Default category
 
-  // Auto-categorize based on keywords in description
-  const text = (scanned.vendor || '').toLowerCase();
-  let category = 'Other';
+    if (text.includes('food') || text.includes('restaurant') || text.includes('cafe') || text.includes('swiggy') || text.includes('zomato') || text.includes('dominos') || text.includes('pizza')) {
+      category = 'FOOD';
+    } else if (text.includes('uber') || text.includes('ola') || text.includes('transport') || text.includes('rapido') || text.includes('taxi') || text.includes('flight') || text.includes('train')) {
+      category = 'TRAVEL';
+    } else if (text.includes('software') || text.includes('subscription') || text.includes('saas') || text.includes('netflix') || text.includes('spotify') || text.includes('adobe')) {
+      category = 'SUBSCRIPTIONS';
+    } else if (text.includes('office') || text.includes('supplies') || text.includes('amazon') || text.includes('flipkart')) {
+      category = 'SHOPPING';
+    } else if (text.includes('electricity') || text.includes('gas') || text.includes('water') || text.includes('internet') || text.includes('mobile') || text.includes('jio') || text.includes('airtel')) {
+      category = 'UTILITIES';
+    } else if (text.includes('hospital') || text.includes('pharmacy') || text.includes('doctor') || text.includes('medical') || text.includes('apollo') || text.includes('1mg')) {
+      category = 'HEALTHCARE';
+    } else if (text.includes('movie') || text.includes('cinema') || text.includes('bookmyshow') || text.includes('game') || text.includes('entertainment')) {
+      category = 'ENTERTAINMENT';
+    }
 
-  if (text.includes('food') || text.includes('restaurant') || text.includes('cafe') || text.includes('swiggy') || text.includes('zomato')) {
-    category = 'Food & Dining';
-  } else if (text.includes('uber') || text.includes('ola') || text.includes('transport') || text.includes('rapido')) {
-    category = 'Transportation';
-  } else if (text.includes('software') || text.includes('subscription') || text.includes('saas')) {
-    category = 'Software & Tools';
-  } else if (text.includes('office') || text.includes('supplies')) {
-    category = 'Office Supplies';
+    return {
+      category,
+      amount: result.amount || 0,
+      date: result.date || new Date().toISOString().split('T')[0],
+      description: result.vendor || result.description || 'Scanned expense',
+    };
+  } catch (error) {
+    console.error('[extractExpenseData] Error:', error);
+    throw new Error('Failed to extract expense data from receipt');
+  }
+};
+
+/**
+ * Direct Gemini Vision API call for receipt/invoice scanning
+ */
+const scanReceiptDirect = async (imageFile: File): Promise<{
+  amount: number;
+  date: string;
+  vendor: string;
+  description: string;
+}> => {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey || apiKey.trim() === '') {
+    throw new Error('Gemini API key not found. Please add VITE_GEMINI_API_KEY to your environment variables.');
   }
 
-  return {
-    category,
-    amount: scanned.amount || 0,
-    date: scanned.date || new Date().toLocaleDateString('en-IN'),
-    description: scanned.vendor || 'Scanned expense',
-  };
+  const { GoogleGenerativeAI } = await import('@google/generative-ai');
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+  // Convert file to base64
+  const base64 = await fileToBase64(imageFile);
+  const mimeType = imageFile.type;
+
+  const prompt = `Extract expense data from this receipt/invoice image.
+
+Return ONLY valid JSON (no markdown, no explanation):
+
+{
+  "amount": 0.00,
+  "date": "YYYY-MM-DD",
+  "vendor": "merchant name",
+  "description": "item/service description"
+}
+
+RULES:
+1. AMOUNT: Extract total amount (look for "Total", "Amount", "₹" symbols)
+2. DATE: Convert any date format to YYYY-MM-DD
+3. VENDOR: Extract merchant/store/company name
+4. DESCRIPTION: Brief description of purchase/service
+5. If any field is unclear, use reasonable defaults`;
+
+  console.log(`[ReceiptScanner] Scanning ${imageFile.name}`);
+
+  const result = await model.generateContent([
+    prompt,
+    {
+      inlineData: {
+        data: base64,
+        mimeType: mimeType
+      }
+    }
+  ]);
+
+  const responseText = result.response.text();
+  console.log('[ReceiptScanner] Raw response:', responseText.substring(0, 200));
+
+  try {
+    const parsed = JSON.parse(responseText);
+    return {
+      amount: Number(parsed.amount) || 0,
+      date: parsed.date || new Date().toISOString().split('T')[0],
+      vendor: parsed.vendor || 'Unknown Merchant',
+      description: parsed.description || 'Expense'
+    };
+  } catch (error) {
+    console.error('[ReceiptScanner] JSON parse error:', error);
+    throw new Error('Failed to parse receipt data');
+  }
+};
+
+/**
+ * Convert File to base64 string
+ */
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = (reader.result as string).split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

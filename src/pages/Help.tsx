@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { HelpCircle, Mail, MessageCircle, FileQuestion, ChevronDown, Search, BookOpen, Wallet, TrendingUp, Calendar, Shield, CreditCard, FileText, Video, ExternalLink } from 'lucide-react';
+import { HelpCircle, Mail, MessageCircle, FileQuestion, ChevronDown, Search, BookOpen, Wallet, TrendingUp, Calendar, Shield, CreditCard, FileText, Video, ExternalLink, Key } from 'lucide-react';
+import { APIKeyChecker } from '../components/common/APIKeyChecker';
 
 interface FAQItem {
   question: string;
@@ -11,9 +12,11 @@ export const Help: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
+  const [showAPIChecker, setShowAPIChecker] = useState(false);
 
   const categories = [
     { id: 'ALL', label: 'All Topics', icon: BookOpen, color: 'blue' },
+    { id: 'API', label: 'API Keys', icon: Key, color: 'red' },
     { id: 'VAULT', label: 'Tax Vault', icon: Wallet, color: 'purple' },
     { id: 'TRANSACTIONS', label: 'Transactions', icon: CreditCard, color: 'green' },
     { id: 'TAX', label: 'Tax Filing', icon: FileText, color: 'orange' },
@@ -22,6 +25,21 @@ export const Help: React.FC = () => {
   ];
 
   const faqs: FAQItem[] = [
+    {
+      category: 'API',
+      question: 'Why is my Gemini API key not working?',
+      answer: 'Check: 1) API key is correct in .env.local, 2) Key starts with "AIza", 3) Gemini API is enabled in Google Cloud Console, 4) No extra spaces in the key. Use the API Key Checker below to test all keys.'
+    },
+    {
+      category: 'API',
+      question: 'How do I get a free Gemini API key?',
+      answer: 'Go to https://makersuite.google.com/app/apikey → Create API Key → Copy and paste in your .env.local file as VITE_GEMINI_API_KEY=your_key_here. Restart your dev server after adding.'
+    },
+    {
+      category: 'API',
+      question: 'What API keys do I need for full functionality?',
+      answer: 'Required: VITE_GEMINI_API_KEY (for AI features). Optional: VITE_GROQ_API_KEY (faster AI), VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY (user auth), VITE_EMAILJS_PUBLIC_KEY (notifications).'
+    },
     {
       category: 'VAULT',
       question: 'What is Smart Tax Vault and how does it work?',
@@ -184,6 +202,13 @@ export const Help: React.FC = () => {
           })}
         </div>
       </div>
+
+      {/* API Key Checker */}
+      {selectedCategory === 'API' && (
+        <div className="mb-8">
+          <APIKeyChecker />
+        </div>
+      )}
 
       {/* FAQ Accordion */}
       <div className="bg-white dark:bg-black border-l-8 border-cyan-500 p-6 shadow-lg">

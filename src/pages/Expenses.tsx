@@ -40,11 +40,20 @@ export const Expenses: React.FC<ExpensesProps> = ({ expenses, onAdd }) => {
         category: expenseData.category,
         description: expenseData.description,
         date: new Date(expenseData.date),
-        merchant: expenseData.description
+        merchant: expenseData.description,
+        paymentMethod: 'UPI', // Default payment method
+        tags: [expenseData.category.toLowerCase()], // Add category as tag
+        deductible: ['SUBSCRIPTIONS', 'UTILITIES'].includes(expenseData.category) // Business deductible logic
       };
-      onAdd && onAdd(newExpense);
-      alert(`✅ Receipt scanned! Added ${expenseData.category} expense of ₹${expenseData.amount}`);
+      
+      if (onAdd) {
+        onAdd(newExpense);
+        alert(`✅ Receipt scanned! Added ${expenseData.category} expense of ₹${expenseData.amount}`);
+      } else {
+        alert('❌ Unable to add expense. Please try again.');
+      }
     } catch (error) {
+      console.error('Receipt scan error:', error);
       alert('❌ Failed to scan receipt. Try again.');
     } finally {
       setScanning(false);

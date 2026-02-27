@@ -67,8 +67,8 @@ cd paylockr/"Prototype 4"
 # Windows: Double-click this file
 start-paylockr.bat
 
-# Or manually:
-quick-start.bat
+# If you encounter issues, run the fix script first:
+fix-paylockr.bat
 ```
 
 3. **Access the app**

@@ -412,16 +412,24 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   <span className={`text-xs font-bold ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Taxable Income</span>
                   <span className={`text-xs font-black ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>₹{taxCalc.taxableIncome.toLocaleString('en-IN')}</span>
                 </div>
-                {taxCalc.breakdown?.map((item, idx) => (
+                {taxCalc.breakdown?.map((item, idx) => {
+                  // Extract rate from slab label (e.g., "₹4L - ₹8L" -> find matching slab)
+                  const slabRate = item.slab.includes('Up to') ? 0 :
+                                   item.slab.includes('4L - ₹8L') ? 5 :
+                                   item.slab.includes('8L - ₹12L') ? 10 :
+                                   item.slab.includes('12L - ₹16L') ? 15 :
+                                   item.slab.includes('16L - ₹20L') ? 20 :
+                                   item.slab.includes('20L - ₹24L') ? 25 : 30;
+                  return (
                   <div key={idx} className="flex items-center justify-between">
                     <span className={`text-xs font-bold ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {item.slab} @ {taxSlab.rate}%
+                      {item.slab} @ {slabRate}%
                     </span>
                     <span className={`text-xs font-black ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
                       ₹{Math.round(item.tax).toLocaleString('en-IN')}
                     </span>
                   </div>
-                ))}
+                )})}
                 <div className={`pt-2 border-t-2 ${isDarkMode ? 'border-gray-700' : 'border-gray-300'} flex items-center justify-between`}>
                   <span className={`text-sm font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>ANNUAL TAX LIABILITY</span>
                   <span className={`text-lg font-black ${isDarkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>

@@ -56,3 +56,10 @@ env/
 *.key
 *.cert
 *.p12
+GET_NEW_KEYS.txt
+metadata.json
+cloudflared.exe
+test-apis.js
+test-correct-models.js
+test-new-keys.js
+backup_before_view_restriction/

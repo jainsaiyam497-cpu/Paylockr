@@ -27,10 +27,10 @@ if %ERRORLEVEL% NEQ 0 (
 echo [2/3] Starting development server...
 echo.
 echo ==========================================
-echo   FRONTEND RUNNING ON PORT 3000
+echo   FRONTEND RUNNING ON PORT 5173
 echo ==========================================
 echo.
-echo Frontend: http://localhost:3000
+echo Frontend: http://localhost:5173
 echo.
 echo Press Ctrl+C to stop the service
 echo.

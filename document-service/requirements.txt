@@ -9,13 +9,14 @@ python-multipart>=0.0.9    # Required for form/file uploads in FastAPI
 
 # --- HTTP client (for fetching files from URLs / Supabase Storage) ---
 httpx>=0.27.0
+httpx[http2]>=0.27.0
 
 # --- PDF text extraction ---
 pdfplumber>=0.11.0
 PyMuPDF>=1.24.0            # also provides scanned PDF → image conversion (ghostscript-free)
 
 # --- Table extraction from text PDFs ---
-camelot-py[cv]>=0.11.0     # requires ghostscript + OpenCV
+# camelot-py[cv]>=0.11.0     # requires ghostscript + OpenCV - DISABLED due to dependency issues
 
 # --- Image preprocessing ---
 opencv-python-headless>=4.9.0   # headless: no GUI deps
@@ -28,4 +29,4 @@ pytesseract>=0.3.10        # Python wrapper; Tesseract binary must be installed 
 python-dotenv>=1.0.1
 
 # --- Optional: LLM normalization / Vision (Gemini) ---
-google-genai>=1.0.0              # new official Google GenAI SDK (replaces google-generativeai)
+google-generativeai>=0.8.0       # Official Google Generative AI SDK

@@ -37,7 +37,7 @@ from app.utils import (
 )
 from app.pdf_parser import parse_pdf, pdf_pages_to_images
 from app.ocr import extract_text_from_image, extract_text_from_images
-from app.table_extractor import extract_tables
+# from app.table_extractor import extract_tables  # Disabled - camelot dependency issues
 from app.normalizer import (
     normalize_text,
     normalize_table_rows,
@@ -422,16 +422,10 @@ async def _run_pipeline(
             extraction_method = "ocr"
 
         else:
-            # Text PDF → try table extraction first
-            table_rows = extract_tables(data)
-            if table_rows:
-                logger.info(f"Using Camelot table rows ({len(table_rows)} rows)")
-                result = normalize_table_rows(table_rows)
-                extraction_method = "camelot"
-            else:
-                logger.info("No tables found — falling back to text normalization")
-                result = normalize_text(pdf_result.full_text)
-                extraction_method = "pdfplumber"
+            # Text PDF → use text normalization (table extraction disabled)
+            logger.info("Text PDF detected — using text normalization")
+            result = normalize_text(pdf_result.full_text)
+            extraction_method = "pdfplumber"
 
     else:
         raise HTTPException(

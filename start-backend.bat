@@ -16,19 +16,36 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-echo [1/3] Navigating to document-service directory...
+echo [1/4] Navigating to document-service directory...
 cd /d "%~dp0document-service"
 
-echo [2/3] Setting up Python environment...
+echo [2/4] Setting up Python environment...
 if not exist .venv (
     echo Creating virtual environment...
     python -m venv .venv
+    if %ERRORLEVEL% NEQ 0 (
+        echo [ERROR] Failed to create virtual environment
+        pause
+        exit /b 1
+    )
 )
 
-call .venv\Scripts\activate
+echo [3/4] Activating virtual environment...
+call .venv\Scripts\activate.bat
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Failed to activate virtual environment
+    pause
+    exit /b 1
+)
 
-echo [3/3] Installing dependencies and starting server...
-pip install -q -r requirements.txt
+echo [4/4] Installing dependencies and starting server...
+pip install --upgrade pip
+pip install -r requirements.txt
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Failed to install dependencies
+    pause
+    exit /b 1
+)
 
 echo.
 echo ==========================================

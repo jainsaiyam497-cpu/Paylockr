@@ -1,4 +1,4 @@
-app: paylockr-backend
+  app: paylockr-backend
 services:
   - name: api
     type: web

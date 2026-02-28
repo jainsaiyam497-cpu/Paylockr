@@ -58,7 +58,7 @@
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/saiyamjain468s-projects/paylockr.git
+git clone https://github.com/jainsaiyam497s-projects/paylockr.git
 cd paylockr/"Prototype 4"
 ```
 
@@ -268,8 +268,8 @@ MIT License - see [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/saiyamjain468s-projects/paylockr/issues)
-- **Email**: saiyamjain468@gmail.com
+- **Issues**: [GitHub Issues](https://github.com/jainsaiyam497s-projects/paylockr/issues)
+- **Email**: jainsaiyam497@gmail.com
 - **Troubleshooting**: Check `start-paylockr.bat` logs
 
 ---
@@ -277,7 +277,7 @@ MIT License - see [LICENSE](LICENSE) file
 ## 👨💻 Author
 
 **Saiyam Jain**
-- GitHub: [@saiyamjain468s-projects](https://github.com/saiyamjain468s-projects)
+- GitHub: [@jainsaiyam497s-projects](https://github.com/jainsaiyam497s-projects)
 - Built for Cu AI Fest
 
 ---
